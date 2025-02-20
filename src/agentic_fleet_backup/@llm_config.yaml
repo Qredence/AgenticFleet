@@ -1,0 +1,191 @@
+Model:
+  providers:
+    azure_openai:
+      name: "Azure OpenAI"
+      models:
+        o3-mini:
+          model_name: "o3-mini"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_openai"
+          architecture: "o3-mini"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "o3-mini"
+          model_info:
+            json_output: true
+            function_calling: true
+            vision: true
+            family: azure_openai
+
+        gpt-4o:
+          model_name: "gpt-4o"
+          context_length: 2048
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_openai"
+          architecture: "gpt-4o"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "gpt-4o"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        gpt-4o-mini:
+          model_name: "gpt-4o-mini"
+          context_length: 2048
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_openai"
+          architecture: "gpt-4o-mini"
+          config:
+            api_version: "2024-08-06-preview"
+            azure_deployment: "gpt-4o-mini"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        gpt-3.5-turbo:
+          model_name: "gpt-3.5-turbo"
+          context_length: 4096
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_openai"
+          architecture: "gpt-3.5-turbo"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "o3-mini"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+
+    azure_foundry:
+      name: "Azure Foundry"
+      models:
+        deepseek-r1:
+          name: "deepseek-r1"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "deepseek-r1"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "deepseek-r1"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        phi-4:
+          name: "phi-4"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "phi-4"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "phi-4"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        o3-mini:
+          name: "o3-mini"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "o3-mini"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "o3-mini"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        gpt-4o:
+          name: "gpt-4o"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "gpt-4o"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "o3-mini"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        Llama-3.3-70b:
+          name: "Llama-3.3-70b"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "Llama-3.3-70b"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "o3-mini"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+
+    gemini:
+      name: "Gemini"
+      models:
+        gemini-2.0-flash:
+          name: "gemini-2.0-flash"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "gemini-2.0-flash"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "gemini-2.0-flash"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        gemini-2.0-lite:
+          name: "gemini-2.0-lite"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "gemini-2.0-lite"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "gemini-2.0-lite"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true
+        
+        gemini-2.0-experimental:
+          name: "gemini-2.0-experimental"
+          context_length: 128000
+          prompt_token_cost: 0.01
+          completion_token_cost: 0.03
+          family: "azure_foundry"
+          architecture: "gemini-2.0-experimental"
+          config:
+            api_version: "2024-12-01-preview"
+            azure_deployment: "gemini-2.0-experimental"
+          model_info:
+            vision: true
+            function_calling: true
+            json_output: true

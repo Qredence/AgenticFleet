@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentic-fleet"
-version = "0.4.80"
+version = "0.4.81"
 description = "A powerful multi-agent system for adaptive AI reasoning and automation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -98,6 +98,7 @@ dependencies = [
     "pytest>=8.3.4",
     "pytest-asyncio>=0.25.2",
     "pytest-cov>=6.0.0",
+    "pytest-xdist>=3.5.0",
     "redis>=5.2.1",
     "rich>=13.9.4",
     "scikit-learn>=1.6.1",
@@ -125,6 +126,16 @@ dependencies = [
     "click>=8.1.8",
     "pyjwt>=2.10.1",
     "html2text>=2024.2.26",
+    "grpcio==1.64.0",
+    "grpcio-tools==1.64.0",
+    "absl-py==2.1.0",
+    "dspy>=1.0.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "ruff>=0.1.0",
+    "chainlit>=2.2.1"
 ]  # Fix closing bracket for dependencies
 
 [project.urls]
@@ -199,6 +210,7 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 markers = [
     "unit: marks tests as unit tests",
     "integration: marks tests as integration tests",
@@ -279,9 +291,7 @@ dev = [
     "ruff>=0.5.3",
     "black>=24.1.1",
     "isort>=5.13.2",
-    "mypy>=1.8.0",
-    "bandit[toml]>=1.7.6",
-    "pre-commit>=3.6.2",
+
     
     # Testing
     "pytest>=8.0.2",
@@ -318,11 +328,6 @@ models = [
     "autogen-ext[semantic-kernel-aws]",
     "autogen-ext[semantic-kernel-mistralai]",
     "autogen-ext[semantic-kernel-hugging-face]"
-]
-
-grpc = [
-    "grpcio-tools>=1.62.0",
-    "protobuf>=5.29.3",
 ]
 
 [tool.setuptools.packages.find]

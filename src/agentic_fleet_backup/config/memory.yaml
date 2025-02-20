@@ -1,0 +1,170 @@
+# Memory System Configuration
+
+# Memory Bank settings
+memory_bank:
+  # Base directory for storing memory files
+  storage_dir: "./files/memory"
+  
+  # Memory type definitions
+  memory_types:
+    conversation:
+      description: "Conversation interactions between agents"
+      retention_period: 30  # days
+      
+    task:
+      description: "Task-related memories and outcomes"
+      retention_period: 90  # days
+      
+    skill:
+      description: "Learned skills and capabilities"
+      retention_period: 180  # days
+      
+    knowledge:
+      description: "Acquired knowledge and facts"
+      retention_period: 365  # days
+
+# Conversation Memory settings
+conversation_memory:
+  # Maximum number of turns to keep in memory
+  max_history: 100
+  
+  # Conversation context settings
+  context:
+    # Types of metadata to track
+    metadata_types:
+      - emotion
+      - intent
+      - confidence
+      - topic
+      - priority
+    
+    # Context retention settings
+    retention:
+      short_term: 10  # turns
+      medium_term: 50  # turns
+      long_term: 100  # turns
+
+# Memory Manager settings
+memory_manager:
+  # Memory pruning settings
+  pruning:
+    enabled: true
+    frequency: 24  # hours
+    min_confidence: 0.5
+    
+  # Memory consolidation settings
+  consolidation:
+    enabled: true
+    frequency: 168  # hours (1 week)
+    threshold: 0.8
+    
+  # Memory indexing settings
+  indexing:
+    enabled: true
+    method: "semantic"  # Options: semantic, keyword, hybrid
+    update_frequency: 1  # hours
+    
+  # Memory search settings
+  search:
+    max_results: 50
+    min_relevance: 0.7
+    context_window: 5  # number of related memories to include
+
+# Memory Analytics settings
+analytics:
+  # Tracking metrics
+  metrics:
+    - memory_usage
+    - access_patterns
+    - retention_rates
+    - recall_accuracy
+    
+  # Analysis settings
+  analysis:
+    frequency: 24  # hours
+    report_format: "markdown"
+    alert_threshold: 0.9
+    
+  # Visualization settings
+  visualization:
+    enabled: true
+    types:
+      - memory_growth
+      - interaction_patterns
+      - topic_clusters
+      - temporal_analysis
+
+# Memory Security settings
+security:
+  # Access control
+  access_control:
+    enabled: true
+    default_policy: "read-only"
+    
+  # Encryption settings
+  encryption:
+    enabled: true
+    algorithm: "AES-256"
+    key_rotation: 30  # days
+    
+  # Audit settings
+  auditing:
+    enabled: true
+    log_level: "INFO"
+    retention: 90  # days
+
+# Performance settings
+performance:
+  # Caching settings
+  caching:
+    enabled: true
+    max_size: 1000  # entries
+    ttl: 3600  # seconds
+    
+  # Optimization settings
+  optimization:
+    auto_optimize: true
+    index_compression: true
+    batch_processing: true
+    
+  # Resource limits
+  limits:
+    max_memory_size: "1GB"
+    max_file_size: "10MB"
+    max_batch_size: 1000
+
+# Integration settings
+integrations:
+  # Database integration
+  database:
+    enabled: false
+    type: "postgresql"
+    connection_pool: 10
+    
+  # External storage
+  storage:
+    enabled: false
+    type: "s3"
+    
+  # Event streaming
+  events:
+    enabled: false
+    type: "kafka"
+
+# Development settings
+development:
+  # Debug settings
+  debug:
+    enabled: false
+    verbose: false
+    
+  # Testing settings
+  testing:
+    mock_data: false
+    performance_tracking: true
+    
+  # Monitoring settings
+  monitoring:
+    enabled: true
+    metrics_interval: 60  # seconds
+    health_check_interval: 300  # seconds

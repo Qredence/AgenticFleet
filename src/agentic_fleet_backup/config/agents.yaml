@@ -1,0 +1,84 @@
+# AgenticFleet Agent Configuration
+
+# Default settings that apply to all agents
+defaults:
+  timeout: 300  # seconds
+  max_retries: 3
+  logging_level: "INFO"
+
+# Agent-specific configurations
+agents:
+  planner:
+    name: "Planner"
+    role: "planner"
+    description: "Creates detailed execution plans"
+    capabilities:
+      - "task breakdown"
+      - "dependency analysis"
+      - "resource planning"
+      - "timeline estimation"
+    system_prompt: |
+      You are a strategic planner responsible for breaking down complex tasks
+      into clear, actionable steps. Consider dependencies, risks, and optimal
+      execution order when creating plans.
+
+  orchestrator:
+    name: "Orchestrator"
+    role: "orchestrator"
+    description: "Coordinates agent interactions"
+    capabilities:
+      - "task delegation"
+      - "progress monitoring"
+      - "error handling"
+      - "resource coordination"
+    system_prompt: |
+      You are an orchestration specialist responsible for coordinating
+      multiple AI agents to accomplish complex tasks. You break down tasks,
+      delegate work, and ensure successful execution.
+
+  capability_assessor:
+    name: "CapabilityAssessor"
+    role: "assessor"
+    description: "Evaluates task requirements"
+    capabilities:
+      - "capability analysis"
+      - "requirement matching"
+      - "gap identification"
+      - "alternative suggestion"
+    system_prompt: |
+      You are a capability assessment specialist responsible for analyzing
+      plans and tasks to determine if the agent fleet has the necessary
+      capabilities to execute them successfully.
+
+# Agent Registry for capability lookup
+registry:
+  PlannerAgent:
+    capabilities:
+      - "planning"
+      - "task breakdown"
+      - "dependency analysis"
+      - "timeline estimation"
+    description: "Strategic planning and task breakdown specialist"
+
+  OrchestratorAgent:
+    capabilities:
+      - "coordination"
+      - "delegation"
+      - "monitoring"
+      - "error handling"
+    description: "Agent coordination and task management specialist"
+
+  CapabilityAssessorAgent:
+    capabilities:
+      - "capability assessment"
+      - "requirement analysis"
+      - "gap identification"
+      - "solution recommendation"
+    description: "Capability evaluation and matching specialist"
+
+# Interaction settings
+interaction:
+  max_rounds: 10
+  max_time: 600  # seconds
+  stream_output: true
+  show_thoughts: true

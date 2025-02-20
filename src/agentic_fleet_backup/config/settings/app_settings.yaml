@@ -1,0 +1,42 @@
+app:
+  name: "AgenticFleet"
+  version: "0.4.80"
+  description: "A multi-agent system for adaptive AI reasoning"
+
+environment:
+  debug: false
+  workspace_dir: "./.files/workspace"
+  downloads_dir: "./.files/downloads"
+  debug_dir: "./.files/debug"
+  logs_dir: "./.files/logs"
+  stream_delay: 0.01
+
+defaults:
+  max_rounds: 10
+  max_time: 300
+  max_stalls: 3
+  start_page: "https://www.bing.com"
+  temperature: 0.7
+  system_prompt: "You are a helpful AI assistant."
+
+security:
+  use_oauth: true
+  oauth_providers:
+    - name: "github"
+      client_id_env: "OAUTH_GITHUB_CLIENT_ID"
+      client_secret_env: "OAUTH_GITHUB_CLIENT_SECRET"
+
+api:
+  prefix: "/api"
+  host: "0.0.0.0"
+  port: 8000
+
+cors:
+  origins: "*"
+  credentials: true
+  methods: "GET,POST,PUT,DELETE,OPTIONS"
+  headers: "Content-Type,Authorization"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

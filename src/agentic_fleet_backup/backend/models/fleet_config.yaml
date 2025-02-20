@@ -1,0 +1,73 @@
+agents:
+  web_surfer:
+    name: "WebSurfer"
+    type: "MultimodalWebSurfer"
+    description: "Expert web surfer agent specialized in navigating and extracting information from web pages"
+    config:
+      headless: true
+      animate_actions: false
+      to_save_screenshots: true
+      use_ocr: false
+      to_resize_viewport: true
+
+  file_surfer:
+    name: "FileSurfer"
+    type: "FileSurfer"
+    description: "Expert file system navigator specialized in searching and analyzing files"
+
+  coder:
+    name: "Coder"
+    type: "MagenticOneCoderAgent"
+    description: "Expert coding agent specialized in software development and problem-solving"
+
+  executor:
+    name: "Executor"
+    type: "CodeExecutorAgent"
+    description: "Expert code execution agent specialized in running and managing code"
+    config:
+      timeout: 300
+
+teams:
+  magentic_fleet_one:
+    name: "MagenticFleet One"
+    description: "Default team configuration with all agents"
+    participants:
+      - web_surfer
+      - file_surfer
+      - coder
+      - executor
+    config:
+      max_messages: 50
+      selector_description: "Select the most appropriate agent for the current task"
+
+chat_profiles:
+  magentic_fleet_one:
+    name: "MagenticFleet One"
+    description: "Balanced settings for general conversations"
+    icon: "/public/icons/standard.png"
+    default: true
+    settings:
+      temperature: 0.7
+      max_rounds: 10
+      max_time: 300
+      system_prompt: "You are a helpful AI assistant focused on balanced, clear communication."
+
+  web_search_fleet:
+    name: "WebSearch Fleet"
+    description: "Enhanced settings for complex tasks requiring deeper analysis"
+    icon: "/public/icons/advanced.png"
+    settings:
+      temperature: 0.3
+      max_rounds: 20
+      max_time: 600
+      system_prompt: "You are an expert AI assistant focused on detailed analysis and precise solutions."
+
+  coding_fleet:
+    name: "Coding Fleet"
+    description: "Optimized settings for creative tasks and brainstorming"
+    icon: "/public/icons/standard.png"
+    settings:
+      temperature: 1.0
+      max_rounds: 15
+      max_time: 450
+      system_prompt: "You are a creative AI assistant focused on generating innovative ideas and solutions."

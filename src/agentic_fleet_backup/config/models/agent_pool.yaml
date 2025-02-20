@@ -1,0 +1,127 @@
+# Agent Pool Configuration
+agents:
+  web_surfer:
+    name: "WebSurfer"
+    type: "MultimodalWebSurfer"
+    class: "autogen_ext.agents.web_surfer.MultimodalWebSurfer"
+    description: |
+      Expert web surfer agent responsible for:
+      1. Navigate and extract information from web pages
+      2. Take screenshots of relevant content
+      3. Summarize findings in a clear, structured format
+    config:
+      downloads_folder: "./files/downloads"
+      debug_dir: "./files/debug"
+      headless: true
+      animate_actions: false
+      to_save_screenshots: true
+      use_ocr: false
+      to_resize_viewport: true
+
+  file_surfer:
+    name: "FileSurfer"
+    type: "FileSurfer"
+    class: "autogen_ext.agents.file_surfer.FileSurfer"
+    description: |
+      Expert file system navigator responsible for:
+      1. Search and analyze files in the workspace
+      2. Extract relevant information from files
+      3. Organize and manage file operations efficiently
+
+  coder:
+    name: "Coder"
+    type: "MagenticOneCoderAgent"
+    class: "autogen_ext.agents.magentic_one.MagenticOneCoderAgent"
+    description: |
+      Expert coding agent responsible for:
+      1. Writing and refactoring code
+      2. Implementing software features
+      3. Code review and optimization
+    config:
+      default_model: "gpt-4o"
+      code_quality_threshold: 0.85
+
+  executor:
+    name: "Executor"
+    type: "CodeExecutorAgent"
+    class: "autogen_agentchat.agents.CodeExecutorAgent"
+    description: |
+      Expert code execution agent responsible for:
+      1. Safely execute code in the workspace
+      2. Monitor execution and handle timeouts
+      3. Provide detailed feedback on execution results
+      4. Maintain a clean and organized workspace
+    config:
+      work_dir: "./files/workspace"
+      timeout: 300
+
+# Team Configurations
+teams:
+  magentic_fleet_one:
+    name: "MagenticFleet One"
+    type: "MagenticOneGroupChat"
+    description: "Balanced team for general tasks"
+    participants:
+      - web_surfer
+      - file_surfer
+      - coder
+      - executor
+    config:
+      max_turns: 10
+      max_stalls: 3
+
+  web_search_fleet:
+    name: "WebSearch Fleet"
+    type: "SelectorGroupChat"
+    description: "Specialized team for web research tasks"
+    participants:
+      - web_surfer
+      - file_surfer
+    config:
+      max_messages: 20
+      termination_conditions:
+        - type: "MaxMessageTermination"
+          max_messages: 20
+        - type: "TextMentionTermination"
+          text: "DONE"
+          ignore_case: true
+      selector_description: "Select the most appropriate agent to handle the current task step."
+
+  coding_fleet:
+    name: "Coding Fleet"
+    type: "SelectorGroupChat"
+    description: "Specialized team for coding tasks"
+    participants:
+      - file_surfer
+      - coder
+      - executor
+    config:
+      max_messages: 15
+      termination_conditions:
+        - type: "MaxMessageTermination"
+          max_messages: 15
+        - type: "TextMentionTermination"
+          text: "DONE"
+          ignore_case: true
+      selector_description: "Select the most appropriate agent for code-related tasks."
+
+# Default Team Configuration
+default_team: "magentic_fleet_one"
+
+# Agent Settings
+settings:
+  workspace:
+    base_dir: "./files"
+    subdirs:
+      - workspace
+      - downloads
+      - debug
+
+  execution:
+    max_retries: 3
+    timeout: 300
+    cleanup_on_fail: true
+
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
