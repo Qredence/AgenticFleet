@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentic-fleet"
-version = "0.4.9"
+version = "0.4.90"
 description = "A powerful multi-agent system for adaptive AI reasoning and automation"
 readme = "README.md"
 requires-python = ">=3.10"

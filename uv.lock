@@ -48,7 +48,7 @@ wheels = [
 
 [[package]]
 name = "agentic-fleet"
-version = "0.4.9"
+version = "0.4.90"
 source = { editable = "." }
 dependencies = [
     { name = "absl-py" },

@@ -1,5 +1,1 @@
-pytest>=7.0.0
-pandas>=1.5.0
-numpy>=1.21.0
-matplotlib>=3.5.0
-chainlit==2.2.1 
+.

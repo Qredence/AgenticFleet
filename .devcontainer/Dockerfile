@@ -2,7 +2,7 @@
 FROM python:3.12-alpine
 
 # Build argument for version only
-ARG VERSION=0.4.71
+ARG VERSION=0.4.90
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -32,16 +32,16 @@ RUN npx playwright install-deps && \
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/workspace
-ENV PORT=8001
+ENV PORT=8000
 ENV VERSION=${VERSION}
 
 # Default values for optional settings
 ENV USE_OAUTH=false
 ENV CHAINLIT_HOST=localhost
-ENV CHAINLIT_PORT=8001
+ENV CHAINLIT_PORT=8000
 
 # Expose port
-EXPOSE 8001
+EXPOSE 8000
 
 # Copy entrypoint script
 COPY scripts/docker-entrypoint.sh /usr/local/bin/
