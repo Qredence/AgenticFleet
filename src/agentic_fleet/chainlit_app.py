@@ -7,8 +7,6 @@ This module serves as the primary entry point for the Chainlit UI application.
 # Initialize environment variables first
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Third-party imports
 # Standard library imports
 import asyncio
@@ -42,6 +40,9 @@ try:
     import agentic_fleet.pool.mcp.mcp_handlers as mcp_handlers  # noqa
 except ImportError:
     pass
+
+# Load environment variables after all imports
+load_dotenv()
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -129,11 +130,14 @@ async def start_chat() -> None:
                 connection_pool_size=model_config.get("connection_pool_size", 10),
                 request_timeout=model_config.get("request_timeout", 30),
             )
-            logger.info(f"Created client for model {model_name} with streaming=True, vision=True")
         except Exception as e:
-            error_msg = f"Failed to create model client: {str(e)}"
+            error_msg = f"Failed to create model client for model {model_name}: {str(e)}"
             logger.error(error_msg)
-            raise ValueError(error_msg)
+            raise ValueError(error_msg) from e
+
+        logger.info(
+            f"Created client for model {model_name} with streaming={model_config.get('streaming', True)}, vision={model_config.get('vision', True)}"
+        )
 
         # Initialize application manager
         app_context.app_manager = ApplicationManager(
