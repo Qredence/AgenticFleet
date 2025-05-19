@@ -2,9 +2,8 @@
 Routes for agent management.
 """
 
-from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 
 from agentic_fleet.api.dependencies.services import get_agent_service
 from agentic_fleet.schemas.agent import Agent, AgentCreate, AgentUpdate
@@ -14,8 +13,10 @@ from agentic_fleet.services.agent_service import AgentService
 router = APIRouter()
 
 
-@router.get("/", response_model=Dict[str, List[Agent]])
-async def list_agents(agent_service: AgentService = Depends(get_agent_service)) -> Dict[str, List[Agent]]:
+@router.get("/", response_model=dict[str, list[Agent]])
+async def list_agents(
+    agent_service: AgentService = Depends(get_agent_service),
+) -> dict[str, list[Agent]]:
     """
     List all available agents.
     """
@@ -27,7 +28,9 @@ async def list_agents(agent_service: AgentService = Depends(get_agent_service)) 
 
 
 @router.get("/{agent_id}", response_model=Agent)
-async def get_agent(agent_id: str, agent_service: AgentService = Depends(get_agent_service)) -> Agent:
+async def get_agent(
+    agent_id: str, agent_service: AgentService = Depends(get_agent_service)
+) -> Agent:
     """
     Get details for a specific agent.
     """
@@ -43,7 +46,9 @@ async def get_agent(agent_id: str, agent_service: AgentService = Depends(get_age
 
 
 @router.post("/", response_model=Agent)
-async def create_agent(agent: AgentCreate, agent_service: AgentService = Depends(get_agent_service)) -> Agent:
+async def create_agent(
+    agent: AgentCreate, agent_service: AgentService = Depends(get_agent_service)
+) -> Agent:
     """
     Create a new agent.
     """
@@ -71,8 +76,10 @@ async def update_agent(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.delete("/{agent_id}", response_model=Dict[str, bool])
-async def delete_agent(agent_id: str, agent_service: AgentService = Depends(get_agent_service)) -> Dict[str, bool]:
+@router.delete("/{agent_id}", response_model=dict[str, bool])
+async def delete_agent(
+    agent_id: str, agent_service: AgentService = Depends(get_agent_service)
+) -> dict[str, bool]:
     """
     Delete an agent.
     """

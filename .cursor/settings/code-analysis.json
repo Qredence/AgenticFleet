@@ -1,0 +1,108 @@
+{
+  "codebase": {
+    "architecture": {
+      "pattern": "Service-oriented with agent-based architecture",
+      "keyComponents": [
+        "Agent Registry - Manages available agents",
+        "Message Processing - Handles message flow between agents",
+        "Tool Registry - Provides tools for agents to use",
+        "UI - Chainlit-based interface",
+        "API - FastAPI endpoints"
+      ]
+    },
+    "dataFlow": [
+      "User Input → UI → Message Processing → Agent Selection → Agent Execution → Tool Execution → Response Generation → UI"
+    ],
+    "codeQuality": {
+      "bestPractices": [
+        "Async patterns for concurrency",
+        "Dependency injection",
+        "Type hints throughout codebase",
+        "Structured logging",
+        "Environment-based configuration"
+      ],
+      "areaOfImprovement": [
+        "Test coverage could be expanded",
+        "Documentation for agent development patterns",
+        "Error handling standardization"
+      ]
+    }
+  },
+  "coreModules": [
+    {
+      "name": "Agents",
+      "description": "Core agent implementations",
+      "files": [
+        "src/agentic_fleet/core/agents/*.py",
+        "src/agentic_fleet/agents/*.py"
+      ],
+      "interfaces": [
+        "BaseAgent",
+        "BaseChatAgent",
+        "UserProxyAgent",
+        "CodingAgent",
+        "MindMapAgent",
+        "ReasoningAgent"
+      ]
+    },
+    {
+      "name": "Message Processing",
+      "description": "Message handling and routing",
+      "files": [
+        "src/agentic_fleet/message_processing/*.py",
+        "src/agentic_fleet/shared/message_processing/*.py"
+      ],
+      "interfaces": [
+        "TextMessage",
+        "FunctionCallMessage",
+        "MessageProcessor"
+      ]
+    },
+    {
+      "name": "UI",
+      "description": "Chainlit-based UI components",
+      "files": [
+        "src/agentic_fleet/ui/*.py",
+        "src/agentic_fleet/ui/chainlit/*.py",
+        "src/agentic_fleet/ui/components/*.py"
+      ],
+      "integrationPoints": [
+        "Chainlit callbacks",
+        "Step visualization",
+        "Task tracking"
+      ]
+    },
+    {
+      "name": "API",
+      "description": "FastAPI-based REST API",
+      "files": [
+        "src/agentic_fleet/api/*.py",
+        "src/agentic_fleet/api/routes/*.py"
+      ],
+      "endpoints": [
+        "Agent management",
+        "Conversation handling",
+        "System status"
+      ]
+    },
+    {
+      "name": "Configuration",
+      "description": "System configuration",
+      "files": [
+        "src/agentic_fleet/config/*.py"
+      ],
+      "keyFeatures": [
+        "Environment-based configuration",
+        "Validation",
+        "Default values",
+        "Settings inheritance"
+      ]
+    }
+  ],
+  "developmentWorkflow": {
+    "environmentSetup": "Python 3.12+ with poetry or pip",
+    "runningLocally": "Use `python -m agentic_fleet`",
+    "testing": "pytest for unit and integration tests",
+    "deployment": "Docker-based with docker-compose.yml"
+  }
+} 

@@ -1,6 +1,5 @@
 import json
 import os
-from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 import html2text
@@ -15,12 +14,12 @@ async def bing_search(
     num_results: int = 3,
     include_snippets: bool = True,
     include_content: bool = True,
-    content_max_length: Optional[int] = 10000,
+    content_max_length: int | None = 10000,
     language: str = "en",
-    country: Optional[str] = None,
+    country: str | None = None,
     safe_search: str = "moderate",
     response_filter: str = "webpages",
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     """
     Perform a Bing search using the Bing Web Search API.
 
@@ -45,19 +44,25 @@ async def bing_search(
     api_key = os.getenv("BING_SEARCH_KEY", "").strip()
 
     if not api_key:
-        raise ValueError("BING_SEARCH_KEY environment variable is not set. Please obtain an API key from Azure Portal.")
+        raise ValueError(
+            "BING_SEARCH_KEY environment variable is not set. Please obtain an API key from Azure Portal."
+        )
 
     # Validate safe_search parameter
     valid_safe_search = ["off", "moderate", "strict"]
     if safe_search.lower() not in valid_safe_search:
-        raise ValueError(f"Invalid safe_search value. Must be one of: {', '.join(valid_safe_search)}")
+        raise ValueError(
+            f"Invalid safe_search value. Must be one of: {', '.join(valid_safe_search)}"
+        )
 
     # Validate response_filter parameter
     valid_filters = ["webpages", "news", "images", "videos"]
     if response_filter.lower() not in valid_filters:
-        raise ValueError(f"Invalid response_filter value. Must be one of: {', '.join(valid_filters)}")
+        raise ValueError(
+            f"Invalid response_filter value. Must be one of: {', '.join(valid_filters)}"
+        )
 
-    async def fetch_page_content(url: str, max_length: Optional[int] = 50000) -> str:
+    async def fetch_page_content(url: str, max_length: int | None = 50000) -> str:
         """Helper function to fetch and convert webpage content to markdown"""
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
@@ -158,7 +163,9 @@ async def bing_search(
                 if include_snippets:
                     result["snippet"] = item.get("snippet", "")
                 if include_content:
-                    result["content"] = await fetch_page_content(result["link"], max_length=content_max_length)
+                    result["content"] = await fetch_page_content(
+                        result["link"], max_length=content_max_length
+                    )
 
             elif response_filter == "news":
                 result["link"] = item.get("url", "")
@@ -166,7 +173,9 @@ async def bing_search(
                     result["snippet"] = item.get("description", "")
                 result["date"] = item.get("datePublished", "")
                 if include_content:
-                    result["content"] = await fetch_page_content(result["link"], max_length=content_max_length)
+                    result["content"] = await fetch_page_content(
+                        result["link"], max_length=content_max_length
+                    )
 
             elif response_filter == "images":
                 result["link"] = item.get("contentUrl", "")
@@ -188,13 +197,17 @@ async def bing_search(
     except httpx.RequestException as e:
         error_msg = str(e)
         if "InvalidApiKey" in error_msg:
-            raise ValueError("Invalid API key. Please check your BING_SEARCH_KEY environment variable.") from e
+            raise ValueError(
+                "Invalid API key. Please check your BING_SEARCH_KEY environment variable."
+            ) from e
         elif "KeyExpired" in error_msg:
             raise ValueError("API key has expired. Please generate a new key.") from e
         else:
             raise ValueError(f"Search request failed: {error_msg}") from e
     except json.JSONDecodeError:
-        raise ValueError("Failed to parse API response. Please verify your API credentials and try again.") from None
+        raise ValueError(
+            "Failed to parse API response. Please verify your API credentials and try again."
+        ) from None
     except Exception as e:
         raise ValueError(f"Unexpected error during search: {str(e)}") from e
 

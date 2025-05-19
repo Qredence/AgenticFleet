@@ -3,7 +3,6 @@
 import os
 import subprocess
 import sys
-from typing import Optional
 
 import click
 from dotenv import load_dotenv
@@ -12,7 +11,7 @@ from agentic_fleet.config import config_manager
 from agentic_fleet.core.application import bootstrap
 
 
-def validate_environment() -> Optional[str]:
+def validate_environment() -> str | None:
     """Validate required environment variables.
 
     Returns:
@@ -33,7 +32,7 @@ def cli():
 @click.argument("mode", type=click.Choice(["default", "no-oauth"]), default="default")
 @click.option("--host", default=None, help="Host to bind to")
 @click.option("--port", default=None, type=int, help="Port to bind to")
-def start(mode: str, host: Optional[str], port: Optional[int]):
+def start(mode: str, host: str | None, port: int | None):
     """Start AgenticFleet with specified configuration.
 
     Args:

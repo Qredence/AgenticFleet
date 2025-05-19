@@ -2,11 +2,10 @@
 
 # Standard library imports
 import logging
-from typing import Dict, Optional
 
 # Third-party imports
 import chainlit as cl
-from chainlit import TaskList, TaskStatus, Text, user_session
+from chainlit import TaskList, TaskStatus, user_session
 
 # Initialize logging
 logger = logging.getLogger(__name__)
@@ -24,7 +23,7 @@ async def initialize_task_list():
 async def extract_and_add_plan_tasks(
     plan_text: str,
     task_list: cl.TaskList | None = None,
-    task_status: Dict[str, cl.Text] | None = None,
+    task_status: dict[str, cl.Text] | None = None,
     message_id: str | None = None,
     is_update: bool = False,
 ):
@@ -125,7 +124,9 @@ async def update_task_status(task_id: str, status: TaskStatus, message: str | No
         # Ensure plan_tasks is retrieved as a dict, default to empty dict if None or error
         plan_tasks = cl.user_session.get("plan_tasks") or {}
         if not isinstance(plan_tasks, dict):
-            logger.warning(f"plan_tasks retrieved from session is not a dict: {type(plan_tasks)}. Resetting.")
+            logger.warning(
+                f"plan_tasks retrieved from session is not a dict: {type(plan_tasks)}. Resetting."
+            )
             plan_tasks = {}
 
     except Exception as e:

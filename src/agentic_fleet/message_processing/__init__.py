@@ -3,9 +3,8 @@
 This module provides functionality for processing and streaming messages in the chat interface.
 """
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
-import chainlit as cl
 from autogen_agentchat.messages import TextMessage
 
 # Task status constants
@@ -17,8 +16,8 @@ TASK_STATUS_FAILED = "failed"
 
 
 async def process_response(
-    response: Union[TextMessage, List[Any], Dict[str, Any], str],
-) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    response: TextMessage | list[Any] | dict[str, Any] | str,
+) -> tuple[dict[str, Any] | None, str | None]:
     """
     Process agent responses and return structured data for rendering and any plan update.
 
@@ -27,8 +26,8 @@ async def process_response(
         - Optional[Dict[str, Any]]: Structured data for rendering (e.g., {'type': 'text', 'content': '...', 'author': '...'}), or None.
         - Optional[str]: Extracted plan text, or None.
     """
-    processed_data: Optional[Dict[str, Any]] = None
-    plan_update: Optional[str] = None
+    processed_data: dict[str, Any] | None = None
+    plan_update: str | None = None
 
     try:
         if isinstance(response, TextMessage):
@@ -92,7 +91,11 @@ async def process_response(
                 content = response["content"]
                 author = response.get("author", "Agent")
                 # Add more sophisticated type detection based on dict structure if needed
-                processed_data = {"type": "text", "content": str(content), "author": author}  # Default to text
+                processed_data = {
+                    "type": "text",
+                    "content": str(content),
+                    "author": author,
+                }  # Default to text
             # Add checks for other dict structures representing images, etc.
             elif response.get("type") == "image":
                 # Basic image handling assuming URL is provided

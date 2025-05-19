@@ -4,7 +4,7 @@ This module contains handlers for Model Context Protocol (MCP) connections.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import chainlit as cl
 
@@ -66,7 +66,7 @@ async def on_mcp_disconnect(name, session):
     ).send()
 
 
-async def call_mcp_tool(server_name: str, tool_name: str, tool_args: Dict[str, Any]):
+async def call_mcp_tool(server_name: str, tool_name: str, tool_args: dict[str, Any]):
     """Call an MCP tool with the given arguments.
 
     This function can be used as part of a step to call MCP tools.
@@ -83,7 +83,9 @@ async def call_mcp_tool(server_name: str, tool_name: str, tool_args: Dict[str, A
 
     # Check if the server exists
     if server_name not in MCP_SERVERS:
-        error_msg = f"MCP server '{server_name}' not found. Available servers: {list(MCP_SERVERS.keys())}"
+        error_msg = (
+            f"MCP server '{server_name}' not found. Available servers: {list(MCP_SERVERS.keys())}"
+        )
         logger.error(error_msg)
         return {"error": error_msg}
 

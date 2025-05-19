@@ -2,7 +2,6 @@ import logging
 import os
 import socket
 import subprocess
-from typing import Optional, Tuple
 
 import psutil
 
@@ -28,7 +27,9 @@ def cleanup_workspace():
 def create_and_set_workspace(user_profile):
     """Create and set a new workspace for the user. This is a stub implementation."""
     workspace = os.path.join(os.getcwd(), "workspace")
-    logger.info(f"Workspace created for user: {user_profile.get('name', 'unknown')}, at {workspace}")
+    logger.info(
+        f"Workspace created for user: {user_profile.get('name', 'unknown')}, at {workspace}"
+    )
     # You might want to add more logic here to create the directory and update user_profile
     user_profile["workspace"] = workspace
     return workspace
@@ -88,7 +89,7 @@ def check_port_availability(host: str, port: int) -> bool:
         return False
 
 
-def find_available_port(start_port: int = 8000, max_attempts: int = 3) -> Optional[int]:
+def find_available_port(start_port: int = 8000, max_attempts: int = 3) -> int | None:
     """Find an available port starting from start_port.
 
     Args:
@@ -104,7 +105,7 @@ def find_available_port(start_port: int = 8000, max_attempts: int = 3) -> Option
     return None
 
 
-def get_running_instance() -> Optional[Tuple[int, int]]:
+def get_running_instance() -> tuple[int, int] | None:
     """Check if an AgenticFleet instance is already running.
 
     Returns:
@@ -139,7 +140,6 @@ def ensure_directory_exists(path: str) -> None:
     Args:
         path: The directory path to ensure exists.
     """
-    import os
     from pathlib import Path
 
     logger = logging.getLogger(__name__)

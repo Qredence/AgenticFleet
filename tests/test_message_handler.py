@@ -1,9 +1,8 @@
 """Tests for the message handler module."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
 from agentic_fleet.ui.message_handler import handle_chat_message
 
 

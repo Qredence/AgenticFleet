@@ -2,9 +2,8 @@
 
 # Standard library imports
 import logging
-from datetime import UTC, datetime
 from importlib.util import find_spec
-from typing import Any, Dict, cast
+from typing import Any
 
 # Initialize logging
 logger = logging.getLogger(__name__)
@@ -80,7 +79,9 @@ try:
             logger.info("Applied patch to LiteralDataLayer.create_step for StepType compatibility")
 
         # Log the datetime module patch
-        logger.info("Applied patch to literalai.helper.datetime to fix datetime.utcnow() deprecation")
+        logger.info(
+            "Applied patch to literalai.helper.datetime to fix datetime.utcnow() deprecation"
+        )
 
 except Exception as e:
     logger.warning(f"Failed to apply LiteralAI patch: {str(e)}")

@@ -3,7 +3,7 @@
 This module provides functionality for initializing and managing agent teams.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.agents.file_surfer import FileSurfer
@@ -11,7 +11,7 @@ from autogen_ext.agents.magentic_one import MagenticOneCoderAgent
 from autogen_ext.agents.web_surfer import MultimodalWebSurfer
 
 
-def initialize_default_agents() -> List[AssistantAgent]:
+def initialize_default_agents() -> list[AssistantAgent]:
     """
     Initialize the default set of agents.
 
@@ -26,7 +26,7 @@ def initialize_default_agents() -> List[AssistantAgent]:
     return agents
 
 
-def initialize_agent_team(team_config: Optional[Dict[str, Any]] = None) -> List[AssistantAgent]:
+def initialize_agent_team(team_config: dict[str, Any] | None = None) -> list[AssistantAgent]:
     """
     Initialize a team of agents with specified configuration.
 

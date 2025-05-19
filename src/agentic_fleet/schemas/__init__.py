@@ -5,7 +5,13 @@ This package contains all the Pydantic schemas used for data validation and seri
 """
 
 from agentic_fleet.schemas.agent import Agent, AgentBase, AgentCreate, AgentUpdate
-from agentic_fleet.schemas.message import Message, MessageBase, MessageCreate, MessageType, MessageUpdate
+from agentic_fleet.schemas.message import (
+    Message,
+    MessageBase,
+    MessageCreate,
+    MessageType,
+    MessageUpdate,
+)
 from agentic_fleet.schemas.task import Task, TaskBase, TaskCreate, TaskStatus, TaskUpdate
 
 __all__ = [

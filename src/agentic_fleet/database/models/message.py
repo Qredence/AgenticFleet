@@ -4,7 +4,6 @@ Message database model.
 
 import uuid
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import JSON, Column, DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import UUID

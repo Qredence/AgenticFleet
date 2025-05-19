@@ -7,11 +7,13 @@ This directory contains the configuration management system for AgenticFleet. Th
 Contains configurations for language models, agent pools, and fleet settings:
 
 - `llm_config.yaml`: Language model configurations for different providers (Azure, OpenAI, Gemini)
+
   - Model capabilities and settings
   - Provider-specific configurations
   - Default parameters
 
 - `agent_pool.yaml`: Available agent configurations
+
   - Agent types and capabilities
   - Default settings for each agent
   - Team compositions
@@ -60,6 +62,7 @@ if error := config_manager.validate_environment():
 ## Configuration Files
 
 ### 1. Model Configuration (`llm_config.yaml`)
+
 ```yaml
 providers:
   azure:
@@ -73,6 +76,7 @@ providers:
 ```
 
 ### 2. Agent Pool Configuration (`agent_pool.yaml`)
+
 ```yaml
 agents:
   web_surfer:
@@ -84,6 +88,7 @@ agents:
 ```
 
 ### 3. Fleet Configuration (`fleet_config.yaml`)
+
 ```yaml
 workflows:
   default:
@@ -94,6 +99,7 @@ workflows:
 ```
 
 ### 4. Application Settings (`app_settings.yaml`)
+
 ```yaml
 app:
   name: "AgenticFleet"

@@ -18,7 +18,7 @@ All functions include comprehensive docstrings to support maintainability
 and adherence to best practices.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 async def generate_chain_of_thought(prompt: str, llm_client: Any, temperature: float = 0.7) -> str:
@@ -57,7 +57,7 @@ async def reflect_on_decision(decision: str, llm_client: Any, temperature: float
     return response.text.strip()
 
 
-def plan_and_critique(task: str, insights: str) -> Dict[str, str]:
+def plan_and_critique(task: str, insights: str) -> dict[str, str]:
     """
     Create a structured plan for a given task and critique previous insights.
 
@@ -79,7 +79,7 @@ def plan_and_critique(task: str, insights: str) -> Dict[str, str]:
 
 
 async def integrate_agentic_reasoning(
-    agents: List[Any], llm_client: Any, global_context: Optional[Dict[str, Any]] = None
+    agents: list[Any], llm_client: Any, global_context: dict[str, Any] | None = None
 ) -> str:
     """
     Integrate reasoning across multiple agents by consolidating their outputs and generating a unified reasoning report.

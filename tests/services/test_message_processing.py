@@ -2,11 +2,9 @@
 Unit tests for the message processing service.
 """
 
-import chainlit as cl
 import pytest
-from autogen_agentchat.messages import TextMessage
-
 from agentic_fleet.services.message_processing import process_response
+from autogen_agentchat.messages import TextMessage
 
 
 @pytest.mark.asyncio

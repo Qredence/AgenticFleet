@@ -4,7 +4,7 @@ Service for task management.
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 from uuid import uuid4
 
 from agentic_fleet.schemas.task import Task, TaskCreate, TaskStatus, TaskUpdate
@@ -20,7 +20,7 @@ class TaskService:
         """Initialize the task service."""
         # In a real implementation, this would connect to a database
         # For now, we'll use an in-memory store
-        self._tasks: Dict[str, Dict[str, Any]] = {}
+        self._tasks: dict[str, dict[str, Any]] = {}
 
     async def create_task(self, task: TaskCreate) -> Task:
         """
@@ -58,7 +58,7 @@ class TaskService:
             logger.error(f"Error creating task: {str(e)}")
             raise
 
-    async def get_task(self, task_id: str) -> Optional[Task]:
+    async def get_task(self, task_id: str) -> Task | None:
         """
         Get a task by ID.
 
@@ -78,7 +78,7 @@ class TaskService:
             logger.error(f"Error getting task {task_id}: {str(e)}")
             raise
 
-    async def update_task(self, task_id: str, task: TaskUpdate) -> Optional[Task]:
+    async def update_task(self, task_id: str, task: TaskUpdate) -> Task | None:
         """
         Update an existing task.
 
@@ -134,7 +134,7 @@ class TaskService:
             logger.error(f"Error deleting task {task_id}: {str(e)}")
             raise
 
-    async def list_tasks(self) -> List[Task]:
+    async def list_tasks(self) -> list[Task]:
         """
         List all tasks.
 
@@ -147,7 +147,7 @@ class TaskService:
             logger.error(f"Error listing tasks: {str(e)}")
             raise
 
-    async def assign_task(self, task_id: str, agent_id: str) -> Optional[Task]:
+    async def assign_task(self, task_id: str, agent_id: str) -> Task | None:
         """
         Assign a task to an agent.
 

@@ -3,7 +3,7 @@ Database session management for Agentic Fleet.
 """
 
 import os
-from typing import Generator
+from collections.abc import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
@@ -73,3 +73,12 @@ def create_tables() -> None:
     Create all tables in the database.
     """
     Base.metadata.create_all(bind=engine)
+
+
+def initialize_database() -> None:
+    """
+    Initialize the database.
+
+    This function creates all tables and performs any other initialization tasks.
+    """
+    create_tables()

@@ -4,7 +4,7 @@ This module provides UI components for displaying a Canvas-like interface.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import chainlit as cl
 
@@ -18,7 +18,12 @@ async def initialize_canvas() -> None:
     """
     try:
         # Create a canvas container with initial empty state
-        canvas_data = {"type": "canvas", "nodes": [], "edges": [], "viewport": {"x": 0, "y": 0, "zoom": 1}}
+        canvas_data = {
+            "type": "canvas",
+            "nodes": [],
+            "edges": [],
+            "viewport": {"x": 0, "y": 0, "zoom": 1},
+        }
 
         # Send the canvas component
         await cl.Custom(content=canvas_data).send()
@@ -29,11 +34,17 @@ async def initialize_canvas() -> None:
         logger.info("Canvas interface initialized")
     except Exception as e:
         logger.error(f"Error initializing canvas: {e}")
-        await cl.Message(content=f"Error initializing canvas interface: {str(e)}", author="System").send()
+        await cl.Message(
+            content=f"Error initializing canvas interface: {str(e)}", author="System"
+        ).send()
 
 
 async def add_node_to_canvas(
-    node_id: str, node_type: str, content: str, position: Dict[str, int] = None, metadata: Dict[str, Any] = None
+    node_id: str,
+    node_type: str,
+    content: str,
+    position: dict[str, int] = None,
+    metadata: dict[str, Any] = None,
 ) -> None:
     """Add a node to the canvas.
 
@@ -90,7 +101,7 @@ async def add_edge_to_canvas(
     target_id: str,
     label: str = None,
     edge_type: str = "default",
-    metadata: Dict[str, Any] = None,
+    metadata: dict[str, Any] = None,
 ) -> None:
     """Add an edge between nodes on the canvas.
 

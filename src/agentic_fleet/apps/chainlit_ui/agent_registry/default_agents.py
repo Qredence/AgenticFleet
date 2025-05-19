@@ -1,38 +1,29 @@
 """Default agents for the Chainlit UI."""
 
 import os
-import warnings
+from collections.abc import Coroutine
 from dataclasses import dataclass
 from typing import (
     Any,
-    Awaitable,
-    Callable,
-    Coroutine,
-    Dict,
-    List,
-    Optional,
     Protocol,
     TypedDict,
     Union,
 )
 
-from autogen_agentchat.agents import CodeExecutorAgent, UserProxyAgent
+from autogen_agentchat.agents import CodeExecutorAgent
 from autogen_agentchat.base import ChatAgent
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from autogen_agentchat.teams import MagenticOneGroupChat, SelectorGroupChat
-from autogen_core import CancellationToken
-from autogen_core.code_executor import CodeExecutor
 from autogen_core.models import ChatCompletionClient
 from autogen_ext.agents.file_surfer import FileSurfer
 from autogen_ext.agents.magentic_one import MagenticOneCoderAgent
 from autogen_ext.agents.web_surfer import MultimodalWebSurfer
 from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
-from autogen_ext.models.openai._openai_client import BaseOpenAIChatCompletionClient
 
 
 # Type definitions
 class ConfigManager(Protocol):
-    def get_agent_settings(self, agent_name: str) -> Optional[Dict[str, Any]]: ...
+    def get_agent_settings(self, agent_name: str) -> dict[str, Any] | None: ...
 
 
 class AppManager(Protocol):
@@ -42,7 +33,7 @@ class AppManager(Protocol):
 
 class AgentConfig(TypedDict, total=False):
     description: str
-    config: Dict[str, Any]
+    config: dict[str, Any]
 
 
 @dataclass
@@ -60,10 +51,10 @@ AgentTeamCoroutine = Coroutine[Any, Any, AgentTeam]
 def initialize_default_agents(
     app_manager: AppManager,
     config_manager: ConfigManager,
-    user_session: Dict[str, Any],
-    defaults: Dict[str, Any],
-    env_config: Dict[str, str],
-) -> Dict[str, ChatAgent]:
+    user_session: dict[str, Any],
+    defaults: dict[str, Any],
+    env_config: dict[str, str],
+) -> dict[str, ChatAgent]:
     """
     Initialize and return a dictionary of default agents.
 
@@ -149,10 +140,10 @@ def initialize_default_agents(
 
 async def initialize_agent_team(
     app_manager: AppManager,
-    user_session: Dict[str, Any],
-    team_config: Dict[str, Any],
-    default_agents: Dict[str, ChatAgent],
-    defaults: Dict[str, Any],
+    user_session: dict[str, Any],
+    team_config: dict[str, Any],
+    default_agents: dict[str, ChatAgent],
+    defaults: dict[str, Any],
 ) -> AgentTeam:
     """
     Initialize and return an agent team based on the active profile.
@@ -217,7 +208,9 @@ async def initialize_agent_team(
                     MaxMessageTermination(max_messages=max_messages),
                     TextMentionTermination(text="DONE", ignore_case=True),
                 ],
-                selector_description=config.get("selector_description", "Select the next agent to handle the task."),
+                selector_description=config.get(
+                    "selector_description", "Select the next agent to handle the task."
+                ),
             )
         except Exception as e:
             raise RuntimeError(f"Failed to initialize SelectorGroupChat: {str(e)}") from e

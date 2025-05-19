@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
 
 
 @dataclass
@@ -32,7 +31,7 @@ class OAuthProviderConfig:
 @dataclass
 class SecurityConfig:
     use_oauth: bool = True
-    oauth_providers: List[OAuthProviderConfig] = field(default_factory=list)
+    oauth_providers: list[OAuthProviderConfig] = field(default_factory=list)
 
 
 @dataclass

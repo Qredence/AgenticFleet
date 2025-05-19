@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from dotenv import load_dotenv
@@ -37,8 +37,8 @@ def initialize_app() -> ApplicationManager:
 
 
 def _create_model_client(
-    settings: Dict[str, Any],
-) -> Optional[AzureOpenAIChatCompletionClient]:
+    settings: dict[str, Any],
+) -> AzureOpenAIChatCompletionClient | None:
     """Create Azure OpenAI model client from settings.
 
     Args:

@@ -1,0 +1,216 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# AgenticFleet Memory Bank Isolation Rules
+
+This document defines the isolation rules for the AgenticFleet project's memory bank planning mode.
+
+## Purpose
+
+The memory bank isolation rules facilitate systematic planning and code organization according to complexity levels.
+
+## Complexity Levels
+
+### Level 1: Simple Fixes
+- Bug fixes
+- Typo corrections
+- Minor documentation updates
+- Simple refactoring
+- Small configuration changes
+
+### Level 2: Feature Enhancements
+- Adding small new features
+- Extending existing functionality
+- UI/UX improvements
+- Test coverage expansion
+- Performance optimizations
+
+### Level 3: Significant Features
+- New agent implementations
+- New service integrations
+- Database schema changes
+- API endpoint additions
+- Complex workflow implementation
+
+### Level 4: Architectural Changes
+- Subsystem redesign
+- Major integrations
+- Framework migrations
+- Performance overhauls
+- Security architecture changes
+
+## Working Modes
+
+The memory bank system has four primary modes that guide your approach:
+
+<mermaid>
+graph LR
+    A[PLANNING MODE] --> B[CREATIVE MODE]
+    B --> C[IMPLEMENTATION MODE]
+    C --> D[REFLECTION MODE]
+    D --> A
+    
+    style A fill:#a7c7e7,stroke:#6e95c8
+    style B fill:#ffb366,stroke:#ff9933
+    style C fill:#b3cc99,stroke:#8ab266
+    style D fill:#da9ec9,stroke:#c87eb0
+</mermaid>
+
+1. **PLANNING MODE**: Analyze requirements, understand existing code, create detailed implementation plans
+2. **CREATIVE MODE**: Brainstorm solutions, explore alternatives, make design decisions
+3. **IMPLEMENTATION MODE**: Execute the plan systematically, write code, test functionality
+4. **REFLECTION MODE**: Review changes, identify improvements, document decisions
+
+## Implementation Strategy
+
+Based on the complexity level, follow these general strategies:
+
+### Level 1-2 Strategy
+- Direct implementation approach
+- Limited planning required
+- Focus on maintaining existing patterns
+
+### Level 3 Strategy
+- Detailed planning phase
+- Component-based implementation
+- Incremental testing
+- Documentation updates
+
+### Level 4 Strategy
+- Comprehensive architecture planning
+- Phased implementation
+- Migration paths and backward compatibility
+- Full test coverage required
+- Documentation overhaul
+
+## Workflow Guidelines
+
+Each complexity level follows a specific workflow tailored to its needs:
+
+<mermaid>
+graph TD
+    Start[Start Project] --> Analyze[Analyze Requirements]
+    Analyze --> DetermineLevel[Determine Complexity Level]
+    
+    DetermineLevel --> L1[Level 1: Quick Bug Fix]
+    DetermineLevel --> L2[Level 2: Feature Enhancement]
+    DetermineLevel --> L3[Level 3: Component Development]
+    DetermineLevel --> L4[Level 4: System Architecture]
+    
+    L1 --> L1P[Brief Planning]
+    L1P --> L1I[Direct Implementation]
+    L1I --> L1R[Quick Review]
+    
+    L2 --> L2P[Structured Planning]
+    L2P --> L2C[Limited Creative Phase]
+    L2C --> L2I[Sequential Implementation]
+    L2I --> L2R[Detailed Review]
+    
+    L3 --> L3P[Comprehensive Planning]
+    L3P --> L3C[Extended Creative Phase]
+    L3C --> L3I[Phased Implementation]
+    L3I --> L3R[Thorough Review]
+    
+    L4 --> L4P[Architectural Planning]
+    L4P --> L4C[Full Creative Phase]
+    L4C --> L4I[Multi-Stage Implementation]
+    L4I --> L4R[System-wide Review]
+    
+    style Start fill:#9999ff,stroke:#6666ff
+    style Analyze fill:#9999ff,stroke:#6666ff
+    style DetermineLevel fill:#9999ff,stroke:#6666ff
+    
+    style L1 fill:#99ff99,stroke:#66cc66
+    style L1P fill:#a7c7e7,stroke:#6e95c8
+    style L1I fill:#b3cc99,stroke:#8ab266
+    style L1R fill:#da9ec9,stroke:#c87eb0
+    
+    style L2 fill:#ffcc99,stroke:#ff9966
+    style L2P fill:#a7c7e7,stroke:#6e95c8
+    style L2C fill:#ffb366,stroke:#ff9933
+    style L2I fill:#b3cc99,stroke:#8ab266
+    style L2R fill:#da9ec9,stroke:#c87eb0
+    
+    style L3 fill:#ff9999,stroke:#ff6666
+    style L3P fill:#a7c7e7,stroke:#6e95c8
+    style L3C fill:#ffb366,stroke:#ff9933
+    style L3I fill:#b3cc99,stroke:#8ab266
+    style L3R fill:#da9ec9,stroke:#c87eb0
+    
+    style L4 fill:#cc99ff,stroke:#9966ff
+    style L4P fill:#a7c7e7,stroke:#6e95c8
+    style L4C fill:#ffb366,stroke:#ff9933
+    style L4I fill:#b3cc99,stroke:#8ab266
+    style L4R fill:#da9ec9,stroke:#c87eb0
+</mermaid>
+
+## Required Documentation
+
+Every implementation must be properly documented according to its complexity level:
+
+- **Level 1**: In-code comments and commit message
+- **Level 2**: Brief function/class documentation and README updates
+- **Level 3**: Comprehensive docstrings, usage examples, and architecture notes
+- **Level 4**: Full technical design document, architecture diagrams, and developer guide updates
+
+## Documentation Guidelines
+
+Each mode requires specific documentation:
+
+### Planning Mode Documents
+- Requirements analysis
+- Problem statement
+- Implementation plan
+- Task breakdown
+
+### Creative Mode Documents
+- Design alternatives
+- Decision rationale
+- Architectural diagrams
+- API specifications
+
+### Implementation Mode Documents
+- Code changes
+- Testing approach
+- Integration points
+- Deployment considerations
+
+### Reflection Mode Documents
+- Code review notes
+- Performance analysis
+- Future improvements
+- Lessons learned
+
+## Mode Transition Criteria
+
+Transitions between modes follow specific criteria:
+
+1. **Planning → Creative**: Complete implementation plan with task breakdown
+2. **Creative → Implementation**: Design decisions finalized and documented
+3. **Implementation → Reflection**: All planned changes implemented and tested
+4. **Reflection → Planning** (next task): Review completed and improvements identified
+
+## Best Practices
+
+- Clearly document which mode you're operating in
+- Complete all required deliverables before transitioning to the next mode
+- Adjust the rigor of each mode based on task complexity
+- Use appropriate tools and templates for each mode
+
+## Mode-Specific Resources
+
+For detailed guidance on each mode, refer to:
+
+- [Planning Mode Reference](mdc:.cursor/rules/isolation_rules/Phases/Planning/planning-phase-reference.mdc)
+- [Creative Mode Reference](mdc:.cursor/rules/isolation_rules/Phases/Creative/creative-phase-reference.mdc)
+- [Implementation Mode Reference](mdc:.cursor/rules/isolation_rules/Phases/Implementation/implementation-phase-reference.mdc)
+- [Reflection Mode Reference](mdc:.cursor/rules/isolation_rules/Phases/Reflection/reflection-phase-reference.mdc)
+
+For complexity-specific workflows, refer to:
+
+- [Level 1 Workflow](mdc:.cursor/rules/isolation_rules/Level1/workflow-level1.mdc)
+- [Level 2 Workflow](mdc:.cursor/rules/isolation_rules/Level2/workflow-level2.mdc)
+- [Level 3 Workflow](mdc:.cursor/rules/isolation_rules/Level3/workflow-level3.mdc)
+- [Level 4 Workflow](mdc:.cursor/rules/isolation_rules/Level4/workflow-level4.mdc)

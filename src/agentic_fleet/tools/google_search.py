@@ -1,5 +1,4 @@
 import os
-from typing import Dict, List, Optional
 from urllib.parse import urljoin
 
 import html2text
@@ -14,11 +13,11 @@ async def google_search(
     num_results: int = 3,
     include_snippets: bool = True,
     include_content: bool = True,
-    content_max_length: Optional[int] = 10000,
+    content_max_length: int | None = 10000,
     language: str = "en",
-    country: Optional[str] = None,
+    country: str | None = None,
     safe_search: bool = True,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     """
     Perform a Google search using the Custom Search API and optionally fetch webpage content.
 
@@ -43,11 +42,13 @@ async def google_search(
     cse_id = os.getenv("GOOGLE_CSE_ID")
 
     if not api_key or not cse_id:
-        raise ValueError("Missing required environment variables. Please set GOOGLE_API_KEY and GOOGLE_CSE_ID.")
+        raise ValueError(
+            "Missing required environment variables. Please set GOOGLE_API_KEY and GOOGLE_CSE_ID."
+        )
 
     num_results = min(max(1, num_results), 10)
 
-    async def fetch_page_content(url: str, max_length: Optional[int] = 50000) -> str:
+    async def fetch_page_content(url: str, max_length: int | None = 50000) -> str:
         """Helper function to fetch and convert webpage content to markdown"""
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
@@ -100,7 +101,9 @@ async def google_search(
 
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get("https://www.googleapis.com/customsearch/v1", params=params, timeout=10)
+            response = await client.get(
+                "https://www.googleapis.com/customsearch/v1", params=params, timeout=10
+            )
             response.raise_for_status()
             data = response.json()
 
@@ -112,7 +115,9 @@ async def google_search(
                         result["snippet"] = item.get("snippet", "")
 
                     if include_content:
-                        result["content"] = await fetch_page_content(result["link"], max_length=content_max_length)
+                        result["content"] = await fetch_page_content(
+                            result["link"], max_length=content_max_length
+                        )
 
                     results.append(result)
 

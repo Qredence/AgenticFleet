@@ -2,10 +2,9 @@
 Service for chat functionality.
 """
 
-import json
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 from uuid import uuid4
 
 from fastapi import WebSocket
@@ -23,11 +22,11 @@ class ChatService:
         """Initialize the chat service."""
         # In a real implementation, this would connect to a database
         # For now, we'll use in-memory stores
-        self._messages: Dict[str, Dict[str, Any]] = {}
+        self._messages: dict[str, dict[str, Any]] = {}
         # session_id -> list of message_ids
-        self._sessions: Dict[str, List[str]] = {}
+        self._sessions: dict[str, list[str]] = {}
         # session_id -> WebSocket
-        self._active_connections: Dict[str, WebSocket] = {}
+        self._active_connections: dict[str, WebSocket] = {}
 
     async def process_message(self, message: MessageCreate) -> Message:
         """
@@ -73,7 +72,7 @@ class ChatService:
             logger.error(f"Error processing message: {str(e)}")
             raise
 
-    async def get_message(self, message_id: str) -> Optional[Message]:
+    async def get_message(self, message_id: str) -> Message | None:
         """
         Get a message by ID.
 
@@ -93,7 +92,7 @@ class ChatService:
             logger.error(f"Error getting message {message_id}: {str(e)}")
             raise
 
-    async def update_message(self, message_id: str, message: MessageUpdate) -> Optional[Message]:
+    async def update_message(self, message_id: str, message: MessageUpdate) -> Message | None:
         """
         Update an existing message.
 
@@ -155,7 +154,7 @@ class ChatService:
             logger.error(f"Error deleting message {message_id}: {str(e)}")
             raise
 
-    async def get_chat_history(self, session_id: str) -> List[Message]:
+    async def get_chat_history(self, session_id: str) -> list[Message]:
         """
         Get chat history for a session.
 
@@ -214,7 +213,7 @@ class ChatService:
             logger.error(f"Error unregistering WebSocket for session {session_id}: {str(e)}")
             raise
 
-    async def process_websocket_message(self, session_id: str, data: Dict[str, Any]) -> Message:
+    async def process_websocket_message(self, session_id: str, data: dict[str, Any]) -> Message:
         """
         Process a message received via WebSocket.
 

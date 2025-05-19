@@ -1,0 +1,544 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Implementation Phase Reference Guide
+
+This document provides a comprehensive reference for the Implementation Phase across all complexity levels in the AgenticFleet project. It outlines the approach, strategies, and best practices for implementing features and changes effectively.
+
+## Implementation Phase Overview
+
+<mermaid>
+graph TD
+    Start["🚀 Start Implementation Phase"] --> Requirements["📋 Review Requirements<br>& Design"]
+    Requirements --> Preparation["🔧 Setup Development<br>Environment"]
+    Preparation --> Implementation["💻 Implement<br>Solution"]
+    Implementation --> Testing["🧪 Test<br>Implementation"]
+    Testing --> Documentation["📝 Document<br>Implementation"]
+    Documentation --> Completion["✅ Complete<br>Implementation Phase"]
+    
+    %% Complexity differentiation
+    Implementation --> L1Impl["Level 1:<br>Direct Fix"]
+    Implementation --> L2Impl["Level 2:<br>Feature Implementation"]
+    Implementation --> L3Impl["Level 3:<br>Component Implementation"]
+    Implementation --> L4Impl["Level 4:<br>System Implementation"]
+    
+    style Start fill:#4da6ff,stroke:#0066cc,color:white
+    style Requirements fill:#4dbb5f,stroke:#36873f,color:white
+    style Preparation fill:#ffa64d,stroke:#cc7a30,color:white
+    style Implementation fill:#ff5555,stroke:#cc0000,color:white
+    style Testing fill:#d971ff,stroke:#a33bc2,color:white
+    style Documentation fill:#4dbbbb,stroke:#368787,color:white
+    style Completion fill:#5fd94d,stroke:#3da336,color:white
+</mermaid>
+
+## Implementation Approach by Complexity Level
+
+### Level 1: Simple Fix Implementation
+
+For simple bug fixes, typo corrections, or minor improvements:
+
+<mermaid>
+graph TD
+    L1["Level 1<br>Implementation"] --> L1Review["Review Issue"]
+    L1Review --> L1Locate["Locate Affected Code"]
+    L1Locate --> L1Fix["Implement Fix"]
+    L1Fix --> L1Test["Test Fix"]
+    L1Test --> L1Doc["Document Fix"]
+    
+    style L1 fill:#4dbb5f,stroke:#36873f,color:white
+    style L1Review fill:#d6f5dd,stroke:#a3e0ae
+    style L1Locate fill:#d6f5dd,stroke:#a3e0ae
+    style L1Fix fill:#d6f5dd,stroke:#a3e0ae
+    style L1Test fill:#d6f5dd,stroke:#a3e0ae
+    style L1Doc fill:#d6f5dd,stroke:#a3e0ae
+</mermaid>
+
+**Key Activities**:
+- Identify the precise location of the issue
+- Make minimal, targeted changes
+- Verify the fix resolves the issue
+- Add appropriate unit tests
+- Update documentation if necessary
+
+**Example Commands**:
+```bash
+# Find relevant code
+grep -r "function_with_bug" src/
+
+# Run specific test
+pytest tests/path/to/test_file.py::test_specific_function -v
+
+# Verify fix
+pytest tests/path/to/test_file.py
+```
+
+### Level 2: Feature Enhancement Implementation
+
+For adding new features or enhancing existing functionality:
+
+<mermaid>
+graph TD
+    L2["Level 2<br>Implementation"] --> L2Plan["Review Design Plan"]
+    L2Plan --> L2Structure["Create Structure"]
+    L2Structure --> L2Implement["Implement Core Logic"]
+    L2Implement --> L2Edge["Handle Edge Cases"]
+    L2Edge --> L2Unit["Write Unit Tests"]
+    L2Unit --> L2Integration["Integration Testing"]
+    L2Integration --> L2Doc["Update Documentation"]
+    
+    style L2 fill:#ffa64d,stroke:#cc7a30,color:white
+    style L2Plan fill:#ffe6cc,stroke:#ffa64d
+    style L2Structure fill:#ffe6cc,stroke:#ffa64d
+    style L2Implement fill:#ffe6cc,stroke:#ffa64d
+    style L2Edge fill:#ffe6cc,stroke:#ffa64d
+    style L2Unit fill:#ffe6cc,stroke:#ffa64d
+    style L2Integration fill:#ffe6cc,stroke:#ffa64d
+    style L2Doc fill:#ffe6cc,stroke:#ffa64d
+</mermaid>
+
+**Key Activities**:
+- Review the feature design thoroughly
+- Create the basic structure or scaffolding
+- Implement the core functionality
+- Address edge cases and error conditions
+- Write comprehensive unit tests
+- Perform integration testing
+- Update technical and user documentation
+
+**Example Commands**:
+```bash
+# Create feature branch
+git checkout -b feature/new-enhancement
+
+# Format code
+black src/path/to/implementation/
+
+# Run linting
+pylint src/path/to/implementation/
+
+# Run tests with coverage
+pytest --cov=src/path/to/implementation tests/path/to/tests/
+```
+
+### Level 3: Component Implementation
+
+For implementing new components or significant subsystems:
+
+<mermaid>
+graph TD
+    L3["Level 3<br>Implementation"] --> L3Plan["Review Component Design"]
+    L3Plan --> L3Phase1["Phase 1: Core Architecture"]
+    L3Phase1 --> L3Unit1["Unit Test Core"]
+    L3Unit1 --> L3Phase2["Phase 2: Main Functionality"]
+    L3Phase2 --> L3Unit2["Unit Test Functionality"]
+    L3Unit2 --> L3Phase3["Phase 3: Integration"]
+    L3Phase3 --> L3Test["Full Component Testing"]
+    L3Test --> L3Doc["Component Documentation"]
+    
+    style L3 fill:#ff5555,stroke:#cc0000,color:white
+    style L3Plan fill:#ffaaaa,stroke:#ff8080
+    style L3Phase1 fill:#ffaaaa,stroke:#ff8080
+    style L3Unit1 fill:#ffaaaa,stroke:#ff8080
+    style L3Phase2 fill:#ffaaaa,stroke:#ff8080
+    style L3Unit2 fill:#ffaaaa,stroke:#ff8080
+    style L3Phase3 fill:#ffaaaa,stroke:#ff8080
+    style L3Test fill:#ffaaaa,stroke:#ff8080
+    style L3Doc fill:#ffaaaa,stroke:#ff8080
+</mermaid>
+
+**Key Activities**:
+- Implement in distinct phases
+- Build core architecture and interfaces first
+- Add main functionality incrementally
+- Implement integration points with other components
+- Write comprehensive test suite
+- Create detailed component documentation
+
+**Example Commands**:
+```bash
+# Create feature branch
+git checkout -b feature/new-component
+
+# Run specific phase tests
+pytest tests/unit/test_component_core.py
+pytest tests/unit/test_component_functionality.py
+pytest tests/integration/test_component_integration.py
+
+# Check test coverage
+pytest --cov=src/component tests/ --cov-report=term-missing
+```
+
+### Level 4: System Implementation
+
+For implementing major system features or architectural changes:
+
+<mermaid>
+graph TD
+    L4["Level 4<br>Implementation"] --> L4Plan["Review System Design"]
+    L4Plan --> L4Phase1["Phase 1: Core Architecture"]
+    L4Phase1 --> L4Test1["Test Phase 1"]
+    L4Test1 --> L4Phase2["Phase 2: Primary Components"]
+    L4Phase2 --> L4Test2["Test Phase 2"]
+    L4Test2 --> L4Phase3["Phase 3: Secondary Components"]
+    L4Phase3 --> L4Test3["Test Phase 3"]
+    L4Test3 --> L4Phase4["Phase 4: System Integration"]
+    L4Phase4 --> L4Test4["Full System Testing"]
+    L4Test4 --> L4Perf["Performance Testing"]
+    L4Perf --> L4Doc["System Documentation"]
+    
+    style L4 fill:#d971ff,stroke:#a33bc2,color:white
+    style L4Plan fill:#e6b3ff,stroke:#d971ff
+    style L4Phase1 fill:#e6b3ff,stroke:#d971ff
+    style L4Test1 fill:#e6b3ff,stroke:#d971ff
+    style L4Phase2 fill:#e6b3ff,stroke:#d971ff
+    style L4Test2 fill:#e6b3ff,stroke:#d971ff
+    style L4Phase3 fill:#e6b3ff,stroke:#d971ff
+    style L4Test3 fill:#e6b3ff,stroke:#d971ff
+    style L4Phase4 fill:#e6b3ff,stroke:#d971ff
+    style L4Test4 fill:#e6b3ff,stroke:#d971ff
+    style L4Perf fill:#e6b3ff,stroke:#d971ff
+    style L4Doc fill:#e6b3ff,stroke:#d971ff
+</mermaid>
+
+**Key Activities**:
+- Implement in well-defined phases
+- Build core architecture first
+- Develop critical components in priority order
+- Establish integration points between components
+- Implement system-level functionality
+- Perform comprehensive testing at each phase
+- Conduct performance and scalability testing
+- Create detailed system documentation
+
+**Example Commands**:
+```bash
+# Create feature branch
+git checkout -b feature/system-implementation
+
+# Run comprehensive tests
+pytest
+
+# Run performance tests
+python -m src.tests.performance.test_system_performance
+
+# Run end-to-end tests
+pytest tests/e2e/
+```
+
+## Implementation Best Practices
+
+### Code Quality
+
+<mermaid>
+graph TD
+    Quality["Code Quality<br>Practices"] --> Style["Follow Style Guide"]
+    Quality --> Clean["Write Clean Code"]
+    Quality --> Comments["Add Meaningful Comments"]
+    Quality --> DRY["Follow DRY Principle"]
+    Quality --> SOLID["Apply SOLID Principles"]
+    
+    style Quality fill:#4da6ff,stroke:#0066cc,color:white
+    style Style fill:#b3d9ff,stroke:#4da6ff
+    style Clean fill:#b3d9ff,stroke:#4da6ff
+    style Comments fill:#b3d9ff,stroke:#4da6ff
+    style DRY fill:#b3d9ff,stroke:#4da6ff
+    style SOLID fill:#b3d9ff,stroke:#4da6ff
+</mermaid>
+
+- **Follow Style Guide**: Adhere to the [Python Style Guide](/.cursor/rules/style_guide/python_style_guide.md)
+- **Code Organization**: Structure code logically and consistently
+- **Naming Conventions**: Use clear, descriptive names for variables, functions, and classes
+- **Comments**: Add comments to explain complex logic or decisions
+- **Type Hints**: Use type hints for better code clarity and IDE support
+
+### Testing Strategy
+
+<mermaid>
+graph TD
+    Testing["Testing<br>Practices"] --> UnitTests["Write Unit Tests First"]
+    Testing --> Integration["Implement Integration Tests"]
+    Testing --> Edge["Test Edge Cases"]
+    Testing --> Error["Test Error Handling"]
+    Testing --> Coverage["Maintain Test Coverage"]
+    
+    style Testing fill:#4dbb5f,stroke:#36873f,color:white
+    style UnitTests fill:#d6f5dd,stroke:#a3e0ae
+    style Integration fill:#d6f5dd,stroke:#a3e0ae
+    style Edge fill:#d6f5dd,stroke:#a3e0ae
+    style Error fill:#d6f5dd,stroke:#a3e0ae
+    style Coverage fill:#d6f5dd,stroke:#a3e0ae
+</mermaid>
+
+- **Test-Driven Development**: Write tests before or alongside implementation
+- **Test Coverage**: Aim for comprehensive coverage of code paths
+- **Edge Cases**: Specifically test boundary and edge cases
+- **Error Scenarios**: Test error handling and recovery
+- **Integration Testing**: Verify interactions between components
+
+### Error Handling
+
+<mermaid>
+graph TD
+    ErrorHandling["Error Handling<br>Practices"] --> Specific["Use Specific Exceptions"]
+    ErrorHandling --> Graceful["Implement Graceful Recovery"]
+    ErrorHandling --> Messages["Provide Clear Error Messages"]
+    ErrorHandling --> Logging["Log Errors Appropriately"]
+    ErrorHandling --> Chain["Maintain Exception Chain"]
+    
+    style ErrorHandling fill:#ffa64d,stroke:#cc7a30,color:white
+    style Specific fill:#ffe6cc,stroke:#ffa64d
+    style Graceful fill:#ffe6cc,stroke:#ffa64d
+    style Messages fill:#ffe6cc,stroke:#ffa64d
+    style Logging fill:#ffe6cc,stroke:#ffa64d
+    style Chain fill:#ffe6cc,stroke:#ffa64d
+</mermaid>
+
+- **Exception Hierarchy**: Use the AgenticFleet exception hierarchy
+- **Specific Exceptions**: Raise specific, appropriate exceptions
+- **Error Messages**: Include clear, actionable error messages
+- **Recovery Mechanism**: Implement proper recovery from errors
+- **Logging**: Log errors with appropriate context and level
+
+### Performance Considerations
+
+<mermaid>
+graph TD
+    Performance["Performance<br>Considerations"] --> Early["Consider Performance Early"]
+    Performance --> Profile["Profile Critical Paths"]
+    Performance --> Optimize["Optimize Judiciously"]
+    Performance --> Resources["Manage Resources Efficiently"]
+    Performance --> Async["Use Async Where Appropriate"]
+    
+    style Performance fill:#ff5555,stroke:#cc0000,color:white
+    style Early fill:#ffaaaa,stroke:#ff8080
+    style Profile fill:#ffaaaa,stroke:#ff8080
+    style Optimize fill:#ffaaaa,stroke:#ff8080
+    style Resources fill:#ffaaaa,stroke:#ff8080
+    style Async fill:#ffaaaa,stroke:#ff8080
+</mermaid>
+
+- **Early Consideration**: Think about performance from the start
+- **Measurement**: Measure before optimizing
+- **Critical Paths**: Focus on optimizing critical paths
+- **Resource Management**: Properly manage and release resources
+- **Async Patterns**: Use proper async patterns for I/O-bound operations
+
+### Documentation
+
+<mermaid>
+graph TD
+    Documentation["Documentation<br>Practices"] --> Code["Document Code"]
+    Documentation --> API["Create API Documentation"]
+    Documentation --> Usage["Provide Usage Examples"]
+    Documentation --> Decisions["Record Design Decisions"]
+    Documentation --> Changes["Document Changes"]
+    
+    style Documentation fill:#d971ff,stroke:#a33bc2,color:white
+    style Code fill:#e6b3ff,stroke:#d971ff
+    style API fill:#e6b3ff,stroke:#d971ff
+    style Usage fill:#e6b3ff,stroke:#d971ff
+    style Decisions fill:#e6b3ff,stroke:#d971ff
+    style Changes fill:#e6b3ff,stroke:#d971ff
+</mermaid>
+
+- **Code Documentation**: Add docstrings to classes, functions, and modules
+- **API Documentation**: Document public interfaces clearly
+- **Usage Examples**: Provide examples of how to use the code
+- **Design Decisions**: Document key design decisions and rationale
+- **Change Documentation**: Document significant changes
+
+## Implementation Process Workflow
+
+<mermaid>
+graph TD
+    Start([Start]) --> Branch["Create Feature Branch"]
+    Branch --> Scaffold["Create Scaffolding"]
+    Scaffold --> Implement["Implement Core Functionality"]
+    Implement --> Unit["Write/Update Unit Tests"]
+    Unit --> Execute["Execute Tests"]
+    Execute --> Pass{Tests Pass?}
+    
+    Pass -->|No| Debug["Debug & Fix Issues"]
+    Debug --> Execute
+    
+    Pass -->|Yes| Refactor["Refactor if Needed"]
+    Refactor --> Execute2["Execute Tests Again"]
+    Execute2 --> Integration["Integration Testing"]
+    Integration --> IntPass{Integration<br>Tests Pass?}
+    
+    IntPass -->|No| DebugInt["Debug Integration Issues"]
+    DebugInt --> Integration
+    
+    IntPass -->|Yes| Doc["Update Documentation"]
+    Doc --> Review["Self-Review Code"]
+    Review --> Final["Final Testing"]
+    Final --> Complete([Complete])
+    
+    style Start fill:#99ccff,stroke:#4d88ff
+    style Complete fill:#99ffcc,stroke:#4dffaa
+    style Pass fill:#ffcc99,stroke:#ff9966
+    style IntPass fill:#ffcc99,stroke:#ff9966
+</mermaid>
+
+## Implementation Checklist
+
+### Level 1 Implementation Checklist
+
+- [ ] Identified exact location of bug/issue
+- [ ] Fixed issue with minimal changes
+- [ ] Added unit test to verify fix
+- [ ] Verified fix addresses the reported issue
+- [ ] Updated documentation if necessary
+- [ ] Added comments explaining the fix if complex
+
+### Level 2 Implementation Checklist
+
+- [ ] Created basic structure/scaffolding
+- [ ] Implemented core functionality
+- [ ] Added error handling
+- [ ] Handled edge cases
+- [ ] Written unit tests
+- [ ] Performed integration testing
+- [ ] Updated documentation
+- [ ] Self-reviewed code
+
+### Level 3 Implementation Checklist
+
+- [ ] Implemented core architecture
+- [ ] Created necessary interfaces
+- [ ] Implemented primary functionality
+- [ ] Added comprehensive error handling
+- [ ] Implemented integration with other components
+- [ ] Added logging at appropriate points
+- [ ] Written comprehensive test suite
+- [ ] Verified performance meets requirements
+- [ ] Updated component documentation
+- [ ] Self-reviewed code
+
+### Level 4 Implementation Checklist
+
+- [ ] Implemented system architecture
+- [ ] Built primary components
+- [ ] Built secondary components
+- [ ] Implemented system integrations
+- [ ] Created comprehensive error handling
+- [ ] Added appropriate logging
+- [ ] Written unit tests for all components
+- [ ] Written integration tests
+- [ ] Written system tests
+- [ ] Performed performance testing
+- [ ] Updated system documentation
+- [ ] Self-reviewed code
+
+## Command Execution During Implementation
+
+### Environment Setup Commands
+
+```bash
+# Set up virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Unix/macOS
+.\.venv\Scripts\activate  # On Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+```
+
+### Git Workflow Commands
+
+```bash
+# Create feature branch
+git checkout -b feature/my-implementation
+
+# Check status
+git status
+
+# Stage changes
+git add src/path/to/changed/files.py
+
+# Commit changes
+git commit -m "Implement feature X"
+
+# Push changes to remote
+git push -u origin feature/my-implementation
+```
+
+### Code Quality Commands
+
+```bash
+# Format code with Black
+black src/path/to/implementation/
+
+# Check with pylint
+pylint src/path/to/implementation/
+
+# Check with flake8
+flake8 src/path/to/implementation/
+
+# Check types with mypy
+mypy src/path/to/implementation/
+```
+
+### Testing Commands
+
+```bash
+# Run all tests
+pytest
+
+# Run specific tests
+pytest tests/path/to/specific_test.py
+
+# Run tests with coverage
+pytest --cov=src/module_name tests/path/to/test_module.py
+
+# Run tests with verbose output
+pytest -v tests/path/to/test_file.py
+
+# Run tests matching a pattern
+pytest -k "test_pattern" tests/
+```
+
+## Common Implementation Challenges and Solutions
+
+### Challenge: Integrating with Existing Code
+
+**Solution**:
+1. Understand the existing interfaces thoroughly
+2. Make minimal changes to existing interfaces
+3. Use adapter patterns if necessary
+4. Write integration tests to verify compatibility
+
+### Challenge: Handling Edge Cases
+
+**Solution**:
+1. Identify potential edge cases during planning
+2. Write tests for each edge case before implementation
+3. Implement robust error handling
+4. Document edge case handling
+
+### Challenge: Performance Issues
+
+**Solution**:
+1. Profile code to identify bottlenecks
+2. Optimize critical paths first
+3. Consider caching for expensive operations
+4. Implement async patterns for I/O-bound operations
+5. Verify optimizations with performance tests
+
+### Challenge: Managing Complexity
+
+**Solution**:
+1. Break down complex implementations into smaller parts
+2. Implement one component at a time
+3. Use consistent design patterns
+4. Maintain clear separation of concerns
+5. Write comprehensive documentation
+
+## Conclusion
+
+The implementation phase is where designs become reality. By following these guidelines and best practices, you can ensure that your implementations are high-quality, maintainable, and meet the requirements of the AgenticFleet project. Remember to adapt your approach based on the complexity level of the task, and always prioritize code quality, testing, and documentation.

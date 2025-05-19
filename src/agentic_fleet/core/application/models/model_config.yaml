@@ -25,4 +25,4 @@ agent_settings:
     description: "A code execution agent capable of running and managing code"
     config:
       timeout: 300
-      max_retries: 3 
+      max_retries: 3

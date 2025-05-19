@@ -1,0 +1,235 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reflection Mode Visual Map
+
+This visual map outlines the systematic approach to reviewing and reflecting on implementations in the AgenticFleet project.
+
+## Reflection Workflow Overview
+
+<mermaid>
+graph TD
+    Start["🚀 START REFLECTION MODE"] --> ReviewImpl["📚 Review Implementation<br>Results"]
+    ReviewImpl --> CheckCompletion{"✓ Implementation<br>Complete?"}
+    
+    CheckCompletion -->|"No"| ReturnImpl["⏪ Return to<br>Implementation Mode"]
+    
+    CheckCompletion -->|"Yes"| BeginReview["🔍 Begin<br>Reflection Process"]
+    
+    BeginReview --> CheckLevel{"📊 Consider<br>Implementation<br>Complexity Level"}
+    
+    %% Level 1 Reflection
+    CheckLevel -->|"Level 1<br>Quick Fix"| L1["🔧 Level 1:<br>Simple Review"]
+    L1 --> L1Code["👁️ Review<br>Code Changes"]
+    L1Code --> L1Test["✅ Verify<br>Tests Pass"]
+    L1Test --> L1Doc["📝 Review<br>Documentation"]
+    
+    %% Level 2 Reflection
+    CheckLevel -->|"Level 2<br>Feature Enhancement"| L2["🛠️ Level 2:<br>Feature Review"]
+    L2 --> L2Code["👁️ Review<br>Code Quality"]
+    L2Code --> L2Test["✅ Verify<br>Test Coverage"]
+    L2Test --> L2Func["🧪 Verify<br>Functionality"]
+    L2Func --> L2Doc["📝 Review<br>Documentation"]
+    
+    %% Level 3 Reflection
+    CheckLevel -->|"Level 3<br>Component Development"| L3["🏗️ Level 3:<br>Component Review"]
+    L3 --> L3Code["👁️ Review<br>Implementation Quality"]
+    L3Code --> L3Test["✅ Verify<br>Test Coverage"]
+    L3Test --> L3Integ["🔄 Verify<br>Integrations"]
+    L3Integ --> L3Perf["⚡ Check<br>Performance"]
+    L3Perf --> L3Doc["📝 Review<br>Documentation"]
+    
+    %% Level 4 Reflection
+    CheckLevel -->|"Level 4<br>System Architecture"| L4["🏢 Level 4:<br>System Review"]
+    L4 --> L4Code["👁️ Review<br>Architecture Quality"]
+    L4Code --> L4Test["✅ Verify<br>Test Coverage"]
+    L4Test --> L4Integ["🔄 Verify<br>System Integrations"]
+    L4Integ --> L4Perf["⚡ Check<br>Performance"]
+    L4Perf --> L4Sec["🔒 Review<br>Security"]
+    L4Sec --> L4Doc["📝 Review<br>Documentation"]
+    
+    %% Final Steps for All Levels
+    L1Doc & L2Doc & L3Doc & L4Doc --> IdentifyImprovements["💡 Identify<br>Improvements"]
+    IdentifyImprovements --> CaptureFindings["📋 Capture<br>Findings"]
+    CaptureFindings --> NextSteps["🧭 Determine<br>Next Steps"]
+    
+    %% Decision Point
+    NextSteps --> NeedsImprovements{"🤔 Needs<br>Improvements?"}
+    
+    NeedsImprovements -->|"Yes<br>Major"| PlanNew["📝 Create New<br>Implementation Task"]
+    NeedsImprovements -->|"Yes<br>Minor"| QuickFix["🔧 Implement<br>Quick Fixes"]
+    NeedsImprovements -->|"No"| FinalizeTask["✅ Finalize<br>Task"]
+    
+    PlanNew --> PlanMode["⏭️ TRANSITION TO<br>PLANNING MODE"]
+    QuickFix --> Verify["✓ Verify<br>Fixes"]
+    Verify --> FinalizeTask
+    
+    FinalizeTask --> UpdateStatus["📊 Update Task<br>Status"]
+    UpdateStatus --> Commit["💾 Commit Final<br>Changes"]
+    Commit --> NextMode["⏭️ TRANSITION TO<br>PLANNING MODE<br>FOR NEXT TASK"]
+    
+    %% Styling
+    style Start fill:#4da6ff,stroke:#0066cc,color:white
+    style CheckCompletion fill:#ffa64d,stroke:#cc7a30,color:white
+    style CheckLevel fill:#d94dbb,stroke:#a3378a,color:white
+    style L1 fill:#4dbb5f,stroke:#36873f,color:white
+    style L2 fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3 fill:#ff5555,stroke:#cc0000,color:white
+    style L4 fill:#d971ff,stroke:#a33bc2,color:white
+    style NeedsImprovements fill:#ffa64d,stroke:#cc7a30,color:white
+    style NextMode fill:#5fd94d,stroke:#3da336,color:white
+    style ReturnImpl fill:#ff5555,stroke:#cc0000,color:white
+    style PlanMode fill:#5fd94d,stroke:#3da336,color:white
+</mermaid>
+
+## Code Review Focus Areas
+
+<mermaid>
+graph TD
+    CodeReview["🔍 Code Review<br>Focus Areas"] --> Quality["✨ Code Quality"]
+    CodeReview --> Correctness["✅ Correctness"]
+    CodeReview --> Maintainability["🔧 Maintainability"]
+    CodeReview --> Performance["⚡ Performance"]
+    CodeReview --> Security["🔒 Security"]
+    
+    Quality --> QA1["Style Guide Compliance"]
+    Quality --> QA2["DRY Principle"]
+    Quality --> QA3["Clean Architecture"]
+    
+    Correctness --> CA1["Requirements Met"]
+    Correctness --> CA2["Edge Cases Handled"]
+    Correctness --> CA3["Error Handling"]
+    
+    Maintainability --> MA1["Documentation"]
+    Maintainability --> MA2["Naming Conventions"]
+    Maintainability --> MA3["Modularity"]
+    
+    Performance --> PA1["Efficiency"]
+    Performance --> PA2["Resource Usage"]
+    Performance --> PA3["Scalability"]
+    
+    Security --> SA1["Input Validation"]
+    Security --> SA2["Authentication/Authorization"]
+    Security --> SA3["Data Protection"]
+    
+    style CodeReview fill:#4da6ff,stroke:#0066cc,color:white
+    style Quality fill:#4dbb5f,stroke:#36873f,color:white
+    style Correctness fill:#ffa64d,stroke:#cc7a30,color:white
+    style Maintainability fill:#ff5555,stroke:#cc0000,color:white
+    style Performance fill:#d971ff,stroke:#a33bc2,color:white
+    style Security fill:#4dbbbb,stroke:#368787,color:white
+</mermaid>
+
+## Testing Verification
+
+### Testing Coverage by Level
+
+<mermaid>
+graph LR
+    L1Cov["Level 1<br>Coverage"] -->|"Requires"| L1Unit["Unit Tests"]
+    
+    L2Cov["Level 2<br>Coverage"] -->|"Requires"| L2Unit["Unit Tests"]
+    L2Cov -->|"Requires"| L2Int["Integration Tests"]
+    
+    L3Cov["Level 3<br>Coverage"] -->|"Requires"| L3Unit["Unit Tests"]
+    L3Cov -->|"Requires"| L3Int["Integration Tests"]
+    L3Cov -->|"Requires"| L3Comp["Component Tests"]
+    
+    L4Cov["Level 4<br>Coverage"] -->|"Requires"| L4Unit["Unit Tests"]
+    L4Cov -->|"Requires"| L4Int["Integration Tests"]
+    L4Cov -->|"Requires"| L4Comp["Component Tests"]
+    L4Cov -->|"Requires"| L4E2E["End-to-End Tests"]
+    L4Cov -->|"Requires"| L4Perf["Performance Tests"]
+    
+    style L1Cov fill:#4dbb5f,stroke:#36873f,color:white
+    style L2Cov fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3Cov fill:#ff5555,stroke:#cc0000,color:white
+    style L4Cov fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Documentation Review Checklist
+
+<mermaid>
+graph TD
+    DocReview["📝 Documentation<br>Review"] --> Code["Code Documentation"]
+    DocReview --> API["API Documentation"]
+    DocReview --> Architecture["Architecture Documentation"]
+    DocReview --> Usage["Usage Documentation"]
+    
+    Code --> CD1["Docstrings"]
+    Code --> CD2["Comments"]
+    Code --> CD3["Type Hints"]
+    
+    API --> AD1["Function Signatures"]
+    API --> AD2["Parameters"]
+    API --> AD3["Return Values"]
+    API --> AD4["Exceptions"]
+    
+    Architecture --> ARD1["Component Diagrams"]
+    Architecture --> ARD2["Data Flow"]
+    Architecture --> ARD3["Design Decisions"]
+    
+    Usage --> UD1["Examples"]
+    Usage --> UD2["Tutorials"]
+    Usage --> UD3["CLI Help"]
+    
+    style DocReview fill:#4da6ff,stroke:#0066cc,color:white
+    style Code fill:#4dbb5f,stroke:#36873f,color:white
+    style API fill:#ffa64d,stroke:#cc7a30,color:white
+    style Architecture fill:#ff5555,stroke:#cc0000,color:white
+    style Usage fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Reflection Deliverables
+
+For each completed implementation, produce the following reflection deliverables:
+
+### Level 1 (Simple Fix)
+- Brief summary of changes
+- Verification of fix effectiveness
+- Test results
+- Documentation updates
+
+### Level 2 (Feature Enhancement)
+- Feature implementation summary
+- Test coverage report
+- Integration verification
+- Updated documentation
+
+### Level 3 (Component Development)
+- Component implementation review
+- Test coverage report
+- Performance summary
+- Integration verification
+- Complete component documentation
+
+### Level 4 (System Architecture)
+- Architecture implementation review
+- System-wide test report
+- Performance and scalability analysis
+- Security review
+- Complete system documentation
+
+## Reflection Checklist
+
+- [ ] Verify all implementation tasks are complete
+- [ ] Review code quality and alignment with style guide
+- [ ] Check test coverage and verify all tests pass
+- [ ] Verify all requirements are fulfilled
+- [ ] Review documentation completeness
+- [ ] Identify areas for improvement
+- [ ] Document lessons learned
+- [ ] Update task status with reflection results
+- [ ] Create follow-up tasks if needed
+- [ ] Finalize and commit changes
+
+## Transition to Planning Mode
+
+Once reflection is complete:
+1. Ensure all identified improvements are documented
+2. Create new tasks for significant improvements
+3. Update the original task status to reflect completion
+4. Commit all final changes and documentation
+5. Transition to Planning Mode for the next task

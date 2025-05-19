@@ -9,15 +9,15 @@ This module provides the main application manager that coordinates:
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from autogen_core.models import ChatCompletionClient
 from pydantic import BaseModel
 
+from agentic_fleet.config import config_manager
 from agentic_fleet.core.agents.base import BaseAgent
 from agentic_fleet.core.agents.team_factory import TeamFactory
 from agentic_fleet.core.agents.team_manager import TeamManager
-from agentic_fleet.config import config_manager
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class ApplicationManager:
     def __init__(
         self,
         config: ApplicationConfig,
-        model_client: Optional[ChatCompletionClient] = None,
+        model_client: ChatCompletionClient | None = None,
     ) -> None:
         """Initialize the application manager.
 
@@ -58,7 +58,7 @@ class ApplicationManager:
 
         # Initialize components
         self.team_factory = TeamFactory(model_client=model_client)
-        self.active_teams: Dict[str, TeamManager] = {}
+        self.active_teams: dict[str, TeamManager] = {}
 
         # Configure logging
         logging.basicConfig(
@@ -79,15 +79,20 @@ class ApplicationManager:
         # Initialize default team if configured and model client is available
         if self.config.default_team_specialization and self.model_client is not None:
             try:
-                await self.create_team(self.config.default_team_specialization)
+                # Note: create_team is marked as async but doesn't await anything internally
+                # so we don't need to await it here
+                self.create_team(self.config.default_team_specialization)
             except ValueError as e:  # Example: Invalid configuration
                 logger.error(f"Configuration error while creating default team: {str(e)}")
             except RuntimeError as e:  # Example: Resource allocation failure
                 logger.error(f"Runtime error while creating default team: {str(e)}")
             # Continue without a team - the application can still function in a limited capacity
 
-    async def create_team(
-        self, specialization: str, custom_config: Optional[Dict[str, Any]] = None, team_id: Optional[str] = None
+    def create_team(
+        self,
+        specialization: str,
+        custom_config: dict[str, Any] | None = None,
+        team_id: str | None = None,
     ) -> TeamManager:
         """Create a new agent team.
 
@@ -109,7 +114,9 @@ class ApplicationManager:
             # If no agents are available (e.g., because model_client is None),
             # create a placeholder team instead
             if not available_agents:
-                logger.warning(f"No agents available to create team with specialization {specialization}")
+                logger.warning(
+                    f"No agents available to create team with specialization {specialization}"
+                )
                 # Generate team ID if not provided
                 if not team_id:
                     team_id = f"{specialization}_{len(self.active_teams)}"
@@ -130,12 +137,16 @@ class ApplicationManager:
                 # Store team
                 self.active_teams[team_id] = team
 
-                logger.info(f"Created placeholder team {team_id} with specialization {specialization}")
+                logger.info(
+                    f"Created placeholder team {team_id} with specialization {specialization}"
+                )
                 return team
 
             # Create team using factory
             team = self.team_factory.create_team(
-                specialization=specialization, available_agents=available_agents, custom_config=custom_config
+                specialization=specialization,
+                available_agents=available_agents,
+                custom_config=custom_config,
             )
 
             # Generate team ID if not provided
@@ -152,7 +163,7 @@ class ApplicationManager:
             logger.error(f"Failed to create team: {str(e)}")
             raise ValueError(f"Team creation failed: {str(e)}")
 
-    def _initialize_default_agents(self) -> Dict[str, BaseAgent]:
+    def _initialize_default_agents(self) -> dict[str, BaseAgent]:
         """Initialize the default set of agents.
 
         Returns:
@@ -161,13 +172,17 @@ class ApplicationManager:
         from agentic_fleet.core.agents.team import initialize_default_agents
 
         if self.model_client is None:
-            logger.warning("model_client is None, skipping agent initialization that requires a model client")
+            logger.warning(
+                "model_client is None, skipping agent initialization that requires a model client"
+            )
             return {}  # Return empty dictionary if no model client is available
 
         agents = initialize_default_agents(model_client=self.model_client)
         return {agent.name: agent for agent in agents}
 
-    async def execute_task(self, task: str, team_id: Optional[str] = None, specialization: Optional[str] = None) -> Any:
+    async def execute_task(
+        self, task: str, team_id: str | None = None, specialization: str | None = None
+    ) -> Any:
         """Execute a task using an agent team.
 
         Args:
@@ -204,7 +219,7 @@ class ApplicationManager:
             logger.error(f"Task execution failed: {str(e)}")
             raise
 
-    def get_team(self, team_id: str) -> Optional[TeamManager]:
+    def get_team(self, team_id: str) -> TeamManager | None:
         """Get a team by ID.
 
         Args:
@@ -215,7 +230,7 @@ class ApplicationManager:
         """
         return self.active_teams.get(team_id)
 
-    def list_teams(self) -> List[Dict[str, Any]]:
+    def list_teams(self) -> list[dict[str, Any]]:
         """List all active teams.
 
         Returns:
@@ -248,8 +263,8 @@ class ApplicationManager:
 
 
 async def create_application(
-    project_root: Union[str, Path],
-    model_client: Optional[ChatCompletionClient] = None,
+    project_root: str | Path,
+    model_client: ChatCompletionClient | None = None,
     debug: bool = False,
     log_level: str = "INFO",
     default_team_specialization: str = "general",
@@ -270,7 +285,9 @@ async def create_application(
         project_root = Path(project_root)
 
     if model_client is None:
-        logger.warning("No model client provided to create_application. Some functionality may be limited.")
+        logger.warning(
+            "No model client provided to create_application. Some functionality may be limited."
+        )
 
     config = ApplicationConfig(
         project_root=project_root,

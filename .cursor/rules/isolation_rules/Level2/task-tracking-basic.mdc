@@ -1,0 +1,77 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Level 2 Task Tracking Template
+
+## Overview
+
+This template is designed for tracking Level 2 tasks, which involve feature enhancements and moderate complexity.
+
+## Template Structure
+
+```markdown
+# Task Implementation Plan: [Task Name]
+
+## Overview
+[Brief description of the task and its purpose]
+
+## Files to Modify
+- `path/to/file1.py`: [Change description]
+- `path/to/file2.py`: [Change description]
+
+## Implementation Steps
+1. [First step description]
+2. [Second step description]
+3. [Third step description]
+
+## Potential Challenges
+- [Challenge 1]: [Mitigation approach]
+- [Challenge 2]: [Mitigation approach]
+
+## Testing Strategy
+- [Test 1]: [Test approach]
+- [Test 2]: [Test approach]
+
+## Completion Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+```
+
+## Example
+
+```markdown
+# Task Implementation Plan: Add User Session Management
+
+## Overview
+Implement user session management to store user preferences and conversation history between sessions.
+
+## Files to Modify
+- `src/agentic_fleet/ui/message_handler.py`: Add session handling logic
+- `src/agentic_fleet/models/session.py`: Create session model
+
+## Implementation Steps
+1. Create session model with user preferences and conversation history
+2. Implement database storage for sessions
+3. Add session creation and retrieval in message handler
+
+## Potential Challenges
+- Performance: Sessions with large conversation histories might be slow - Implement pagination
+- Security: Need to ensure session data is properly secured - Use JWT for authentication
+
+## Testing Strategy
+- Unit tests for session model and database operations
+- Integration tests for session retrieval in message handler
+
+## Completion Criteria
+- [ ] Sessions persist between user visits
+- [ ] User preferences are saved and retrieved correctly
+```
+
+## Usage Guidelines
+
+1. Copy the template structure
+2. Fill in all sections with relevant details
+3. Update the checklist as you complete items
+4. Reference the plan in commit messages

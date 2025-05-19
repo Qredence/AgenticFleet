@@ -6,18 +6,28 @@ code based on given tasks and requirements.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Any
 
-from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.base import Response
 from autogen_agentchat.messages import ChatMessage, TextMessage
 from autogen_core import CancellationToken
-from autogen_core.models import ChatCompletionClient, CreateResult, RequestUsage, SystemMessage, UserMessage
+from autogen_core.models import (
+    ChatCompletionClient,
+    CreateResult,
+    RequestUsage,
+    SystemMessage,
+    UserMessage,
+)
 from pydantic import BaseModel
 
 from agentic_fleet.core.agents.base import BaseAgent
 from agentic_fleet.core.models.messages import EnhancedSystemMessage
-from agentic_fleet.core.tools.code_execution.code_execution_tool import CodeBlock, CodeExecutionTool, ExecutionResult
+from agentic_fleet.core.tools.code_execution.code_execution_tool import (
+    CodeBlock,
+    CodeExecutionTool,
+    ExecutionResult,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +60,8 @@ class CodingAgent(BaseAgent):
     def __init__(
         self,
         name: str = "coding_agent",
-        config: Optional[CodingConfig] = None,
-        model_client: Optional[ChatCompletionClient] = None,
+        config: CodingConfig | None = None,
+        model_client: ChatCompletionClient | None = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -121,9 +131,9 @@ class CodingAgent(BaseAgent):
 
     async def generate_response(
         self,
-        messages: Sequence[Union[SystemMessage, UserMessage]],
-        token: Optional[CancellationToken] = None,
-        temperature: Optional[float] = None,
+        messages: Sequence[SystemMessage | UserMessage],
+        token: CancellationToken | None = None,
+        temperature: float | None = None,
     ) -> CreateResult:
         """
         Generate a response using the model client.
@@ -180,7 +190,7 @@ class CodingAgent(BaseAgent):
             return CreateResult(message=response.chat_message)
 
     async def _generate_code(
-        self, task: str, requirements: Dict[str, Any], context: Optional[Dict[str, Any]] = None
+        self, task: str, requirements: dict[str, Any], context: dict[str, Any] | None = None
     ) -> CodeBlock:
         """
         Generate code based on a task description and requirements.
@@ -201,18 +211,27 @@ class CodingAgent(BaseAgent):
 
             messages = [
                 system_message,
-                UserMessage(content=f"Task: {task}\nRequirements: {requirements}\nContext: {context}", source="user"),
+                UserMessage(
+                    content=f"Task: {task}\nRequirements: {requirements}\nContext: {context}",
+                    source="user",
+                ),
             ]
 
-            result = await self.generate_response(messages, temperature=self.config.generation_temperature)
+            result = await self.generate_response(
+                messages, temperature=self.config.generation_temperature
+            )
 
-            return CodeBlock(code=result.content, language=self._detect_language(task, requirements))
+            return CodeBlock(
+                code=result.content, language=self._detect_language(task, requirements)
+            )
 
         except Exception as e:
             logger.error("Error generating code", exc_info=True)
             raise RuntimeError(f"Error generating code: {str(e)}") from e
 
-    async def _execute_code(self, code: str, context: Optional[Dict[str, Any]] = None) -> ExecutionResult:
+    async def _execute_code(
+        self, code: str, context: dict[str, Any] | None = None
+    ) -> ExecutionResult:
         """
         Execute the provided code and return the result.
 
@@ -235,7 +254,7 @@ class CodingAgent(BaseAgent):
             raise RuntimeError(f"Error executing code: {str(e)}") from e
 
     async def _optimize_code(
-        self, code: str, metrics: List[str], context: Optional[Dict[str, Any]] = None
+        self, code: str, metrics: list[str], context: dict[str, Any] | None = None
     ) -> CodeBlock:
         """
         Optimize the provided code based on specified metrics.
@@ -256,10 +275,14 @@ class CodingAgent(BaseAgent):
 
             messages = [
                 system_message,
-                UserMessage(content=f"Code: {code}\nMetrics: {metrics}\nContext: {context}", source="user"),
+                UserMessage(
+                    content=f"Code: {code}\nMetrics: {metrics}\nContext: {context}", source="user"
+                ),
             ]
 
-            result = await self.generate_response(messages, temperature=self.config.optimization_temperature)
+            result = await self.generate_response(
+                messages, temperature=self.config.optimization_temperature
+            )
 
             return CodeBlock(code=result.content, language=self._detect_language_from_code(code))
 
@@ -267,7 +290,7 @@ class CodingAgent(BaseAgent):
             logger.error("Error optimizing code", exc_info=True)
             raise RuntimeError(f"Error optimizing code: {str(e)}") from e
 
-    async def _review_code(self, code: str, context: Optional[Dict[str, Any]] = None) -> str:
+    async def _review_code(self, code: str, context: dict[str, Any] | None = None) -> str:
         """
         Review the provided code for quality and correctness.
 
@@ -281,7 +304,8 @@ class CodingAgent(BaseAgent):
         try:
             # Use EnhancedSystemMessage instead of SystemMessage
             system_message = EnhancedSystemMessage(
-                content="Review the code for quality, security, and best practices.", source="system"
+                content="Review the code for quality, security, and best practices.",
+                source="system",
             )
 
             messages = [
@@ -289,7 +313,9 @@ class CodingAgent(BaseAgent):
                 UserMessage(content=f"Code: {code}\nContext: {context}", source="user"),
             ]
 
-            result = await self.generate_response(messages, temperature=self.config.review_temperature)
+            result = await self.generate_response(
+                messages, temperature=self.config.review_temperature
+            )
 
             return result.content
 
@@ -297,7 +323,7 @@ class CodingAgent(BaseAgent):
             logger.error("Error reviewing code", exc_info=True)
             raise RuntimeError(f"Error reviewing code: {str(e)}") from e
 
-    def _parse_message(self, content: str) -> tuple[str, Dict[str, Any]]:
+    def _parse_message(self, content: str) -> tuple[str, dict[str, Any]]:
         """
         Parse a message into a task and requirements.
 
@@ -344,7 +370,7 @@ class CodingAgent(BaseAgent):
             logger.error("Error in improved language detection", exc_info=True)
         return "python"
 
-    def _detect_language(self, task: str, requirements: Dict[str, Any]) -> str:
+    def _detect_language(self, task: str, requirements: dict[str, Any]) -> str:
         """
         Detect the programming language from task description and requirements.
 
@@ -420,7 +446,7 @@ class CodingAgent(BaseAgent):
         # No state to reset for now
         pass
 
-    def produced_message_types(self) -> List[str]:
+    def produced_message_types(self) -> list[str]:
         """
         Get the list of message types this agent can produce.
 

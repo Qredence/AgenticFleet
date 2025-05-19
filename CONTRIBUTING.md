@@ -7,6 +7,7 @@ AgenticFleet is an open-source project that thrives on community contributions. 
 ## 📋 Contribution Guidelines
 
 ### 1. Ways to Contribute
+
 - Reporting bugs
 - Suggesting enhancements
 - Writing code
@@ -16,11 +17,13 @@ AgenticFleet is an open-source project that thrives on community contributions. 
 ### 2. Development Setup
 
 #### Prerequisites
+
 - Python 3.10-3.12
 - `uv` package manager
 - `pre-commit`
 
 #### Local Development Environment
+
 ```bash
 # Clone the repository
 git clone https://github.com/qredence/agenticfleet.git
@@ -38,13 +41,16 @@ pre-commit install
 ### 3. ⚠️ Package Modification Warning
 
 #### Editable Installation Risks
+
 - **NOT recommended for production**
 - May introduce unsupported behaviors
 - Intended ONLY for core contributors
 - Local modifications void official support
 
 #### Modification Guidelines
+
 1. For bug fixes or features:
+
    - Open a GitHub Issue first
    - Discuss proposed changes
    - Submit a Pull Request
@@ -58,6 +64,7 @@ pre-commit install
 ### 4. Contribution Process
 
 #### Workflow
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -67,6 +74,7 @@ pre-commit install
 7. Submit a Pull Request
 
 #### Pre-Commit Checks
+
 ```bash
 # Run all pre-commit hooks
 pre-commit run --all-files

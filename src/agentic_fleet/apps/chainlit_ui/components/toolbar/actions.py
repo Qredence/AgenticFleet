@@ -1,6 +1,6 @@
 """Actions component for the Chainlit UI toolbar."""
 
-from typing import Callable, Dict, List
+from collections.abc import Callable
 
 import chainlit as cl
 
@@ -10,7 +10,7 @@ class ToolbarActions:
 
     def __init__(self):
         """Initialize toolbar actions."""
-        self.actions: Dict[str, Callable] = {}
+        self.actions: dict[str, Callable] = {}
 
     def add_action(self, name: str, callback: Callable) -> None:
         """Add an action to the toolbar.
@@ -25,7 +25,10 @@ class ToolbarActions:
         """Render the actions in the toolbar."""
         for name, callback in self.actions.items():
             await cl.Action(
-                name=name, label=name.replace("_", " ").title(), description=f"Execute {name} action", callback=callback
+                name=name,
+                label=name.replace("_", " ").title(),
+                description=f"Execute {name} action",
+                callback=callback,
             ).send()
 
     @classmethod

@@ -6,27 +6,14 @@ import logging
 import os
 import re
 import time
+from collections.abc import AsyncGenerator
 from typing import (
-    Annotated,
     Any,
-    AsyncGenerator,
-    Dict,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    TypeVar,
-    Union,
 )
 
 import chainlit as cl
 from autogen_agentchat.base import TaskResult
-from autogen_agentchat.messages import (
-    FunctionCall,
-    Image,
-    MultiModalMessage,
-    TextMessage,
-)
+from autogen_agentchat.messages import FunctionCall, Image, MultiModalMessage, TextMessage
 from chainlit import Message, Step, TaskStatus, context, sleep, user_session
 
 # Constants for task status
@@ -45,8 +32,8 @@ async def stream_text(text: str, stream_delay: float = 0.01) -> AsyncGenerator[s
 
 @cl.step(name="Response Processing", type="process", show_input=True)
 async def process_response(
-    response: Union[TaskResult, TextMessage, List[Any], Dict[str, Any]],
-    collected_responses: List[str],
+    response: TaskResult | TextMessage | list[Any] | dict[str, Any],
+    collected_responses: list[str],
 ) -> None:
     """Process agent responses with step visualization and error handling."""
     try:
@@ -54,7 +41,9 @@ async def process_response(
         current_step.input = str(response)
 
         if isinstance(response, TaskResult):
-            async with cl.Step(name="Task Execution", type="task", show_input=True, language="json") as task_step:
+            async with cl.Step(
+                name="Task Execution", type="task", show_input=True, language="json"
+            ) as task_step:
                 task_step.input = getattr(response, "task", "Task execution")
                 for msg in response.messages:
                     await process_message(msg, collected_responses)
@@ -65,7 +54,9 @@ async def process_response(
 
         elif isinstance(response, TextMessage):
             source = getattr(response, "source", "Unknown")
-            async with cl.Step(name=f"Agent: {source}", type="message", show_input=True) as msg_step:
+            async with cl.Step(
+                name=f"Agent: {source}", type="message", show_input=True
+            ) as msg_step:
                 msg_step.input = response.content
                 await process_message(response, collected_responses)
                 msg_step.output = f"Message from {source} processed"
@@ -77,13 +68,17 @@ async def process_response(
                 chat_step.output = "Chat message processed"
 
         elif hasattr(response, "inner_monologue"):
-            async with cl.Step(name="Inner Thought", type="reasoning", show_input=True) as thought_step:
+            async with cl.Step(
+                name="Inner Thought", type="reasoning", show_input=True
+            ) as thought_step:
                 thought_step.input = str(response.inner_monologue)
                 await process_message(response.inner_monologue, collected_responses)
                 thought_step.output = "Inner thought processed"
 
         elif hasattr(response, "function_call"):
-            async with cl.Step(name="Function Call", type="function", show_input=True, language="json") as func_step:
+            async with cl.Step(
+                name="Function Call", type="function", show_input=True, language="json"
+            ) as func_step:
                 func_step.input = str(response.function_call)
                 collected_responses.append(str(response.function_call))
                 func_step.output = "Function call processed"
@@ -102,7 +97,7 @@ async def process_response(
 
 
 @cl.step(name="Message Processing", type="message", show_input=True)
-async def process_message(message: Union[TextMessage, Any], collected_responses: List[str]) -> None:
+async def process_message(message: TextMessage | Any, collected_responses: list[str]) -> None:
     """Process a single message with proper formatting and step visualization."""
     try:
         current_step = context.current_step
@@ -184,7 +179,7 @@ async def process_message(message: Union[TextMessage, Any], collected_responses:
         await Message(content=f"⚠️ Error processing message: {str(e)}").send()
 
 
-def extract_steps_from_content(content: str) -> List[Dict[str, str]]:
+def extract_steps_from_content(content: str) -> list[dict[str, str]]:
     """Extract steps from the content with their descriptions.
 
     Returns:
@@ -220,7 +215,7 @@ def extract_steps_from_content(content: str) -> List[Dict[str, str]]:
     return steps
 
 
-async def _process_multimodal_message(content: List[Any]) -> None:
+async def _process_multimodal_message(content: list[Any]) -> None:
     """Process a multimodal message containing text and images."""
     try:
         for item in content:
@@ -234,7 +229,7 @@ async def _process_multimodal_message(content: List[Any]) -> None:
         await Message(content=f"⚠️ Error processing multimodal message: {str(e)}").send()
 
 
-async def _handle_image_data(image_data: Union[str, bytes]) -> Optional[Image]:
+async def _handle_image_data(image_data: str | bytes) -> Image | None:
     """Handle image data processing and display."""
     try:
         if isinstance(image_data, str):

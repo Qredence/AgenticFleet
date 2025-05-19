@@ -11,6 +11,7 @@ This guide will help you get up and running with AgenticFleet quickly.
 ## Installation
 
 1. **Install AgenticFleet:**
+
    ```bash
    uv pip install agentic-fleet
    ```
@@ -24,12 +25,14 @@ This guide will help you get up and running with AgenticFleet quickly.
 ## Environment Setup
 
 1. **Create Environment File:**
+
    ```bash
    cp .env.example .env
    ```
 
 2. **Configure Environment Variables:**
    Open `.env` and set these required variables:
+
    ```env
    # Required: Azure OpenAI Configuration
    AZURE_OPENAI_API_KEY=your_api_key
@@ -48,11 +51,13 @@ This guide will help you get up and running with AgenticFleet quickly.
 ### Using CLI (Recommended)
 
 1. **Start with Default Settings:**
+
    ```bash
    agenticfleet start
    ```
 
 2. **Start Without OAuth:**
+
    ```bash
    agenticfleet start no-oauth
    ```
@@ -65,6 +70,7 @@ This guide will help you get up and running with AgenticFleet quickly.
 ### Using Scripts
 
 1. **Shell Script:**
+
    ```bash
    ./scripts/run.sh
    ```
@@ -77,6 +83,7 @@ This guide will help you get up and running with AgenticFleet quickly.
 ### Using Docker
 
 1. **Pull the Image:**
+
    ```bash
    docker pull qredence/agenticfleet:latest
    ```

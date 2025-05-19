@@ -1,9 +1,8 @@
 """Tests for the settings handler module."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
-
 from agentic_fleet.ui.settings_handler import SettingsManager, chat_profiles
 
 
@@ -96,7 +95,9 @@ async def test_chat_settings_combined_flow(mock_user_session, mock_settings_comp
     settings_manager = SettingsManager()
 
     # Mock get_default_settings to return specific settings
-    settings_manager.get_default_settings = MagicMock(return_value={"temperature": 0.7, "max_rounds": 10})
+    settings_manager.get_default_settings = MagicMock(
+        return_value={"temperature": 0.7, "max_rounds": 10}
+    )
 
     # 1. Set up chat settings
     await settings_manager.setup_chat_settings()

@@ -9,39 +9,43 @@ This module provides functionality for managing teams of agents, including:
 
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional, Type, Union
 from dataclasses import dataclass
+from typing import Any
 
 from autogen_core.models import ChatCompletionClient
 from pydantic import BaseModel
 
 from agentic_fleet.core.agents.base import BaseAgent
 from agentic_fleet.core.agents.orchestrator import Orchestrator, OrchestratorConfig
-from agentic_fleet.core.models.messages import EnhancedSystemMessage
 
 logger = logging.getLogger(__name__)
 
+
 class TeamConfig(BaseModel):
     """Configuration for an agent team."""
+
     name: str
-    description: Optional[str] = None
-    orchestrator_config: Optional[OrchestratorConfig] = None
+    description: str | None = None
+    orchestrator_config: OrchestratorConfig | None = None
     max_parallel_tasks: int = 1
     max_retries: int = 3
     timeout_seconds: int = 3600  # 1 hour default timeout
 
+
 @dataclass
 class TeamMetrics:
     """Metrics for team performance tracking."""
+
     tasks_completed: int = 0
     tasks_failed: int = 0
     total_execution_time: float = 0.0
     average_task_time: float = 0.0
 
+
 class TeamManager:
     """
     Manages teams of agents and their coordination.
-    
+
     The team manager:
     1. Initializes and configures agent teams
     2. Handles agent registration and coordination
@@ -52,7 +56,7 @@ class TeamManager:
     def __init__(
         self,
         config: TeamConfig,
-        model_client: Optional[ChatCompletionClient] = None,
+        model_client: ChatCompletionClient | None = None,
     ) -> None:
         """Initialize the team manager.
 
@@ -62,10 +66,10 @@ class TeamManager:
         """
         self.config = config
         self.model_client = model_client
-        
+
         # Initialize collections
-        self.agents: Dict[str, BaseAgent] = {}
-        self.orchestrator: Optional[Orchestrator] = None
+        self.agents: dict[str, BaseAgent] = {}
+        self.orchestrator: Orchestrator | None = None
         self.metrics = TeamMetrics()
 
     def register_agent(self, name: str, agent: BaseAgent) -> None:
@@ -78,12 +82,12 @@ class TeamManager:
         if name in self.agents:
             logger.warning(f"Overwriting existing agent registration for {name}")
         self.agents[name] = agent
-        
+
         # Update orchestrator's available agents if it exists
         if self.orchestrator:
             self.orchestrator.available_agents = self.agents
 
-    def register_agents(self, agents: Dict[str, BaseAgent]) -> None:
+    def register_agents(self, agents: dict[str, BaseAgent]) -> None:
         """Register multiple agents at once.
 
         Args:
@@ -93,9 +97,7 @@ class TeamManager:
             self.register_agent(name, agent)
 
     def initialize_orchestrator(
-        self,
-        name: str = "orchestrator",
-        config: Optional[OrchestratorConfig] = None
+        self, name: str = "orchestrator", config: OrchestratorConfig | None = None
     ) -> None:
         """Initialize the team's orchestrator agent.
 
@@ -104,12 +106,12 @@ class TeamManager:
             config: Optional custom configuration
         """
         orchestrator_config = config or self.config.orchestrator_config or OrchestratorConfig()
-        
+
         self.orchestrator = Orchestrator(
             name=name,
             config=orchestrator_config,
             model_client=self.model_client,
-            available_agents=self.agents
+            available_agents=self.agents,
         )
 
     async def execute_task(self, task: str) -> Any:
@@ -129,11 +131,12 @@ class TeamManager:
 
         try:
             import time
+
             start_time = time.time()
-            
+
             # Execute task through orchestrator
             results = await self.orchestrator.execute_task(task)
-            
+
             # Update metrics
             execution_time = time.time() - start_time
             self.metrics.tasks_completed += 1
@@ -141,7 +144,7 @@ class TeamManager:
             self.metrics.average_task_time = (
                 self.metrics.total_execution_time / self.metrics.tasks_completed
             )
-            
+
             return results
 
         except Exception as e:
@@ -157,7 +160,7 @@ class TeamManager:
         """
         return self.metrics
 
-    def get_agent_status(self) -> Dict[str, str]:
+    def get_agent_status(self) -> dict[str, str]:
         """Get status of all registered agents.
 
         Returns:
@@ -166,17 +169,17 @@ class TeamManager:
         status = {}
         for name, agent in self.agents.items():
             # Get agent status if it has a status property, otherwise mark as 'unknown'
-            status[name] = getattr(agent, 'status', 'unknown')
+            status[name] = getattr(agent, "status", "unknown")
         return status
 
     async def cleanup(self) -> None:
         """Clean up team resources."""
         for agent in self.agents.values():
-            if hasattr(agent, 'cleanup') and callable(agent.cleanup):
+            if hasattr(agent, "cleanup") and callable(agent.cleanup):
                 try:
                     if asyncio.iscoroutinefunction(agent.cleanup):
                         await agent.cleanup()
                     else:
                         agent.cleanup()
                 except Exception as e:
-                    logger.warning(f"Error cleaning up agent {agent.name}: {str(e)}") 
+                    logger.warning(f"Error cleaning up agent {agent.name}: {str(e)}")

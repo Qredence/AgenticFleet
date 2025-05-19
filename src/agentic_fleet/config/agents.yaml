@@ -2,7 +2,7 @@
 
 # Default settings that apply to all agents
 defaults:
-  timeout: 300  # seconds
+  timeout: 300 # seconds
   max_retries: 3
   logging_level: "INFO"
 
@@ -79,6 +79,6 @@ registry:
 # Interaction settings
 interaction:
   max_rounds: 10
-  max_time: 600  # seconds
+  max_time: 600 # seconds
   stream_output: true
   show_thoughts: true

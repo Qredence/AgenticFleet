@@ -3,7 +3,7 @@ Middleware for authentication.
 """
 
 import logging
-from typing import Callable, Optional
+from collections.abc import Callable
 
 from fastapi import HTTPException, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class AuthMiddleware(BaseHTTPMiddleware):
     """Middleware for authenticating requests."""
 
-    def __init__(self, app, api_key: Optional[str] = None, exclude_paths: Optional[list] = None):
+    def __init__(self, app, api_key: str | None = None, exclude_paths: list | None = None):
         """
         Initialize the authentication middleware.
 
@@ -57,7 +57,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
                 f"Unauthorized access attempt: {request.method} {request.url.path} "
                 f"Client: {request.client.host if request.client else 'Unknown'}"
             )
-            raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail="Invalid or missing API key")
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED, detail="Invalid or missing API key"
+            )
 
         # API key is valid, proceed with the request
         return await call_next(request)

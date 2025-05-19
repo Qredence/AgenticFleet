@@ -1,0 +1,131 @@
+{
+  "projectName": "AgenticFleet",
+  "description": "A framework for building and managing fleets of autonomous agents",
+  "mainDirectories": [
+    {
+      "name": "src/agentic_fleet",
+      "description": "Core application source code",
+      "subDirectories": [
+        {
+          "name": "agent_registry",
+          "description": "Agent registration and discovery"
+        },
+        {
+          "name": "agents",
+          "description": "Agent implementations"
+        },
+        {
+          "name": "api",
+          "description": "API endpoints and routes"
+        },
+        {
+          "name": "apps",
+          "description": "Application modules including Chainlit UI"
+        },
+        {
+          "name": "config",
+          "description": "Configuration management"
+        },
+        {
+          "name": "core",
+          "description": "Core framework components"
+        },
+        {
+          "name": "database",
+          "description": "Database models and access"
+        },
+        {
+          "name": "message_processing",
+          "description": "Message processing pipelines"
+        },
+        {
+          "name": "models",
+          "description": "Data models and schemas"
+        },
+        {
+          "name": "pool",
+          "description": "Agent pool management"
+        },
+        {
+          "name": "runners",
+          "description": "Agent execution runners"
+        },
+        {
+          "name": "services",
+          "description": "Shared services"
+        },
+        {
+          "name": "tools",
+          "description": "Agent tools and capabilities"
+        },
+        {
+          "name": "ui",
+          "description": "UI components and handlers"
+        },
+        {
+          "name": "utils",
+          "description": "Utility functions"
+        }
+      ]
+    },
+    {
+      "name": "tests",
+      "description": "Test suite",
+      "subDirectories": [
+        {
+          "name": "unit",
+          "description": "Unit tests"
+        },
+        {
+          "name": "integration",
+          "description": "Integration tests"
+        },
+        {
+          "name": "e2e",
+          "description": "End-to-end tests"
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "description": "Documentation"
+    },
+    {
+      "name": "scripts",
+      "description": "Utility scripts"
+    }
+  ],
+  "keyFiles": [
+    {
+      "path": "pyproject.toml",
+      "description": "Project configuration and dependencies"
+    },
+    {
+      "path": "requirements.txt",
+      "description": "Python dependencies"
+    },
+    {
+      "path": "docker-compose.yml",
+      "description": "Docker compose configuration"
+    },
+    {
+      "path": "Dockerfile",
+      "description": "Docker build configuration"
+    },
+    {
+      "path": "Makefile",
+      "description": "Build and development tasks"
+    },
+    {
+      "path": ".env.example",
+      "description": "Example environment variables"
+    }
+  ],
+  "codeAnalysisNotes": [
+    "The project uses FastAPI for API endpoints",
+    "Chainlit provides the UI framework",
+    "Agent system follows a modular design pattern",
+    "Message processing uses asyncio for concurrency",
+    "Configuration is environment-based with dotenv support"
+  ]
+} 

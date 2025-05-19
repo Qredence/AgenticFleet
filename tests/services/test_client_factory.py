@@ -2,11 +2,8 @@
 Unit tests for the client factory service.
 """
 
-import os
-from unittest.mock import patch
 
 import pytest
-
 from agentic_fleet.services.client_factory import create_client, get_cached_client
 
 

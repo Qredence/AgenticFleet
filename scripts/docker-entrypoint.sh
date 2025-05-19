@@ -10,7 +10,7 @@ echo "📦 Pip version: $(pip --version)"
 # Check if we're in development mode
 if [ "$DEBUG" = "true" ]; then
     echo "🔧 Running in DEVELOPMENT mode"
-    
+
     # Install package in development mode if not already installed
     if ! pip show agentic-fleet &>/dev/null; then
         echo "📥 Installing package in development mode..."
@@ -18,7 +18,7 @@ if [ "$DEBUG" = "true" ]; then
     else
         echo "✅ Package already installed in development mode"
     fi
-    
+
     # Install development dependencies if needed
     if [ "$INSTALL_DEV_DEPS" = "true" ]; then
         echo "📥 Installing development dependencies..."

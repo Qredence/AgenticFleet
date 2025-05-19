@@ -1,0 +1,37 @@
+{
+  "editor": {
+    "formatOnSave": true,
+    "tabSize": 4,
+    "insertSpaces": true,
+    "wordWrap": "on",
+    "rulers": [100],
+    "fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+    "fontSize": 14
+  },
+  "python": {
+    "analysis": {
+      "autoSearchPaths": true,
+      "extraPaths": ["src"],
+      "diagnosticMode": "workspace",
+      "typeCheckingMode": "basic"
+    },
+    "linting": {
+      "enabled": true,
+      "pylintEnabled": true,
+      "flake8Enabled": true
+    },
+    "formatting": {
+      "provider": "black",
+      "blackPath": "${workspaceFolder}/.venv/bin/black"
+    }
+  },
+  "ai": {
+    "enableAutocomplete": true,
+    "enableChatView": true,
+    "preferredModel": "claude-3-sonnet-20240229"
+  },
+  "workbench": {
+    "colorTheme": "Default Dark+",
+    "iconTheme": "vs-seti"
+  }
+} 

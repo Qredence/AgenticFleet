@@ -13,12 +13,14 @@ agenticfleet start [OPTIONS]
 ```
 
 Options:
+
 - `--host TEXT` - Host to bind to (default: localhost)
 - `--port INTEGER` - Port to bind to (default: 8000)
 - `--debug` - Enable debug mode
 - `no-oauth` - Start without OAuth authentication
 
 Examples:
+
 ```bash
 # Start with default settings
 agenticfleet start
@@ -39,9 +41,11 @@ agenticfleet status [OPTIONS]
 ```
 
 Options:
+
 - `--json` - Output in JSON format
 
 Examples:
+
 ```bash
 # Check status
 agenticfleet status
@@ -59,10 +63,12 @@ agenticfleet stop [OPTIONS]
 ```
 
 Options:
+
 - `--force` - Force stop all instances
 - `--port INTEGER` - Stop specific instance on port
 
 Examples:
+
 ```bash
 # Stop all instances
 agenticfleet stop
@@ -82,12 +88,14 @@ agenticfleet config [OPTIONS] COMMAND [ARGS]...
 ```
 
 Subcommands:
+
 - `get` - Get configuration value
 - `set` - Set configuration value
 - `list` - List all configuration values
 - `reset` - Reset configuration to defaults
 
 Examples:
+
 ```bash
 # List all configuration
 agenticfleet config list
@@ -108,10 +116,12 @@ agenticfleet init [OPTIONS]
 ```
 
 Options:
+
 - `--force` - Overwrite existing configuration
 - `--template TEXT` - Use specific template
 
 Examples:
+
 ```bash
 # Initialize with defaults
 agenticfleet init
@@ -131,10 +141,12 @@ agenticfleet dev [OPTIONS]
 ```
 
 Options:
+
 - `--reload` - Enable auto-reload on code changes
 - `--debug` - Enable debug mode
 
 Examples:
+
 ```bash
 # Start in development mode with auto-reload
 agenticfleet dev --reload
@@ -152,10 +164,12 @@ agenticfleet test [OPTIONS]
 ```
 
 Options:
+
 - `--coverage` - Generate coverage report
 - `--verbose` - Verbose output
 
 Examples:
+
 ```bash
 # Run all tests
 agenticfleet test
@@ -175,11 +189,13 @@ agenticfleet clean [OPTIONS]
 ```
 
 Options:
+
 - `--cache` - Clean only cache files
 - `--all` - Clean all temporary files
 - `--dry-run` - Show what would be cleaned
 
 Examples:
+
 ```bash
 # Clean cache
 agenticfleet clean --cache
@@ -197,10 +213,12 @@ agenticfleet version [OPTIONS]
 ```
 
 Options:
+
 - `--json` - Output in JSON format
 - `--check` - Check for updates
 
 Examples:
+
 ```bash
 # Show version
 agenticfleet version
@@ -220,11 +238,13 @@ agenticfleet env [OPTIONS] COMMAND [ARGS]...
 ```
 
 Subcommands:
+
 - `list` - List environment variables
 - `set` - Set environment variable
 - `unset` - Unset environment variable
 
 Examples:
+
 ```bash
 # List all environment variables
 agenticfleet env list

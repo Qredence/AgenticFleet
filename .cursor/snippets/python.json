@@ -1,0 +1,65 @@
+{
+  "Agent Class Template": {
+    "prefix": "agent",
+    "body": [
+      "class ${1:Name}Agent(BaseAgent):",
+      "    \"\"\"",
+      "    ${2:Description of the agent}",
+      "    \"\"\"",
+      "",
+      "    def __init__(self, config: Dict[str, Any] = None):",
+      "        super().__init__(config or {})",
+      "        self.name = \"${1:Name}Agent\"",
+      "        ${0}",
+      "",
+      "    async def process_message(self, message: str, token: CancellationToken = None) -> Response:",
+      "        \"\"\"",
+      "        Process an incoming message and generate a response.",
+      "",
+      "        Args:",
+      "            message: The message content to process",
+      "            token: Optional cancellation token to cancel processing",
+      "",
+      "        Returns:",
+      "            Response: The agent's response to the message",
+      "        \"\"\"",
+      "        try:",
+      "            # Process message logic here",
+      "            return Response(content=\"Processed message: \" + message)",
+      "        except Exception as e:",
+      "            logger.error(\"Error processing message\", exc_info=True)",
+      "            return Response(content=f\"Error: {str(e)}\", error=True)"
+    ],
+    "description": "Create a new agent class"
+  },
+  "Chainlit Step": {
+    "prefix": "clstep",
+    "body": [
+      "async with cl.Step(name=\"${1:Step Name}\", type=\"${2:process}\", show_input=${3:True}) as step:",
+      "    step.input = ${4:input_data}",
+      "    # Process step logic here",
+      "    ${0}",
+      "    step.output = ${5:output_data}"
+    ],
+    "description": "Create a Chainlit step"
+  },
+  "FastAPI Endpoint": {
+    "prefix": "fapiendpoint",
+    "body": [
+      "@router.${1:get}(\"/${2:path}\")",
+      "async def ${3:function_name}(${4:parameters}) -> ${5:ResponseModel}:",
+      "    \"\"\"",
+      "    ${6:Endpoint description}",
+      "    \"\"\"",
+      "    try:",
+      "        ${0}",
+      "        return ${7:response}",
+      "    except Exception as e:",
+      "        raise HTTPException(",
+      "            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,",
+      "            detail=f\"Error: {str(e)}\"",
+      "        )"
+    ],
+    "description": "Create a FastAPI endpoint"
+  }
+} 

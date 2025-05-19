@@ -1,0 +1,118 @@
+[MASTER]
+# Use multiple processes to speed up Pylint
+jobs=4
+
+# Add files or directories to the blacklist
+ignore=.git,__pycache__,.venv,.pytest_cache,.chainlit,.files
+
+# Python code to execute before checking
+init-hook='import sys; sys.path.append("src")'
+
+[MESSAGES CONTROL]
+# Only show warnings with the listed confidence levels
+confidence=HIGH,CONTROL_FLOW,INFERENCE,INFERENCE_FAILURE,UNDEFINED
+
+# Disable specific checks
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    line-too-long,  # Handled by black
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-instance-attributes,
+    too-many-locals,
+    fixme,  # Allow TODOs
+    c-extension-no-member,
+    broad-except,  # Sometimes we want to catch all exceptions
+    no-member,  # False positives with dynamic attributes
+    arguments-differ,  # Methods can have different signatures in subclasses
+    unsubscriptable-object,  # Type hints sometimes cause false positives
+    no-name-in-module,  # False positives with dynamic imports
+    logging-fstring-interpolation,  # F-strings in logging are fine
+
+# Enable specific checks
+enable=
+    unused-import,
+    unused-variable,
+    unused-argument,
+    redefined-outer-name,
+    import-error,
+    undefined-variable,
+    undefined-loop-variable,
+    redefined-builtin,
+    bare-except,
+    syntax-error,
+    unidiomatic-typecheck,
+    consider-using-f-string,
+    use-dict-literal
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+# String used as indentation
+indent-string='    '
+
+# Number of spaces of indent required inside a hanging or continued line
+indent-after-paren=4
+
+# Expected format of line ending
+expected-line-ending-format=LF
+
+[VARIABLES]
+# Tells whether we should check for unused import in __init__ files
+init-import=no
+
+# A regular expression matching the name of dummy variables
+dummy-variables-rgx=_$|dummy|unused
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=6
+
+# Maximum number of locals for function / method body
+max-locals=15
+
+# Maximum number of return / yield for function / method body
+max-returns=6
+
+# Maximum number of branch for function / method body
+max-branches=12
+
+# Maximum number of statements in function / method body
+max-statements=50
+
+# Maximum number of attributes for a class
+max-attributes=15
+
+[TYPECHECK]
+# List of module names for which member attributes should not be checked
+ignored-modules=
+    numpy,
+    torch,
+    chainlit,
+    sqlalchemy,
+    pydantic
+
+# List of class names for which member attributes should not be checked
+ignored-classes=
+    Response,
+    SQLBase,
+    scoped_session
+
+[IMPORTS]
+# Force import order to recognize a module as part of the standard library
+known-standard-library=
+
+# Force import order to recognize a module as part of a third party library
+known-third-party=
+    chainlit,
+    fastapi,
+    pydantic,
+    pytest,
+    sqlalchemy,
+    torch
+
+# Analyze import fallback blocks
+analyse-fallback-blocks=yes 

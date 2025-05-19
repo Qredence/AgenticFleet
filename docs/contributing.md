@@ -11,17 +11,19 @@ We love your input! We want to make contributing to AgenticFleet as easy and tra
    ```
 3. Make your changes.
 4. Ensure your code follows our standards:
+
    ```bash
    # Format code
    black .
    isort .
-   
+
    # Run linters
    ruff check .
-   
+
    # Run tests
    pytest
    ```
+
 5. Submit a pull request!
 
 ## Code Style
@@ -48,12 +50,12 @@ Configuration for these tools is in `pyproject.toml`.
 ```markdown
 **What does this PR do?**
 
-* [ ] Fix a bug
-* [ ] Add a feature
-* [ ] Update dependencies
-* [ ] Refactor code
-* [ ] Tests
-* [ ] Other (please specify)
+- [ ] Fix a bug
+- [ ] Add a feature
+- [ ] Update dependencies
+- [ ] Refactor code
+- [ ] Tests
+- [ ] Other (please specify)
 
 **How should this be tested?**
 
@@ -65,27 +67,30 @@ Add relevant screenshots if applicable.
 
 **Checklist**
 
-* [ ] I have added an entry to the changelog
-* [ ] I have updated the documentation
-* [ ] I have tested this PR
-* [ ] I have added the correct labels
+- [ ] I have added an entry to the changelog
+- [ ] I have updated the documentation
+- [ ] I have tested this PR
+- [ ] I have added the correct labels
 ```
 
 ## Setting Up Development Environment
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/qredence/agenticfleet.git
    cd agenticfleet
    ```
 
 2. Create a virtual environment:
+
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
 3. Install dependencies:
+
    ```bash
    uv pip install -e ".[dev]"
    ```
@@ -116,6 +121,7 @@ pytest -v
 We use Mintify for documentation. After making changes:
 
 1. Build documentation:
+
    ```bash
    mintify build
    ```

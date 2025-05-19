@@ -7,7 +7,7 @@ within their constraints.
 """
 
 from datetime import datetime
-from typing import Dict, Literal, Optional
+from typing import Literal
 
 import dspy
 from dspy.teleprompt import PromptConfig
@@ -24,8 +24,8 @@ class AzureMiniCompiler(dspy.Compiler):
         model_name: SUPPORTED_MODELS,
         api_key: str,
         api_version: str = DEFAULT_API_VERSION,
-        deployment: Optional[str] = None,
-        base_url: Optional[str] = None,
+        deployment: str | None = None,
+        base_url: str | None = None,
         **kwargs,
     ):
         """
@@ -84,7 +84,7 @@ class AzureMiniCompiler(dspy.Compiler):
 
         return super().compile(program, config=config)
 
-    def get_config(self) -> Dict:
+    def get_config(self) -> dict:
         """Get the current compiler configuration."""
         return {
             "model_name": self.model_name,

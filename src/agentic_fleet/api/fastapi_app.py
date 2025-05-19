@@ -6,18 +6,18 @@ This module provides a FastAPI application that mounts the Chainlit app.
 import logging
 import os
 import subprocess
-import sys
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 # Initialize logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 # Create FastAPI app
@@ -63,10 +63,15 @@ async def health_check():
 async def get_models():
     """Get available models."""
     try:
-        from agentic_fleet.config.llm_config_manager import llm_config_manager
+        from agentic_fleet.config import config_manager
 
-        models = llm_config_manager.get_all_models()
-        return {"models": models}
+        # Load configurations
+        config_manager.load_all()
+
+        # Get Azure provider models
+        azure_models = config_manager.get_model_settings("azure")
+
+        return {"models": azure_models.get("models", {})}
     except Exception as e:
         logger.error(f"Error getting models: {e}")
         return JSONResponse(
@@ -79,10 +84,26 @@ async def get_models():
 async def get_profiles():
     """Get available profiles."""
     try:
-        from agentic_fleet.config.llm_config_manager import llm_config_manager
+        from agentic_fleet.config import config_manager
 
-        profiles = llm_config_manager.get_all_profiles()
-        return {"profiles": profiles}
+        # Load configurations
+        config_manager.load_all()
+
+        # Get team configurations as profiles
+        team_configs = {}
+
+        # Load known teams
+        known_teams = ["magentic_fleet_one", "default", "web_team", "code_team"]
+        for team_name in known_teams:
+            try:
+                team_config = config_manager.get_team_settings(team_name)
+                if team_config:
+                    team_configs[team_name] = team_config
+            except ValueError:
+                # Skip teams that don't exist
+                pass
+
+        return {"profiles": team_configs}
     except Exception as e:
         logger.error(f"Error getting profiles: {e}")
         return JSONResponse(

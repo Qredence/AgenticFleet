@@ -3,12 +3,8 @@
 from unittest.mock import AsyncMock, Mock
 
 import pytest
+from agentic_fleet.models.models import EnhancedAssistantAgent, create_agent_team
 from autogen_core.models import ChatCompletionClient
-
-from agentic_fleet.models.models import (
-    EnhancedAssistantAgent,
-    create_agent_team,
-)
 
 
 @pytest.fixture
@@ -22,7 +18,9 @@ def mock_model_client():
 @pytest.mark.asyncio
 async def test_enhanced_assistant_agent_initialization(mock_model_client):
     """Test initialization of EnhancedAssistantAgent."""
-    agent = EnhancedAssistantAgent(name="test_agent", system_message="test message", model_client=mock_model_client)
+    agent = EnhancedAssistantAgent(
+        name="test_agent", system_message="test message", model_client=mock_model_client
+    )
     assert agent is not None
     assert agent.name == "test_agent"
 
@@ -30,7 +28,9 @@ async def test_enhanced_assistant_agent_initialization(mock_model_client):
 @pytest.mark.asyncio
 async def test_enhanced_assistant_agent_process_message(mock_model_client):
     """Test message processing in EnhancedAssistantAgent."""
-    agent = EnhancedAssistantAgent(name="test_agent", system_message="test message", model_client=mock_model_client)
+    agent = EnhancedAssistantAgent(
+        name="test_agent", system_message="test message", model_client=mock_model_client
+    )
 
     mock_model_client.generate.return_value = "test response"
 
@@ -42,7 +42,9 @@ async def test_enhanced_assistant_agent_process_message(mock_model_client):
 @pytest.mark.asyncio
 async def test_enhanced_assistant_agent_error_handling(mock_model_client):
     """Test error handling in EnhancedAssistantAgent."""
-    agent = EnhancedAssistantAgent(name="test_agent", system_message="test message", model_client=mock_model_client)
+    agent = EnhancedAssistantAgent(
+        name="test_agent", system_message="test message", model_client=mock_model_client
+    )
 
     mock_model_client.generate.side_effect = Exception("test error")
 

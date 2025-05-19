@@ -9,7 +9,7 @@ import ast
 import re
 from contextlib import redirect_stdout
 from io import StringIO
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import black
 import isort
@@ -24,10 +24,10 @@ class CodeBlock(BaseModel):
 
     code: str
     language: str = "python"
-    dependencies: List[str] = []
+    dependencies: list[str] = []
     description: str = ""
     version: str = "1.0"
-    metadata: Dict[str, Any] = {}
+    metadata: dict[str, Any] = {}
 
 
 class ExecutionResult(BaseModel):
@@ -35,21 +35,21 @@ class ExecutionResult(BaseModel):
 
     success: bool
     output: str = ""
-    error: Optional[str] = None
+    error: str | None = None
     result: Any = None
     execution_time: float = 0.0
     memory_usage: float = 0.0
-    metadata: Dict[str, Any] = {}
+    metadata: dict[str, Any] = {}
 
 
 class CodeValidationResult(BaseModel):
     """Represents the result of code validation."""
 
     valid: bool
-    errors: List[str] = []
-    warnings: List[str] = []
-    style_issues: List[str] = []
-    security_issues: List[str] = []
+    errors: list[str] = []
+    warnings: list[str] = []
+    style_issues: list[str] = []
+    security_issues: list[str] = []
 
 
 class CodeExecutionTool:
@@ -62,7 +62,7 @@ class CodeExecutionTool:
         self,
         max_execution_time: int = 30,
         memory_limit_mb: int = 1024,
-        allowed_modules: Optional[List[str]] = None,
+        allowed_modules: list[str] | None = None,
     ) -> None:
         """
         Initialize the Code Execution Tool.
@@ -81,10 +81,10 @@ class CodeExecutionTool:
             "statsmodels",
             "sklearn",
         ]
-        self.execution_history: List[Dict[str, Any]] = []
+        self.execution_history: list[dict[str, Any]] = []
 
     async def execute_code(
-        self, code_block: Union[str, CodeBlock], context: Optional[Dict[str, Any]] = None
+        self, code_block: str | CodeBlock, context: dict[str, Any] | None = None
     ) -> ExecutionResult:
         """
         Execute a code block with safety checks and resource limits.
@@ -102,7 +102,9 @@ class CodeExecutionTool:
         # Validate code before execution
         validation = await self.validate_code(code_block)
         if not validation.valid:
-            return ExecutionResult(success=False, error="Code validation failed: " + "; ".join(validation.errors))
+            return ExecutionResult(
+                success=False, error="Code validation failed: " + "; ".join(validation.errors)
+            )
 
         # Prepare execution environment
         globals_dict = {"__builtins__": __builtins__, "np": np, "pd": pd}
@@ -130,7 +132,9 @@ class CodeExecutionTool:
             )
 
         except Exception as e:
-            execution_result = ExecutionResult(success=False, error=str(e), output=output_buffer.getvalue())
+            execution_result = ExecutionResult(
+                success=False, error=str(e), output=output_buffer.getvalue()
+            )
 
         # Record execution in history
         self.execution_history.append(
@@ -143,7 +147,7 @@ class CodeExecutionTool:
 
         return execution_result
 
-    async def validate_code(self, code_block: Union[str, CodeBlock]) -> CodeValidationResult:
+    async def validate_code(self, code_block: str | CodeBlock) -> CodeValidationResult:
         """
         Validate code for syntax, style, and security issues.
 
@@ -169,7 +173,9 @@ class CodeExecutionTool:
 
             if self._has_dangerous_operations(code_block.code):
                 validation_result.valid = False
-                validation_result.security_issues.append("Potentially dangerous operations detected")
+                validation_result.security_issues.append(
+                    "Potentially dangerous operations detected"
+                )
 
             # Style checks
             style_issues = []
@@ -203,7 +209,7 @@ class CodeExecutionTool:
 
         return validation_result
 
-    def format_code(self, code_block: Union[str, CodeBlock]) -> str:
+    def format_code(self, code_block: str | CodeBlock) -> str:
         """
         Format code according to style guidelines.
 
@@ -229,7 +235,7 @@ class CodeExecutionTool:
         except Exception:
             return code  # Return original if formatting fails
 
-    def get_execution_history(self, limit: int = 10) -> List[Dict[str, Any]]:
+    def get_execution_history(self, limit: int = 10) -> list[dict[str, Any]]:
         """
         Get the history of code executions.
 

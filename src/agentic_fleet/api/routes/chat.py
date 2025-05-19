@@ -3,11 +3,9 @@ Routes for chat functionality.
 """
 
 import json
-from datetime import datetime
-from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 
 from agentic_fleet.api.dependencies.services import get_chat_service
 from agentic_fleet.schemas.message import Message as ChatMessage
@@ -19,10 +17,10 @@ from agentic_fleet.services.chat_service import ChatService
 router = APIRouter()
 
 
-@router.get("/messages", response_model=Dict[str, List[ChatMessage]])
+@router.get("/messages", response_model=dict[str, list[ChatMessage]])
 async def list_messages(
     session_id: str, chat_service: ChatService = Depends(get_chat_service)
-) -> Dict[str, List[ChatMessage]]:
+) -> dict[str, list[ChatMessage]]:
     """
     List all chat messages for a session.
 
@@ -50,7 +48,9 @@ async def create_message(
 
 
 @router.get("/messages/{message_id}", response_model=ChatMessage)
-async def get_message(message_id: str, chat_service: ChatService = Depends(get_chat_service)) -> ChatMessage:
+async def get_message(
+    message_id: str, chat_service: ChatService = Depends(get_chat_service)
+) -> ChatMessage:
     """
     Get a specific chat message.
     """
@@ -67,7 +67,9 @@ async def get_message(message_id: str, chat_service: ChatService = Depends(get_c
 
 @router.put("/messages/{message_id}", response_model=ChatMessage)
 async def update_message(
-    message_id: str, message: ChatMessageUpdate, chat_service: ChatService = Depends(get_chat_service)
+    message_id: str,
+    message: ChatMessageUpdate,
+    chat_service: ChatService = Depends(get_chat_service),
 ) -> ChatMessage:
     """
     Update a chat message.
@@ -83,8 +85,10 @@ async def update_message(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.delete("/messages/{message_id}", response_model=Dict[str, bool])
-async def delete_message(message_id: str, chat_service: ChatService = Depends(get_chat_service)) -> Dict[str, bool]:
+@router.delete("/messages/{message_id}", response_model=dict[str, bool])
+async def delete_message(
+    message_id: str, chat_service: ChatService = Depends(get_chat_service)
+) -> dict[str, bool]:
     """
     Delete a chat message.
     """
@@ -100,7 +104,9 @@ async def delete_message(message_id: str, chat_service: ChatService = Depends(ge
 
 
 @router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, chat_service: ChatService = Depends(get_chat_service)):
+async def websocket_endpoint(
+    websocket: WebSocket, chat_service: ChatService = Depends(get_chat_service)
+):
     """
     WebSocket endpoint for real-time chat.
     """

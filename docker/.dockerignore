@@ -54,3 +54,8 @@ notebooks/
 .dockerignore
 docker-compose*.yml
 docker-compose*.yaml
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

@@ -51,8 +51,8 @@ class SettingsManager:
                 Select(
                     id="model",
                     label="Model",
-                    values=["o4-mini", "o3-mini"],
-                    initial_value="o4-mini",
+                    values=["gpt-4.1-nano", "gpt-4.1-mini"],
+                    initial_value="gpt-4.1-nano",
                 ),
                 Slider(
                     id="temperature",
@@ -117,7 +117,7 @@ async def chat_profiles() -> list[cl.ChatProfile]:
             name="Magentic Fleet Fast",
             markdown_description=(
                 "**Speed-Optimized Workflow**\n\n"
-                "- Model: GPT-4o Mini (128k context)\n"
+                "- Model: GPT-4.1 Nano (128k context)\n"
                 "- Response Time: <2s average\n"
                 "- Best for: Simple queries & quick tasks"
             ),
@@ -127,7 +127,7 @@ async def chat_profiles() -> list[cl.ChatProfile]:
             name="Magentic Fleet Standard",
             markdown_description=(
                 "**Advanced Reasoning Suite**\n\n"
-                "- Model: O3 Mini (128k context)\n"
+                "- Model: GPT-4.1 Mini (128k context)\n"
                 "- Multi-agent collaboration\n"
                 "- Complex problem solving"
             ),

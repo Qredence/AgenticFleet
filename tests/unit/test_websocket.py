@@ -22,7 +22,11 @@ async def test_websocket():
         print(f"Received settings: {settings_data}")
 
         # Send a test message
-        test_message = {"type": "TextMessage", "content": "Hello, this is a test message!", "source": "user"}
+        test_message = {
+            "type": "TextMessage",
+            "content": "Hello, this is a test message!",
+            "source": "user",
+        }
         print(f"Sending message: {test_message}")
         await websocket.send(json.dumps(test_message))
 

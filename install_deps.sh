@@ -18,4 +18,4 @@ pip install -e ".[dev]"
 
 echo "Dependencies installed successfully!"
 echo "You can now run the application with: python -m agentic_fleet.main"
-echo "Or use the entry point: agentic-fleet" 
+echo "Or use the entry point: agentic-fleet"

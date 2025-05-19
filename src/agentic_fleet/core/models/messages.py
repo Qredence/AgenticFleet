@@ -5,7 +5,6 @@ This module provides custom message types that extend the base message types
 from autogen_core.models with additional fields required by the system.
 """
 
-from typing import Optional
 
 from autogen_core.models import SystemMessage as BaseSystemMessage
 

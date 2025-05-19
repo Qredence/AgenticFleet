@@ -3,6 +3,7 @@ MCP Factory module.
 Provides a function to retrieve available MCP configurations.
 """
 
+
 def get_available_mcp_configs():
     """
     Returns a dictionary of available MCP configurations, keyed by MCP ID.

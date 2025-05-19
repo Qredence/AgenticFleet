@@ -5,7 +5,6 @@ This module provides specialized DSPy modules for reasoning tasks,
 optimized for Azure OpenAI mini models.
 """
 
-from typing import List, Optional
 
 import dspy
 from dspy import InputField, OutputField
@@ -35,12 +34,12 @@ class ChainOfThoughtModule(dspy.Module):
             f"""
             Context: {context}
             Question: {question}
-            
+
             Let's approach this step by step:
             1) First, let's identify the key elements...
             2) Then, analyze their relationships...
             3) Finally, draw a logical conclusion...
-            
+
             Reasoning steps should be clear and concise.
             """
         )
@@ -57,7 +56,7 @@ class ReflectionModule(dspy.Module):
     insights = OutputField(desc="Key insights from reflection")
     improvements = OutputField(desc="Suggested improvements")
 
-    def forward(self, reasoning: str, feedback: Optional[str] = None) -> dspy.Prediction:
+    def forward(self, reasoning: str, feedback: str | None = None) -> dspy.Prediction:
         """
         Generate reflective analysis of previous reasoning.
 
@@ -78,12 +77,12 @@ class ReflectionModule(dspy.Module):
         prompt = dspy.ChainOfThought(
             prompt_text
             + """
-            
+
             Let's reflect on this reasoning:
             1) What are the key insights?
             2) What could be improved?
             3) How can we enhance the logic?
-            
+
             Provide specific, actionable insights.
             """
         )

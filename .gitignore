@@ -327,3 +327,8 @@ yarn-error.log*
 .qodo
 .cursor/rules.md
 docs/tasks.md
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

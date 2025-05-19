@@ -1,0 +1,29 @@
+[
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+f",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+a",
+    "command": "cursor.showAIChat",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "alt+s",
+    "command": "cursor.showStructuredAssistant",
+    "when": "editorTextFocus"
+  }
+] 

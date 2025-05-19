@@ -1,0 +1,209 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Implementation Mode Visual Map
+
+This visual map outlines the systematic approach to implementing features and changes in the AgenticFleet project.
+
+## Implementation Workflow Overview
+
+<mermaid>
+graph TD
+    Start["🚀 START IMPLEMENTATION MODE"] --> ReadPlan["📚 Read Implementation Plan"]
+    ReadPlan --> CheckReqs["✓ Verify Requirements<br>& Dependencies"]
+    
+    CheckReqs --> GetCode["👁️ Review Existing Code"]
+    GetCode --> CheckLevel{"🔍 Determine<br>Complexity Level"}
+    
+    %% Level 1 Implementation
+    CheckLevel -->|"Level 1<br>Quick Fix"| L1["🔧 Level 1:<br>Simple Fix Process"]
+    L1 --> L1Plan["📋 Review<br>Implementation Plan"]
+    L1Plan --> L1Fix["⚒️ Implement<br>Direct Fix"]
+    L1Fix --> L1Test["✅ Test<br>Fix"]
+    L1Test --> L1Doc["📝 Update<br>Documentation"]
+    
+    %% Level 2 Implementation
+    CheckLevel -->|"Level 2<br>Feature Enhancement"| L2["🛠️ Level 2:<br>Feature Enhancement Process"]
+    L2 --> L2Plan["📋 Review<br>Implementation Plan"]
+    L2Plan --> L2Impl["⚒️ Step-by-Step<br>Implementation"]
+    L2Impl --> L2Test["✅ Component<br>Testing"]
+    L2Test --> L2Doc["📝 Update<br>Documentation"]
+    
+    %% Level 3 Implementation
+    CheckLevel -->|"Level 3<br>Component Development"| L3["🏗️ Level 3:<br>Component Dev Process"]
+    L3 --> L3Plan["📋 Review<br>Detailed Plan"]
+    L3Plan --> L3Phase1["⚒️ Phase 1<br>Core Implementation"]
+    L3Phase1 --> L3Test1["✅ Test<br>Phase 1"]
+    L3Test1 --> L3Phase2["⚒️ Phase 2<br>Supporting Features"]
+    L3Phase2 --> L3Test2["✅ Test<br>Phase 2"]
+    L3Test2 --> L3Phase3["⚒️ Phase 3<br>Integrations"]
+    L3Phase3 --> L3Test3["✅ Test<br>Phase 3"]
+    L3Test3 --> L3Doc["📝 Component<br>Documentation"]
+    
+    %% Level 4 Implementation
+    CheckLevel -->|"Level 4<br>System Architecture"| L4["🏢 Level 4:<br>System Architecture Process"]
+    L4 --> L4Plan["📋 Review<br>Comprehensive Plan"]
+    L4Plan --> L4Scope["🔍 Confirm Scope<br>& Requirements"]
+    L4Scope --> L4Phase1["⚒️ Phase 1<br>Core Architecture"]
+    L4Phase1 --> L4Test1["✅ Test<br>Phase 1"]
+    L4Test1 --> L4Phase2["⚒️ Phase 2<br>Key Components"]
+    L4Phase2 --> L4Test2["✅ Test<br>Phase 2"]
+    L4Test2 --> L4Phase3["⚒️ Phase 3<br>Secondary Components"]
+    L4Phase3 --> L4Test3["✅ Test<br>Phase 3"]
+    L4Test3 --> L4Phase4["⚒️ Phase 4<br>Final Integrations"]
+    L4Phase4 --> L4Test4["✅ Test<br>Phase 4"]
+    L4Test4 --> L4Doc["📝 Comprehensive<br>Documentation"]
+    
+    %% Final Steps for All Levels
+    L1Doc & L2Doc & L3Doc & L4Doc --> FinalTest["🧪 Final Integration<br>Tests"]
+    FinalTest --> UpdateTasks["📝 Update Tasks<br>& Status"]
+    UpdateTasks --> Commit["💾 Commit<br>Changes"]
+    Commit --> NextMode["⏭️ TRANSITION TO<br>REFLECTION MODE"]
+    
+    %% Styling
+    style Start fill:#4da6ff,stroke:#0066cc,color:white
+    style CheckLevel fill:#d94dbb,stroke:#a3378a,color:white
+    style L1 fill:#4dbb5f,stroke:#36873f,color:white
+    style L2 fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3 fill:#ff5555,stroke:#cc0000,color:white
+    style L4 fill:#d971ff,stroke:#a33bc2,color:white
+    style FinalTest fill:#4dbbbb,stroke:#368787,color:white
+    style NextMode fill:#5fd94d,stroke:#3da336,color:white
+</mermaid>
+
+## Implementation Best Practices
+
+### Code Quality Focus
+
+- Follow the [Python Style Guide](/.cursor/rules/style_guide/python_style_guide.md)
+- Adhere to error handling patterns in [Error Handling Best Practices](/.cursor/rules/best_practices/error_handling.md)
+- Use proper async patterns from [Async Patterns](/.cursor/rules/best_practices/async_patterns.md)
+- Run tests frequently during implementation
+
+### Documentation During Implementation
+
+<mermaid>
+graph LR
+    Code["💻 Code<br>Implementation"] -->|"Document<br>as you go"| Inline["📝 Inline<br>Documentation"]
+    Code -->|"Update when<br>completed"| API["📘 API<br>Documentation"]
+    Code -->|"Capture key<br>decisions"| Decisions["🧠 Decision<br>Records"]
+    
+    Inline -->|"Supports"| Maintenance["🔧 Future<br>Maintenance"]
+    API -->|"Enables"| Usage["👥 User<br>Adoption"]
+    Decisions -->|"Preserves"| Context["🧩 Implementation<br>Context"]
+    
+    style Code fill:#ff9966,stroke:#ff6600
+    style Inline fill:#99cc99,stroke:#66aa66
+    style API fill:#9999ff,stroke:#6666cc
+    style Decisions fill:#ff99cc,stroke:#ff66aa
+    style Maintenance fill:#99ccff,stroke:#66aaff
+    style Usage fill:#cc99ff,stroke:#aa66ff
+    style Context fill:#ffcc99,stroke:#ffaa66
+</mermaid>
+
+## Testing Strategy By Complexity Level
+
+<mermaid>
+graph TD
+    L1T["Level 1<br>Testing"] -->|"Requires"| UnitTests1["Unit Tests"]
+    L1T -->|"May require"| ManualTests1["Manual Verification"]
+    
+    L2T["Level 2<br>Testing"] -->|"Requires"| UnitTests2["Unit Tests"]
+    L2T -->|"Requires"| IntegrationTests2["Integration Tests"]
+    L2T -->|"May require"| ManualTests2["Manual Verification"]
+    
+    L3T["Level 3<br>Testing"] -->|"Requires"| UnitTests3["Unit Tests"]
+    L3T -->|"Requires"| IntegrationTests3["Integration Tests"]
+    L3T -->|"Requires"| ComponentTests3["Component Tests"]
+    L3T -->|"Consider"| PerformanceTests3["Performance Tests"]
+    
+    L4T["Level 4<br>Testing"] -->|"Requires"| UnitTests4["Unit Tests"]
+    L4T -->|"Requires"| IntegrationTests4["Integration Tests"]
+    L4T -->|"Requires"| ComponentTests4["Component Tests"]
+    L4T -->|"Requires"| E2ETests4["End-to-End Tests"]
+    L4T -->|"Requires"| PerformanceTests4["Performance Tests"]
+    
+    style L1T fill:#4dbb5f,stroke:#36873f,color:white
+    style L2T fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3T fill:#ff5555,stroke:#cc0000,color:white
+    style L4T fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Phased Implementation Approach
+
+For complex Level 3 and 4 tasks, follow a phased implementation:
+
+### Phase 1: Core Implementation
+- Implement foundational components
+- Build essential interfaces
+- Establish primary data models
+- Create main service structure
+
+### Phase 2: Supporting Features
+- Implement secondary functionality
+- Build utility components
+- Create supporting services
+- Develop extension points
+
+### Phase 3: Integrations
+- Connect with other components
+- Implement API endpoints
+- Build UI integrations
+- Create necessary adapters
+
+### Phase 4: Refinement (Level 4 only)
+- Optimize performance
+- Enhance error handling
+- Improve usability
+- Complete end-to-end testing
+
+## Implementation Progress Tracking
+
+<mermaid>
+graph TD
+    Start([Start]) --> PlanReview["1. Review Plan<br><small>Ensure clear understanding</small>"]
+    PlanReview --> Scaffolding["2. Create Scaffolding<br><small>Basic structure</small>"]
+    Scaffolding --> CoreImpl["3. Core Implementation<br><small>Essential functionality</small>"]
+    CoreImpl --> FirstTest["4. Initial Testing<br><small>Verify core features</small>"]
+    FirstTest --> Refinement["5. Refinement<br><small>Improve and extend</small>"]
+    Refinement --> FinalTest["6. Complete Testing<br><small>Comprehensive verification</small>"]
+    FinalTest --> DocuUpdate["7. Update Documentation<br><small>Ensure completeness</small>"]
+    DocuUpdate --> Completion([Complete])
+    
+    style Start fill:#99ccff,stroke:#4d88ff
+    style Completion fill:#99ffcc,stroke:#4dffaa
+    style PlanReview fill:#ffe6cc,stroke:#ffc266
+    style Scaffolding fill:#ffe6cc,stroke:#ffc266
+    style CoreImpl fill:#ffe6cc,stroke:#ffc266
+    style FirstTest fill:#ffe6cc,stroke:#ffc266
+    style Refinement fill:#ffe6cc,stroke:#ffc266
+    style FinalTest fill:#ffe6cc,stroke:#ffc266
+    style DocuUpdate fill:#ffe6cc,stroke:#ffc266
+</mermaid>
+
+## Implementation Checklist
+
+- [ ] Review implementation plan thoroughly
+- [ ] Understand existing code structure
+- [ ] Verify all dependencies are available
+- [ ] Create scaffolding/structure first
+- [ ] Follow phased implementation approach
+- [ ] Write tests alongside implementation
+- [ ] Document code as you write it
+- [ ] Check for edge cases
+- [ ] Ensure error handling is robust
+- [ ] Run linters and formatters
+- [ ] Update relevant documentation
+- [ ] Perform final testing
+- [ ] Update task status
+
+## Transition to Reflection Mode
+
+Once implementation is complete:
+1. Ensure all tests pass
+2. Verify all documentation is updated
+3. Address any TODO items
+4. Update implementation status in tasks.md
+5. Transition to Reflection Mode for review and refinement

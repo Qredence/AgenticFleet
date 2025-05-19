@@ -1,0 +1,250 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Creative Mode Visual Map
+
+This visual map outlines the approach to creative problem-solving and design exploration in the AgenticFleet project.
+
+## Creative Mode Workflow Overview
+
+<mermaid>
+graph TD
+    Start["🚀 START CREATIVE MODE"] --> ReadPlan["📚 Review Planning<br>Documents"]
+    ReadPlan --> CheckLevel{"🔍 Consider<br>Complexity Level"}
+    
+    %% Level 1 Creative Process
+    CheckLevel -->|"Level 1<br>Quick Fix"| L1["🔧 Level 1:<br>Simple Creative Process"]
+    L1 --> L1Solution["💡 Refine<br>Solution Approach"]
+    L1Solution --> L1Check["✓ Verify<br>Solution Viability"]
+    
+    %% Level 2 Creative Process
+    CheckLevel -->|"Level 2<br>Feature Enhancement"| L2["🛠️ Level 2:<br>Feature Design Process"]
+    L2 --> L2Options["💡 Explore<br>Design Options"]
+    L2Options --> L2Evaluate["⚖️ Evaluate<br>Alternatives"]
+    L2Evaluate --> L2Detail["✏️ Detail<br>Chosen Approach"]
+    L2Detail --> L2Validate["✓ Validate<br>Design"]
+    
+    %% Level 3 Creative Process
+    CheckLevel -->|"Level 3<br>Component Development"| L3["🏗️ Level 3:<br>Component Design Process"]
+    L3 --> L3Options["💡 Explore<br>Architecture Options"]
+    L3Options --> L3Evaluate["⚖️ Evaluate<br>Alternative Approaches"]
+    L3Evaluate --> L3Detail["✏️ Detail<br>Component Design"]
+    L3Detail --> L3Interface["🔌 Refine<br>Interface Design"]
+    L3Interface --> L3Validate["✓ Validate<br>Design Approach"]
+    
+    %% Level 4 Creative Process
+    CheckLevel -->|"Level 4<br>System Architecture"| L4["🏢 Level 4:<br>System Design Process"]
+    L4 --> L4Options["💡 Explore<br>Architecture Alternatives"]
+    L4Options --> L4Evaluate["⚖️ Conduct<br>Trade-off Analysis"]
+    L4Evaluate --> L4Detail["✏️ Detail<br>System Design"]
+    L4Detail --> L4Interface["🔌 Refine<br>System Interfaces"]
+    L4Interface --> L4Patterns["🧩 Apply<br>Design Patterns"]
+    L4Patterns --> L4Validate["✓ Validate<br>Architecture"]
+    
+    %% Final Steps for All Levels
+    L1Check & L2Validate & L3Validate & L4Validate --> DocDecisions["📝 Document<br>Design Decisions"]
+    DocDecisions --> PrepProto["🧪 Consider<br>Prototyping"]
+    PrepProto --> RefineApproach["🔄 Refine<br>Implementation Approach"]
+    RefineApproach --> FinalizePlan["📋 Finalize<br>Technical Approach"]
+    FinalizePlan --> NextMode["⏭️ TRANSITION TO<br>IMPLEMENTATION MODE"]
+    
+    %% Styling
+    style Start fill:#4da6ff,stroke:#0066cc,color:white
+    style CheckLevel fill:#d94dbb,stroke:#a3378a,color:white
+    style L1 fill:#4dbb5f,stroke:#36873f,color:white
+    style L2 fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3 fill:#ff5555,stroke:#cc0000,color:white
+    style L4 fill:#d971ff,stroke:#a33bc2,color:white
+    style NextMode fill:#5fd94d,stroke:#3da336,color:white
+</mermaid>
+
+## Design Options Exploration
+
+<mermaid>
+graph TD
+    Explore["💡 Design Options<br>Exploration"] --> Technical["🔧 Technical<br>Approaches"]
+    Explore --> Patterns["🧩 Design<br>Patterns"]
+    Explore --> Frameworks["🏗️ Framework<br>Options"]
+    Explore --> Architecture["🏛️ Architecture<br>Styles"]
+    
+    Technical --> TA1["Language Features"]
+    Technical --> TA2["Libraries & Tools"]
+    Technical --> TA3["Algorithms"]
+    
+    Patterns --> PA1["Structural Patterns"]
+    Patterns --> PA2["Behavioral Patterns"]
+    Patterns --> PA3["Concurrency Patterns"]
+    
+    Frameworks --> FA1["Existing Framework Components"]
+    Frameworks --> FA2["Framework Extensions"]
+    
+    Architecture --> AA1["Layered Architecture"]
+    Architecture --> AA2["Microservices"]
+    Architecture --> AA3["Event-Driven"]
+    Architecture --> AA4["Domain-Driven"]
+    
+    style Explore fill:#4da6ff,stroke:#0066cc,color:white
+    style Technical fill:#4dbb5f,stroke:#36873f,color:white
+    style Patterns fill:#ffa64d,stroke:#cc7a30,color:white
+    style Frameworks fill:#ff5555,stroke:#cc0000,color:white
+    style Architecture fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Design Decision Evaluation Framework
+
+When evaluating alternative approaches, consider these dimensions:
+
+<mermaid>
+graph TD
+    Evaluation["⚖️ Design<br>Evaluation"] --> Functionality["✅ Functionality"]
+    Evaluation --> Performance["⚡ Performance"]
+    Evaluation --> Maintainability["🔧 Maintainability"]
+    Evaluation --> Complexity["🧩 Complexity"]
+    Evaluation --> Compatibility["🔄 Compatibility"]
+    
+    Functionality --> F1["Requirements Coverage"]
+    Functionality --> F2["Feature Completeness"]
+    
+    Performance --> P1["Speed"]
+    Performance --> P2["Resource Usage"]
+    Performance --> P3["Scalability"]
+    
+    Maintainability --> M1["Code Readability"]
+    Maintainability --> M2["Extensibility"]
+    Maintainability --> M3["Testability"]
+    
+    Complexity --> C1["Implementation Difficulty"]
+    Complexity --> C2["Learning Curve"]
+    
+    Compatibility --> CP1["Existing System Integration"]
+    Compatibility --> CP2["Technology Stack Alignment"]
+    
+    style Evaluation fill:#4da6ff,stroke:#0066cc,color:white
+    style Functionality fill:#4dbb5f,stroke:#36873f,color:white
+    style Performance fill:#ffa64d,stroke:#cc7a30,color:white
+    style Maintainability fill:#ff5555,stroke:#cc0000,color:white
+    style Complexity fill:#d971ff,stroke:#a33bc2,color:white
+    style Compatibility fill:#4dbbbb,stroke:#368787,color:white
+</mermaid>
+
+## Design Patterns Applicable to AgenticFleet
+
+<mermaid>
+graph TD
+    Patterns["🧩 Applicable<br>Design Patterns"] --> Agent["Agent<br>Patterns"]
+    Patterns --> Messaging["Messaging<br>Patterns"]
+    Patterns --> Workflow["Workflow<br>Patterns"]
+    Patterns --> Interface["Interface<br>Patterns"]
+    
+    Agent --> AP1["Factory Pattern"]
+    Agent --> AP2["Strategy Pattern"]
+    Agent --> AP3["Template Method"]
+    
+    Messaging --> MP1["Observer Pattern"]
+    Messaging --> MP2["Mediator Pattern"]
+    Messaging --> MP3["Chain of Responsibility"]
+    
+    Workflow --> WP1["Pipeline Pattern"]
+    Workflow --> WP2["State Pattern"]
+    Workflow --> WP3["Command Pattern"]
+    
+    Interface --> IP1["Facade Pattern"]
+    Interface --> IP2["Adapter Pattern"]
+    Interface --> IP3["Decorator Pattern"]
+    
+    style Patterns fill:#4da6ff,stroke:#0066cc,color:white
+    style Agent fill:#4dbb5f,stroke:#36873f,color:white
+    style Messaging fill:#ffa64d,stroke:#cc7a30,color:white
+    style Workflow fill:#ff5555,stroke:#cc0000,color:white
+    style Interface fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Prototype Considerations
+
+For complex features, consider these prototyping approaches:
+
+<mermaid>
+graph LR
+    Prototype["🧪 Prototyping<br>Approaches"] --> P1["Proof of Concept"]
+    Prototype --> P2["Technical Spike"]
+    Prototype --> P3["UI Mockup"]
+    Prototype --> P4["API Simulation"]
+    
+    P1 -->|"For"| PC1["Core Functionality"]
+    P2 -->|"For"| PC2["Technical Risks"]
+    P3 -->|"For"| PC3["User Interactions"]
+    P4 -->|"For"| PC4["Integration Testing"]
+    
+    style Prototype fill:#4da6ff,stroke:#0066cc,color:white
+    style P1 fill:#99cc99,stroke:#66aa66
+    style P2 fill:#9999ff,stroke:#6666cc
+    style P3 fill:#ff99cc,stroke:#ff66aa
+    style P4 fill:#ffcc99,stroke:#ffaa66
+</mermaid>
+
+## Creative Deliverables by Complexity Level
+
+### Level 1 (Quick Fix)
+- Solution approach details
+- Implementation considerations
+
+### Level 2 (Feature Enhancement)
+- Design alternatives evaluation
+- Selected approach with justification
+- Visual diagrams when helpful
+- Implementation considerations
+- Interface adjustments
+
+### Level 3 (Component Development)
+- Architecture alternatives
+- Detailed component design
+- Interface specifications
+- Design pattern applications
+- Prototype results (if applicable)
+- Implementation guidelines
+
+### Level 4 (System Architecture)
+- Architecture alternatives with trade-off analysis
+- Detailed system design
+- Component interaction diagrams
+- Interface specifications
+- Applied design patterns
+- Security and performance designs
+- Prototype results
+- Implementation guidelines
+
+## Creative Decision Documentation
+
+For significant design decisions, document:
+
+1. **Context**: Background and problem description
+2. **Options Considered**: Different approaches explored
+3. **Decision**: The chosen approach
+4. **Rationale**: Why this approach was selected
+5. **Consequences**: Benefits and trade-offs of the decision
+6. **Implementation Guidelines**: How to implement the design
+
+## Creative Checklist
+
+- [ ] Review the planning documents thoroughly
+- [ ] Explore multiple design options
+- [ ] Evaluate alternatives systematically
+- [ ] Detail the selected approach
+- [ ] Consider applicable design patterns
+- [ ] Prototype complex aspects if needed
+- [ ] Document design decisions and rationale
+- [ ] Provide implementation guidelines
+- [ ] Validate design against requirements
+- [ ] Refine implementation approach
+- [ ] Update technical documentation
+
+## Transition to Implementation Mode
+
+Once creative design is complete:
+1. Ensure design decisions are well-documented
+2. Verify the technical approach is viable
+3. Check that the design addresses all requirements
+4. Prepare detailed implementation guidelines
+5. Transition to Implementation Mode to execute the design

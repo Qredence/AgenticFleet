@@ -2,7 +2,7 @@
 API-specific exceptions for Agentic Fleet.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from agentic_fleet.exceptions.base import AgenticFleetAPIError
 
@@ -21,7 +21,7 @@ class ValidationError(AgenticFleetAPIError):
     Exception raised when request validation fails.
     """
 
-    def __init__(self, message: str = "Validation error", errors: Optional[Dict[str, Any]] = None):
+    def __init__(self, message: str = "Validation error", errors: dict[str, Any] | None = None):
         self.errors = errors or {}
         super().__init__(message=message, status_code=422)
 
@@ -49,6 +49,6 @@ class RateLimitError(AgenticFleetAPIError):
     Exception raised when a rate limit is exceeded.
     """
 
-    def __init__(self, message: str = "Rate limit exceeded", retry_after: Optional[int] = None):
+    def __init__(self, message: str = "Rate limit exceeded", retry_after: int | None = None):
         self.retry_after = retry_after
         super().__init__(message=message, status_code=429)

@@ -1,16 +1,11 @@
 """Chainlit UI event handlers."""
 
-import json
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 
 import chainlit as cl
-from autogen_agentchat.base import TaskResult
-from autogen_agentchat.messages import TextMessage
-from chainlit import user_session
 
 from agentic_fleet.apps.chainlit_ui.agent_registry.default_agents import (
-    initialize_agent_team,
     initialize_default_agents,
 )
 from agentic_fleet.core.application.manager import ApplicationManager
@@ -20,7 +15,9 @@ async def initialize_chat() -> None:
     """Initialize chat session with configured agents and settings."""
     try:
         # Get profile selection
-        profile = await cl.AskForOption(content="Choose a chat profile:", options=chat_profiles(), timeout=180)
+        profile = await cl.AskForOption(
+            content="Choose a chat profile:", options=chat_profiles(), timeout=180
+        )
 
         # Store profile in session
         await cl.user_session.set("chat_profile", profile)
@@ -67,7 +64,7 @@ async def process_message(message: cl.Message) -> None:
 
 
 async def handle_message(
-    message: cl.Message, team: Any, task_ledger: cl.TaskList, task_status: Dict[str, cl.Text]
+    message: cl.Message, team: Any, task_ledger: cl.TaskList, task_status: dict[str, cl.Text]
 ) -> None:
     """Handle chat message processing.
 

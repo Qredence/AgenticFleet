@@ -4,7 +4,6 @@ from enum import Enum
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from agentic_fleet.ui.task_manager import extract_and_add_plan_tasks, update_task_status
 
 
@@ -55,7 +54,9 @@ async def test_extract_plan_tasks(mock_user_session, mock_chainlit_elements, moc
 
 
 @pytest.mark.asyncio
-async def test_extract_plan_tasks_with_update(mock_user_session, mock_chainlit_elements, mock_chainlit_context):
+async def test_extract_plan_tasks_with_update(
+    mock_user_session, mock_chainlit_elements, mock_chainlit_context
+):
     """Test extracting tasks with the update flag set to True."""
     plan_text = "Updated plan with a single task"
 
@@ -101,7 +102,9 @@ async def test_update_task_status(mock_user_session, mock_chainlit_elements, moc
 
 
 @pytest.mark.asyncio
-async def test_update_task_status_nonexistent_task(mock_user_session, mock_chainlit_elements, mock_chainlit_context):
+async def test_update_task_status_nonexistent_task(
+    mock_user_session, mock_chainlit_elements, mock_chainlit_context
+):
     """Test updating a task that doesn't exist."""
     # Set up mock tasks in user session
     mock_user_session["plan_tasks"] = {}

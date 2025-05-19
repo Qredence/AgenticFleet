@@ -2,7 +2,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional
 
 from agentic_fleet.config.models import (
     get_agent_config,
@@ -111,12 +110,12 @@ class ConfigurationManager:
         self._agent_configs = {}
         self._fleet_configs = {}
 
-    def validate_environment(self) -> Optional[str]:
+    def validate_environment(self) -> str | None:
         """Validate environment configuration."""
         # Use the imported validate_env_vars function if available
-        if 'validate_env_vars' in globals():
+        if "validate_env_vars" in globals():
             return validate_env_vars()
-            
+
         # Fallback to the original implementation
         required_vars = [
             "AZURE_OPENAI_API_KEY",

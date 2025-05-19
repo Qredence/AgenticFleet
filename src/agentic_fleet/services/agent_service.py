@@ -4,11 +4,8 @@ Service for agent management.
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-from uuid import uuid4
 
 from fastapi import Depends
-from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -76,7 +73,7 @@ class AgentService:
             logger.error(f"Error creating agent: {str(e)}")
             raise
 
-    async def get_agent(self, agent_id: str) -> Optional[Agent]:
+    async def get_agent(self, agent_id: str) -> Agent | None:
         """
         Get an agent by ID.
 
@@ -112,7 +109,7 @@ class AgentService:
             logger.error(f"Error getting agent {agent_id}: {str(e)}")
             raise
 
-    async def update_agent(self, agent_id: str, agent: AgentUpdate) -> Optional[Agent]:
+    async def update_agent(self, agent_id: str, agent: AgentUpdate) -> Agent | None:
         """
         Update an existing agent.
 
@@ -201,7 +198,7 @@ class AgentService:
             logger.error(f"Error deleting agent {agent_id}: {str(e)}")
             raise
 
-    async def list_agents(self) -> List[Agent]:
+    async def list_agents(self) -> list[Agent]:
         """
         List all agents.
 

@@ -2,7 +2,6 @@ import unicodedata
 import uuid
 from io import BytesIO
 from pathlib import Path
-from typing import Dict, List, Optional
 
 import requests
 from autogen_core.code_executor import ImportFromModule
@@ -12,7 +11,7 @@ from PIL import Image, ImageDraw, ImageOps
 
 
 async def generate_pdf(
-    sections: List[Dict[str, Optional[str]]],
+    sections: list[dict[str, str | None]],
     output_file: str = "report.pdf",
     report_title: str = "PDF Report",
 ) -> str:
@@ -96,7 +95,9 @@ async def generate_pdf(
         content = section.get("content", "")
         image = section.get("image")
 
-        pdf.set_font("Arial", "B" if level in font_size else "", font_size.get(level, font_size["body"]))
+        pdf.set_font(
+            "Arial", "B" if level in font_size else "", font_size.get(level, font_size["body"])
+        )
         pdf.chapter_title(title)
 
         if content:

@@ -2,9 +2,9 @@
 
 AgenticFleet currently leverages the [Microsoft Autogen](https://microsoft.github.io/autogen/) framework for its core agent functionality. Therefore, the primary API reference for agent creation, management, and interaction is the Autogen documentation:
 
-*   **Autogen Documentation:** [https://microsoft.github.io/autogen/](https://microsoft.github.io/autogen/)
-*   **Autogen API Reference:** Refer to the Autogen documentation for details on classes, methods, and data structures.
-*   **Autogen Examples:** [https://github.com/microsoft/autogen/tree/main/samples](https://github.com/microsoft/autogen/tree/main/samples)
+- **Autogen Documentation:** [https://microsoft.github.io/autogen/](https://microsoft.github.io/autogen/)
+- **Autogen API Reference:** Refer to the Autogen documentation for details on classes, methods, and data structures.
+- **Autogen Examples:** [https://github.com/microsoft/autogen/tree/main/samples](https://github.com/microsoft/autogen/tree/main/samples)
 
 ## AgenticFleet-Specific APIs
 

@@ -4,7 +4,6 @@
 Test script for examining the SystemMessage class from autogen_core.
 """
 
-import sys
 import traceback
 
 try:

@@ -49,4 +49,4 @@ help:
 	@echo "  format   - Format code"
 	@echo "  clean    - Clean build artifacts"
 	@echo "  run      - Run the application"
-	@echo "  help     - Show this help message" 
+	@echo "  help     - Show this help message"

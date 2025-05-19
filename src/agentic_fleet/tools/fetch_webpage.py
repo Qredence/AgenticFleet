@@ -1,4 +1,3 @@
-from typing import Dict, Optional
 from urllib.parse import urljoin
 
 import html2text
@@ -11,8 +10,8 @@ from bs4 import BeautifulSoup
 async def fetch_webpage(
     url: str,
     include_images: bool = True,
-    max_length: Optional[int] = None,
-    headers: Optional[Dict[str, str]] = None,
+    max_length: int | None = None,
+    headers: dict[str, str] | None = None,
 ) -> str:
     """Fetch a webpage and convert it to markdown format.
 

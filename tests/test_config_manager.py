@@ -1,10 +1,8 @@
 """Tests for the ConfigurationManager class."""
 
-import os
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
-
 from agentic_fleet.config import ConfigurationManager
 
 
@@ -36,7 +34,9 @@ def mock_config_files():
                     "system_prompt": "You are a coding assistant.",
                 }
             },
-            "fleet": {"magentic_one": {"name": "MagenticOne", "agents": ["coder"], "max_rounds": 10}},
+            "fleet": {
+                "magentic_one": {"name": "MagenticOne", "agents": ["coder"], "max_rounds": 10}
+            },
         }
         yield
 
@@ -111,7 +111,9 @@ def test_load_all_with_valid_configs(mock_config_files, mock_env_vars):
 
 def test_load_all_with_missing_files():
     """Test loading configurations when files are missing."""
-    with patch("agentic_fleet.config.load_all_configs", side_effect=FileNotFoundError("Test error")):
+    with patch(
+        "agentic_fleet.config.load_all_configs", side_effect=FileNotFoundError("Test error")
+    ):
         config_manager = ConfigurationManager()
 
         # Should not raise an exception

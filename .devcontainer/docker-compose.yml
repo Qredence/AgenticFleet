@@ -17,7 +17,7 @@ services:
         GEMINI_API_KEY: ${GEMINI_API_KEY}
         DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
         COGCACHE_API_KEY: ${COGCACHE_API_KEY}
-    image: qredenceai/agenticfleet:${TAG:-latest}  # Updated Docker Hub username
+    image: qredenceai/agenticfleet:${TAG:-latest} # Updated Docker Hub username
     container_name: agenticfleet
     env_file:
       - .env
@@ -46,10 +46,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 4G
         reservations:
-          cpus: '1'
+          cpus: "1"
           memory: 2G
 volumes:
   chainlit-cache:

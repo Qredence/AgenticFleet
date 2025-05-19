@@ -1,8 +1,0 @@
-DEFAULT_AGENT_DESCRIPTION = "Default agent description."
-DEFAULT_AGENT_NAME = "AgenticFleet Agent"
-DEFAULT_MAX_ROUNDS = 10
-DEFAULT_MAX_STALLS = 3
-DEFAULT_MAX_TIME = 300
-DEFAULT_START_PAGE = "https://www.bing.com"
-DEFAULT_SYSTEM_PROMPT = "You are a helpful AI assistant."
-DEFAULT_TEMPERATURE = 0.7

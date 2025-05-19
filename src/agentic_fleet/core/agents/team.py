@@ -5,17 +5,18 @@ This module provides functionality for initializing and managing agent teams.
 Moved from agent_registry/__init__.py and consolidated here.
 """
 
-from typing import Any, Optional
+from typing import Any
 
-from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.agents import AssistantAgent, CodeExecutorAgent
 from autogen_ext.agents.file_surfer import FileSurfer
 from autogen_ext.agents.magentic_one import MagenticOneCoderAgent
 from autogen_ext.agents.web_surfer import MultimodalWebSurfer
+from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
 
 
 def initialize_default_agents(model_client=None) -> list[AssistantAgent]:
     """
-    Initialize the default set of agents.
+    Initialize the default set of agents, including the required executor agent.
 
     Args:
         model_client: The LLM client to use for agents that require it
@@ -27,11 +28,18 @@ def initialize_default_agents(model_client=None) -> list[AssistantAgent]:
         MagenticOneCoderAgent(name="coder", model_client=model_client),
         FileSurfer(name="file_surfer", model_client=model_client),
         MultimodalWebSurfer(name="web_surfer", model_client=model_client),
+        CodeExecutorAgent(
+            name="executor",
+            code_executor=LocalCommandLineCodeExecutor(timeout=60),
+            description="Executes code in a safe local environment.",
+        ),
     ]
     return agents
 
 
-def initialize_agent_team(team_config: Optional[dict[str, Any]] = None, model_client=None) -> list[AssistantAgent]:
+def initialize_agent_team(
+    team_config: dict[str, Any] | None = None, model_client=None
+) -> list[AssistantAgent]:
     """
     Initialize a team of agents with specified configuration.
 

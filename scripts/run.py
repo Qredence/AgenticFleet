@@ -14,25 +14,27 @@ def cli():
 
 
 @cli.command()
-def start():
+@click.option("--port", default=8000, help="Port to run the application on")
+def start(port):
     """Start AgenticFleet with OAuth enabled"""
-    run_app(no_oauth=False)
+    run_app(no_oauth=False, port=port)
 
 
 @cli.command()
-def no_oauth():
+@click.option("--port", default=8000, help="Port to run the application on")
+def no_oauth(port):
     """Start AgenticFleet without OAuth"""
-    run_app(no_oauth=True)
+    run_app(no_oauth=True, port=port)
 
 
-def run_app(no_oauth: bool):
+def run_app(no_oauth: bool, port: int = 8000):
     # Load .env from project root
     env_path = Path(__file__).parent.parent / ".env"
     load_dotenv(env_path)
 
     app_path = os.path.join(os.path.dirname(__file__), "..", "src", "agentic_fleet", "app.py")
 
-    cmd = ["chainlit", "run", app_path, "--port", "8000"]
+    cmd = ["chainlit", "run", app_path, "--port", str(port)]
 
     if no_oauth:
         # Only disable OAuth-specific variables

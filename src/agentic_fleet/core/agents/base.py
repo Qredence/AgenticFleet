@@ -7,11 +7,11 @@ It follows patterns from Microsoft Autogen documentation.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.messages import ChatMessage, TextMessage
-from autogen_core.models import ChatCompletionClient, CreateResult
+from autogen_core.models import ChatCompletionClient
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -29,9 +29,9 @@ class AgentConfig(BaseModel):
     """
 
     name: str
-    description: Optional[str] = None
-    system_message: Optional[str] = None
-    model: Optional[str] = None
+    description: str | None = None
+    system_message: str | None = None
+    model: str | None = None
 
 
 class BaseAgent(AssistantAgent):
@@ -53,9 +53,9 @@ class BaseAgent(AssistantAgent):
     def __init__(
         self,
         name: str,
-        model_client: Optional[ChatCompletionClient] = None,
-        description: Optional[str] = None,
-        system_message: Optional[str] = None,
+        model_client: ChatCompletionClient | None = None,
+        description: str | None = None,
+        system_message: str | None = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -113,7 +113,7 @@ class BaseAgent(AssistantAgent):
         """
         pass
 
-    async def process_message(self, message: Union[str, ChatMessage]) -> Dict[str, Any]:
+    async def process_message(self, message: str | ChatMessage) -> dict[str, Any]:
         """
         Process an incoming message and generate a response.
 
@@ -132,7 +132,7 @@ class BaseAgent(AssistantAgent):
         response = await self.generate_response(messages=[message])
         return {"content": response.content, "role": "assistant", "metadata": response.model_dump()}
 
-    async def run(self, task: Union[str, List[ChatMessage]]) -> Dict[str, Any]:
+    async def run(self, task: str | list[ChatMessage]) -> dict[str, Any]:
         """
         Execute the agent's primary task.
 
@@ -151,7 +151,7 @@ class BaseAgent(AssistantAgent):
         response = await self.generate_response(messages=task)
         return {"content": response.content, "role": "assistant", "metadata": response.model_dump()}
 
-    def dump_component(self) -> Dict[str, Any]:
+    def dump_component(self) -> dict[str, Any]:
         """
         Dump the agent configuration to a dictionary format.
 
@@ -178,7 +178,7 @@ class BaseAgent(AssistantAgent):
         }
 
     @classmethod
-    def load_component(cls, config: Dict[str, Any]) -> "BaseAgent":
+    def load_component(cls, config: dict[str, Any]) -> "BaseAgent":
         """
         Load an agent from a configuration dictionary.
 

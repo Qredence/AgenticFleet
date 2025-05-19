@@ -1,11 +1,11 @@
 """Chainlit UI components and settings."""
 
-from typing import Any, Dict, List  # noqa: UP035
+from typing import Any  # noqa: UP035
 
 import chainlit as cl
 
 
-def chat_profiles() -> List[Dict[str, Any]]:
+def chat_profiles() -> list[dict[str, Any]]:
     """Define enhanced chat profiles with metadata and icons.
 
     Returns:
@@ -33,7 +33,7 @@ async def setup_chat_settings() -> None:
     await cl.user_session.set("settings", settings)
 
 
-async def update_settings(new_settings: Dict[str, Any]) -> None:
+async def update_settings(new_settings: dict[str, Any]) -> None:
     """Update chat settings with new values.
 
     Args:
@@ -44,7 +44,7 @@ async def update_settings(new_settings: Dict[str, Any]) -> None:
     await cl.user_session.set("settings", current)
 
 
-def agent_input_widgets() -> List[cl.InputWidget]:
+def agent_input_widgets() -> list[cl.InputWidget]:
     """Generate Chainlit input widgets for agent configuration.
 
     Returns:

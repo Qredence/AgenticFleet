@@ -5,19 +5,16 @@ This module implements an agent that performs web searches and analyzes
 results to provide relevant information for the reasoning process.
 """
 
-from typing import Any, Dict, List, Optional, Sequence
+from collections.abc import Sequence
+from typing import Any
 
-from autogen_agentchat.agents import BaseChatAgent
-from autogen_agentchat.base import Response
 from autogen_agentchat.messages import ChatMessage
 from autogen_core import CancellationToken
-from autogen_core.models._model_client import CreateResult, LLMMessage, RequestUsage
+from autogen_core.models import CreateResult, LLMMessage, RequestUsage
 from pydantic import BaseModel
 
-from agentic_fleet.core.tools.web_search.web_search_tool import (
-    SearchResult,
-    WebSearchTool,
-)
+from agentic_fleet.core.agents.base import BaseAgent
+from agentic_fleet.core.tools.web_search.web_search_tool import SearchResult, WebSearchTool
 
 
 class WebSearchConfig(BaseModel):
@@ -29,14 +26,18 @@ class WebSearchConfig(BaseModel):
     synthesis_temperature: float = 0.8
 
 
-class WebSearchAgent(BaseChatAgent):
+class WebSearchAgent(BaseAgent):
     """
     Agent that performs web searches and analyzes results to provide
     relevant information for the reasoning process.
     """
 
     def __init__(
-        self, name: str = "web_search_agent", description: str = "", temperature: float = 0.6, **kwargs
+        self,
+        name: str = "web_search_agent",
+        description: str = "",
+        temperature: float = 0.6,
+        **kwargs,
     ) -> None:
         """
         Initialize the Web Search Agent.
@@ -47,103 +48,134 @@ class WebSearchAgent(BaseChatAgent):
             temperature: Temperature for the agent
             **kwargs: Additional arguments passed to BaseChatAgent
         """
-        super().__init__(name=name, description=description, **kwargs)
-        self.temperature = temperature
+        model_client = kwargs.pop("model_client", None)
+        system_message = kwargs.pop("system_message", self._get_default_system_message())
+        super().__init__(
+            name=name,
+            description=description,
+            model_client=model_client,
+            system_message=system_message,
+            **kwargs,
+        )
+
+        self.temperature = (
+            temperature  # General temperature, can be overridden by specific config values
+        )
 
         # Extract config from kwargs or use defaults
-        config = WebSearchConfig(**kwargs.get("config", {}))
-        self.web_search_tool = WebSearchTool(
-            max_results=config.max_results, min_relevance_score=config.min_relevance_score
-        )
-        self.config = config
+        web_search_specific_config_data = kwargs.get("config", {})
+        if isinstance(web_search_specific_config_data, WebSearchConfig):
+            self.web_search_config = web_search_specific_config_data
+        else:
+            self.web_search_config = WebSearchConfig(**web_search_specific_config_data)
 
-    async def process_message(self, message: ChatMessage, token: CancellationToken = None) -> Response:
+        self.web_search_tool = WebSearchTool(
+            max_results=self.web_search_config.max_results,
+            min_relevance_score=self.web_search_config.min_relevance_score,
+        )
+        # self.config is BaseAgent's AgentConfig. We store specific config in self.web_search_config
+
+    async def process_message(
+        self, message: str | ChatMessage, token: CancellationToken = None
+    ) -> dict[str, Any]:
         """
         Process incoming messages and manage web search operations.
 
         Args:
-            message: Incoming chat message
+            message: Incoming chat message or string
             token: Cancellation token for the operation
 
         Returns:
             Response containing the search and analysis results
         """
+        if isinstance(message, str):
+            message_content = message
+        elif hasattr(message, "content"):
+            message_content = message.content
+        else:
+            return {"content": "Invalid message type", "error": True, "role": "assistant"}
+
         try:
             # Parse the command and parameters from the message
-            command, params = self._parse_message(message.content)
+            command, params = self._parse_message(message_content)
+            response_content = ""
+            error = False
 
             if command == "search":
-                results = await self._perform_search(params.get("query", ""), params.get("context", {}))
-                return Response(content=str(results))
-
-            elif command == "analyze":
-                analysis = await self._analyze_results(params.get("results", []), params.get("focus", None))
-                return Response(content=analysis)
-
-            elif command == "synthesize":
-                synthesis = await self._synthesize_information(params.get("query", ""), params.get("context", {}))
-                return Response(content=synthesis)
-
-            else:
-                return Response(
-                    content=f"Unknown command: {command}. Available commands: search, analyze, synthesize", error=True
+                results = await self._perform_search(
+                    params.get("query", ""), params.get("context", {})
                 )
+                response_content = str(results)
+            elif command == "analyze":
+                analysis = await self._analyze_results(
+                    params.get("results", []), params.get("focus", None)
+                )
+                response_content = analysis
+            elif command == "synthesize":
+                synthesis = await self._synthesize_information(
+                    params.get("query", ""), params.get("context", {})
+                )
+                response_content = synthesis
+            else:
+                response_content = (
+                    f"Unknown command: {command}. Available commands: search, analyze, synthesize"
+                )
+                error = True
+
+            return {"content": response_content, "error": error, "role": "assistant"}
 
         except Exception as e:
-            return Response(content=f"Error processing web search operation: {str(e)}", error=True)
+            return {
+                "content": f"Error processing web search operation: {str(e)}",
+                "error": True,
+                "role": "assistant",
+            }
 
-    async def generate_response(self, messages: Sequence[LLMMessage], token: CancellationToken = None) -> CreateResult:
+    async def generate_response(
+        self,
+        messages: Sequence[LLMMessage],
+        token: CancellationToken = None,
+        temperature: float | None = None,
+    ) -> CreateResult:
         """
         Generate a response based on the message history.
 
         Args:
             messages: Sequence of messages in the conversation
             token: Cancellation token for the operation
+            temperature: Optional temperature for this specific call
 
         Returns:
             CreateResult containing the generated response
         """
-        result = await super().generate_response(messages, token)
+        # Use the generate_response from BaseAgent
+        current_temperature = temperature if temperature is not None else self.temperature
+
+        if not self.model_client:
+            mock_message = LLMMessage(
+                content="Mock response - model_client not available", source="assistant"
+            )
+            return CreateResult(
+                message=mock_message,
+                usage=RequestUsage(prompt_tokens=0, completion_tokens=0),
+                finish_reason="stop",
+                content=mock_message.content,
+                cached=False,
+            )
+
+        create_result = await super().generate_response(
+            messages=messages, token=token, temperature=current_temperature
+        )
 
         # Add token usage information
-        if not hasattr(result, "usage"):
-            result.usage = RequestUsage(prompt_tokens=0, completion_tokens=0, total_tokens=0)
+        if not hasattr(create_result, "usage") or create_result.usage is None:
+            create_result.usage = RequestUsage(prompt_tokens=0, completion_tokens=0, total_tokens=0)
 
-        return result
+        return create_result
 
-    async def on_messages(self, messages: Sequence[ChatMessage]) -> Response:
-        """
-        Handle incoming messages and generate responses.
-
-        Args:
-            messages: Sequence of messages to process
-
-        Returns:
-            Response: The agent's response to the messages
-        """
-        if not messages:
-            return Response(content="No messages to process")
-
-        # For now, just process the last message
-        last_message = messages[-1]
-        response = await self.process_message(last_message)
-        return Response(content=response.result if response else "Failed to process message")
-
-    async def on_reset(self) -> None:
-        """Reset the agent's state."""
-        # No state to reset for now
-        pass
-
-    def produced_message_types(self) -> List[str]:
-        """
-        Get the types of messages this agent can produce.
-
-        Returns:
-            List[str]: List of supported message types
-        """
-        return ["text", "search_results"]
-
-    async def _perform_search(self, query: str, context: Optional[Dict[str, Any]] = None) -> List[SearchResult]:
+    async def _perform_search(
+        self, query: str, context: dict[str, Any] | None = None
+    ) -> list[SearchResult]:
         """
         Perform a web search and return relevant results.
 
@@ -166,15 +198,19 @@ class WebSearchAgent(BaseChatAgent):
 
             # Filter results by relevance
             filtered_results = [
-                result for result in results if result.relevance_score >= self.config.min_relevance_score
+                result
+                for result in results
+                if result.relevance_score >= self.web_search_config.min_relevance_score
             ]
 
-            return filtered_results[: self.config.max_results]
+            return filtered_results[: self.web_search_config.max_results]
 
         except Exception as e:
             raise RuntimeError(f"Error performing web search: {str(e)}")
 
-    async def _analyze_results(self, results: List[SearchResult], focus: Optional[str] = None) -> str:
+    async def _analyze_results(
+        self, results: list[SearchResult], focus: str | None = None
+    ) -> str:
         """
         Analyze search results to extract key information.
 
@@ -188,17 +224,23 @@ class WebSearchAgent(BaseChatAgent):
         try:
             # Create messages for analysis
             messages = [
-                LLMMessage(role="system", content="Analyze the search results and extract key information."),
+                LLMMessage(
+                    role="system", content="Analyze the search results and extract key information."
+                ),
                 LLMMessage(role="user", content=f"Results: {results}\nFocus Area: {focus}"),
             ]
 
-            result = await self.generate_response(messages, temperature=self.config.analysis_temperature)
+            result = await self.generate_response(
+                messages, temperature=self.web_search_config.analysis_temperature
+            )
             return result.message.content
 
         except Exception as e:
             raise RuntimeError(f"Error analyzing search results: {str(e)}")
 
-    async def _synthesize_information(self, query: str, context: Optional[Dict[str, Any]] = None) -> str:
+    async def _synthesize_information(
+        self, query: str, context: dict[str, Any] | None = None
+    ) -> str:
         """
         Synthesize information from search results into a coherent response.
 
@@ -222,16 +264,20 @@ class WebSearchAgent(BaseChatAgent):
                     role="system",
                     content="Synthesize the analyzed information into a coherent response.",
                 ),
-                LLMMessage(role="user", content=f"Query: {query}\nAnalysis: {analysis}\nContext: {context}"),
+                LLMMessage(
+                    role="user", content=f"Query: {query}\nAnalysis: {analysis}\nContext: {context}"
+                ),
             ]
 
-            result = await self.generate_response(messages, temperature=self.config.synthesis_temperature)
+            result = await self.generate_response(
+                messages, temperature=self.web_search_config.synthesis_temperature
+            )
             return result.message.content
 
         except Exception as e:
             raise RuntimeError(f"Error synthesizing information: {str(e)}")
 
-    async def _refine_query(self, query: str, context: Dict[str, Any]) -> str:
+    async def _refine_query(self, query: str, context: dict[str, Any]) -> str:
         """
         Refine a search query using context information.
 
@@ -244,17 +290,20 @@ class WebSearchAgent(BaseChatAgent):
         """
         try:
             messages = [
-                LLMMessage(role="system", content="Refine the search query using the provided context."),
+                LLMMessage(
+                    role="system", content="Refine the search query using the provided context."
+                ),
                 LLMMessage(role="user", content=f"Query: {query}\nContext: {context}"),
             ]
-
-            result = await self.generate_response(messages)
+            result = await self.generate_response(
+                messages, temperature=self.temperature
+            )  # Using general agent temperature
             return result.message.content
 
         except Exception as e:
             raise RuntimeError(f"Error refining query: {str(e)}")
 
-    def _parse_message(self, content: str) -> tuple[str, Dict[str, Any]]:
+    def _parse_message(self, content: str) -> tuple[str, dict[str, Any]]:
         """
         Parse the command and parameters from a message.
 
@@ -277,6 +326,51 @@ class WebSearchAgent(BaseChatAgent):
 
                 params = json.loads(param_text)
             except json.JSONDecodeError:
-                params = {"content": param_text}
+                params = {"query": param_text}  # Default to query for search like agents
 
         return command, params
+
+    # Methods to be kept from original if they don't conflict with BaseAgent
+    # or if BaseAgent doesn't provide equivalents.
+    async def on_reset(self) -> None:
+        """Reset the agent's state."""
+        # If BaseAgent has on_reset, call it.
+        if hasattr(super(), "on_reset"):
+            await super().on_reset()
+        # Add any WebSearchAgent specific reset logic here if needed
+        pass
+
+    def produced_message_types(self) -> list[str]:
+        """
+        Get the types of messages this agent can produce.
+
+        Returns:
+            List[str]: List of supported message types
+        """
+        return ["text", "search_results"]
+
+    def _get_default_system_message(self) -> str:
+        return "You are a Web Search agent. You perform web searches and analyze results."
+
+    def _get_default_description(self) -> str:
+        return "An agent that performs web searches and synthesizes information."
+
+    def dump_component(self) -> dict[str, Any]:
+        """Dump the agent configuration to a dictionary format."""
+        base_dump = super().dump_component()
+        base_dump["config"]["web_search_specific_config"] = self.web_search_config.model_dump()
+        return base_dump
+
+    @classmethod
+    def load_component(cls, config_dict: dict[str, Any]) -> "WebSearchAgent":
+        """Load an agent from a configuration dictionary."""
+        agent_config_data = config_dict.get("config", {})
+        web_search_specific_config_data = agent_config_data.pop("web_search_specific_config", {})
+
+        return cls(
+            name=agent_config_data.get("name", "web_search_agent"),
+            description=agent_config_data.get("description"),
+            system_message=agent_config_data.get("system_message"),
+            model_client=None,  # To be injected by factory/registry
+            config=web_search_specific_config_data,
+        )

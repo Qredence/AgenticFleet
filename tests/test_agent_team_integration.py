@@ -1,10 +1,8 @@
 """Tests for the integration of agent teams with the application."""
 
-import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from agentic_fleet.app import start_chat
 
 
@@ -126,7 +124,9 @@ async def test_agent_team_in_message_handling(mock_user_session, mock_chainlit_e
 
     # Create mock agent team
     mock_team = MagicMock()
-    mock_team.run_stream = AsyncMock(return_value=[{"content": "I'll help you with your task", "author": "Assistant"}])
+    mock_team.run_stream = AsyncMock(
+        return_value=[{"content": "I'll help you with your task", "author": "Assistant"}]
+    )
 
     # Set up mock team in user session
     mock_user_session["agent_team"] = mock_team

@@ -3,7 +3,7 @@
 This module provides enhanced agent models and team creation functionality.
 """
 
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any
 
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.base import Response
@@ -16,7 +16,11 @@ class EnhancedAssistantAgent(AssistantAgent):
     """Enhanced version of AssistantAgent with additional capabilities."""
 
     def __init__(
-        self, name: str, system_message: str, model_client: Optional[ChatCompletionClient] = None, **kwargs: Any
+        self,
+        name: str,
+        system_message: str,
+        model_client: ChatCompletionClient | None = None,
+        **kwargs: Any,
     ) -> None:
         """
         Initialize the enhanced assistant agent.
@@ -27,7 +31,9 @@ class EnhancedAssistantAgent(AssistantAgent):
             model_client: Optional model client for chat completion
             **kwargs: Additional arguments passed to AssistantAgent
         """
-        super().__init__(name=name, system_message=system_message, model_client=model_client, **kwargs)
+        super().__init__(
+            name=name, system_message=system_message, model_client=model_client, **kwargs
+        )
         self._model_client = model_client
 
     async def process_message(self, message: str, token: CancellationToken = None) -> Response:
@@ -45,14 +51,20 @@ class EnhancedAssistantAgent(AssistantAgent):
             if self._model_client:
                 response = await self._model_client.generate(message)
                 return Response(chat_message=TextMessage(content=str(response), source=self.name))
-            return Response(chat_message=TextMessage(content="No model client available", source=self.name))
+            return Response(
+                chat_message=TextMessage(content="No model client available", source=self.name)
+            )
         except Exception as e:
-            return Response(chat_message=TextMessage(content=f"Error processing message: {str(e)}", source=self.name))
+            return Response(
+                chat_message=TextMessage(
+                    content=f"Error processing message: {str(e)}", source=self.name
+                )
+            )
 
 
 async def create_agent_team(
-    agents: List[EnhancedAssistantAgent], team_config: Optional[Dict[str, Any]] = None
-) -> List[EnhancedAssistantAgent]:
+    agents: list[EnhancedAssistantAgent], team_config: dict[str, Any] | None = None
+) -> list[EnhancedAssistantAgent]:
     """
     Create a team of agents with specified configuration.
 

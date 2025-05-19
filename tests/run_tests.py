@@ -5,11 +5,9 @@ This script runs all tests in the tests directory.
 """
 
 import argparse
-import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, List, Optional
 
 # Add the project root to the Python path
 project_root = Path(__file__).parent.parent
@@ -19,7 +17,7 @@ sys.path.insert(0, str(project_root))
 def run_tests(args: argparse.Namespace) -> int:
     """Run the tests with the specified arguments."""
     # Base pytest command
-    cmd: List[str] = ["pytest"]
+    cmd: list[str] = ["pytest"]
 
     # Add verbosity
     if args.verbose:

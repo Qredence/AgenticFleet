@@ -1,6 +1,6 @@
 """Chat message component for the Chainlit UI."""
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 from chainlit.message import Message
 
@@ -8,7 +8,7 @@ from chainlit.message import Message
 class ChatMessage:
     """A component for rendering chat messages."""
 
-    def __init__(self, content: str, author: str, metadata: Optional[Dict[str, Any]] = None):
+    def __init__(self, content: str, author: str, metadata: dict[str, Any] | None = None):
         """Initialize a chat message.
 
         Args:
@@ -26,4 +26,6 @@ class ChatMessage:
         Returns:
             The sent message object
         """
-        return await Message(content=self.content, author=self.author, metadata=self.metadata).send()
+        return await Message(
+            content=self.content, author=self.author, metadata=self.metadata
+        ).send()

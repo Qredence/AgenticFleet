@@ -19,7 +19,7 @@ pip install chainlit==2.4.4.00
 
 # Install MCP packages
 echo "Installing MCP dependencies..."
-pip install "mcp-sdk>=0.2.0" 
+pip install "mcp-sdk>=0.2.0"
 pip install "mcp-api-client>=0.1.0"
 pip install "chainlit[mcp]>=2.4.4"
 

@@ -1,21 +1,17 @@
 """Main entry point for AgenticFleet.
 
-This module provides the main entry point for the AgenticFleet application.
-It can start either the Chainlit app directly, the FastAPI app with the Chainlit app mounted,
-or the original API app.
+This module provides a unified entry point for all application modes:
+- chainlit: Run the Chainlit UI
+- api: Run the API server
+- fastapi: Run the FastAPI server with Chainlit mounted
 """
 
 import argparse
 import logging
-import os
 import sys
-from pathlib import Path
 
-import uvicorn
-from dotenv import load_dotenv
-
-# Load environment variables from .env file if it exists
-load_dotenv()
+from agentic_fleet.core.bootstrap import bootstrap_application
+from agentic_fleet.runners import api_runner, chainlit_runner, fastapi_runner
 
 # Configure logging
 logging.basicConfig(
@@ -25,78 +21,68 @@ logging.basicConfig(
 logger = logging.getLogger("agentic_fleet")
 
 
-def run_chainlit():
-    """Run the Chainlit app directly."""
-    logger.info("Starting Chainlit app directly")
-
-    # Import the chainlit_app module
-    from agentic_fleet.chainlit_app import main as chainlit_main
-
-    # Run the Chainlit app
-    chainlit_main()
-
-
-def run_fastapi():
-    """Run the FastAPI app with the Chainlit app mounted."""
-    logger.info("Starting FastAPI app with Chainlit app mounted")
-
-    # Import the fastapi_app module
-    from agentic_fleet.api.fastapi_app import run_server as fastapi_run_server
-
-    # Run the FastAPI server
-    fastapi_run_server()
-
-
-def run_api():
-    """Run the original API app."""
-    logger.info("Starting original API app")
-
-    # Import necessary modules
-    from agentic_fleet.api.app import app
-    from agentic_fleet.database.session import create_tables
-
-    # Initialize database
-    create_tables()
-    logger.info("Database tables created")
-
-    # Get configuration from environment variables
-    host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", "8000"))
-    reload = os.environ.get("RELOAD", "False").lower() == "true"
-
-    logger.info(f"Starting Agentic Fleet API on {host}:{port}")
-
-    # Run the application
-    uvicorn.run(
-        "agentic_fleet.api.app:app",
-        host=host,
-        port=port,
-        reload=reload,
-        log_level="info",
-    )
-
-
 def main():
     """Main entry point for the application."""
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description="AgenticFleet")
-    parser.add_argument(
-        "--mode",
-        choices=["chainlit", "fastapi", "api"],
-        default="chainlit",
-        help="Mode to run the application in (default: chainlit)",
+    parser = argparse.ArgumentParser(description="AgenticFleet - Multi-agent AI system")
+
+    # Create subparsers for different modes
+    subparsers = parser.add_subparsers(dest="mode", help="Mode to run the application in")
+
+    # Chainlit mode
+    chainlit_parser = subparsers.add_parser("chainlit", help="Run the Chainlit UI")
+    chainlit_parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    chainlit_parser.add_argument("--port", type=int, default=8000, help="Port to bind to")
+    chainlit_parser.add_argument(
+        "--no-oauth", action="store_true", help="Disable OAuth authentication"
     )
+
+    # API mode
+    api_parser = subparsers.add_parser("api", help="Run the API server")
+    api_parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    api_parser.add_argument("--port", type=int, default=8000, help="Port to bind to")
+    api_parser.add_argument("--reload", action="store_true", help="Enable auto-reload")
+
+    # FastAPI mode
+    fastapi_parser = subparsers.add_parser(
+        "fastapi", help="Run the FastAPI server with Chainlit mounted"
+    )
+    fastapi_parser.add_argument("--api-host", default="0.0.0.0", help="Host for the API server")
+    fastapi_parser.add_argument(
+        "--api-port", type=int, default=8080, help="Port for the API server"
+    )
+    fastapi_parser.add_argument(
+        "--chainlit-host", default="127.0.0.1", help="Host for the Chainlit server"
+    )
+    fastapi_parser.add_argument(
+        "--chainlit-port", type=int, default=8000, help="Port for the Chainlit server"
+    )
+
+    # Parse arguments
     args = parser.parse_args()
+
+    # Set default mode if none specified
+    if not args.mode:
+        logger.info("No mode specified, defaulting to 'chainlit'")
+        args.mode = "chainlit"
+        # Create default args for chainlit mode
+        args.host = "0.0.0.0"
+        args.port = 8000
+        args.no_oauth = False
+
+    # Bootstrap the application
+    logger.info(f"Bootstrapping application in {args.mode} mode")
+    app_context = bootstrap_application()
 
     # Run the application in the specified mode
     if args.mode == "chainlit":
-        run_chainlit()
-    elif args.mode == "fastapi":
-        run_fastapi()
+        chainlit_runner.run(app_context, args)
     elif args.mode == "api":
-        run_api()
+        api_runner.run(app_context, args)
+    elif args.mode == "fastapi":
+        fastapi_runner.run(app_context, args)
     else:
         logger.error(f"Unknown mode: {args.mode}")
+        parser.print_help()
         sys.exit(1)
 
 

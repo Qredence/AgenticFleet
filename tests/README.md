@@ -70,4 +70,4 @@ pip install pytest-cov
 ./run_tests.py --cov=agentic_fleet --cov-report=html
 ```
 
-This will generate a coverage report in the `htmlcov` directory. 
+This will generate a coverage report in the `htmlcov` directory.

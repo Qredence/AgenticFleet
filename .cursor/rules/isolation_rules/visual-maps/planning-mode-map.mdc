@@ -1,0 +1,260 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Planning Mode Visual Map
+
+This visual map outlines the systematic approach to planning features and changes in the AgenticFleet project.
+
+## Planning Workflow Overview
+
+<mermaid>
+graph TD
+    Start["🚀 START PLANNING MODE"] --> Assess["📊 Assess Task<br>Requirements"]
+    Assess --> AnalyzeCode["👁️ Analyze Existing<br>Code"]
+    
+    AnalyzeCode --> DetermineScope["📏 Determine<br>Scope"]
+    DetermineScope --> DetermineLevel{"🔍 Determine<br>Complexity Level"}
+    
+    %% Level 1 Planning
+    DetermineLevel -->|"Level 1<br>Quick Fix"| L1["🔧 Level 1:<br>Simple Planning"]
+    L1 --> L1Problem["🔍 Identify<br>Specific Issue"]
+    L1Problem --> L1Solution["💡 Define<br>Simple Solution"]
+    L1Solution --> L1Approach["📋 Create<br>Brief Plan"]
+    
+    %% Level 2 Planning
+    DetermineLevel -->|"Level 2<br>Feature Enhancement"| L2["🛠️ Level 2:<br>Feature Planning"]
+    L2 --> L2Reqs["📝 Document<br>Requirements"]
+    L2Reqs --> L2Design["🎨 Create<br>Basic Design"]
+    L2Design --> L2Tasks["📋 Define<br>Implementation Tasks"]
+    L2Tasks --> L2Tests["🧪 Plan<br>Testing Approach"]
+    
+    %% Level 3 Planning
+    DetermineLevel -->|"Level 3<br>Component Development"| L3["🏗️ Level 3:<br>Component Planning"]
+    L3 --> L3Reqs["📝 Document<br>Detailed Requirements"]
+    L3Reqs --> L3Arch["🏛️ Establish<br>Component Architecture"]
+    L3Arch --> L3Design["🎨 Create<br>Detailed Design"]
+    L3Design --> L3Interface["🔌 Define<br>Interfaces"]
+    L3Interface --> L3Tasks["📋 Create<br>Implementation Plan"]
+    L3Tasks --> L3Tests["🧪 Design<br>Test Strategy"]
+    
+    %% Level 4 Planning
+    DetermineLevel -->|"Level 4<br>System Architecture"| L4["🏢 Level 4:<br>System Planning"]
+    L4 --> L4Reqs["📝 Document<br>Comprehensive Requirements"]
+    L4Reqs --> L4Arch["🏛️ Design<br>System Architecture"]
+    L4Arch --> L4Design["🎨 Create<br>Detailed Design"]
+    L4Design --> L4Interface["🔌 Define<br>System Interfaces"]
+    L4Interface --> L4Tasks["📋 Create<br>Phased Implementation Plan"]
+    L4Tasks --> L4Tests["🧪 Design<br>Testing Strategy"]
+    L4Tests --> L4Performance["⚡ Consider<br>Performance Aspects"]
+    L4Performance --> L4Security["🔒 Address<br>Security Concerns"]
+    
+    %% Final Steps for All Levels
+    L1Approach & L2Tests & L3Tests & L4Security --> EvaluateRisks["⚠️ Evaluate<br>Risks"]
+    EvaluateRisks --> EstimateEffort["⏱️ Estimate<br>Effort"]
+    EstimateEffort --> DocumentPlan["📝 Finalize<br>Implementation Plan"]
+    DocumentPlan --> PrepareForImpl["🔧 Prepare for<br>Implementation"]
+    PrepareForImpl --> NextMode["⏭️ TRANSITION TO<br>CREATIVE MODE"]
+    
+    %% Styling
+    style Start fill:#4da6ff,stroke:#0066cc,color:white
+    style DetermineLevel fill:#d94dbb,stroke:#a3378a,color:white
+    style L1 fill:#4dbb5f,stroke:#36873f,color:white
+    style L2 fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3 fill:#ff5555,stroke:#cc0000,color:white
+    style L4 fill:#d971ff,stroke:#a33bc2,color:white
+    style NextMode fill:#5fd94d,stroke:#3da336,color:white
+</mermaid>
+
+## Requirement Analysis Framework
+
+<mermaid>
+graph TD
+    Requirements["📝 Requirements<br>Analysis"] --> Functional["✅ Functional<br>Requirements"]
+    Requirements --> NonFunctional["⚙️ Non-Functional<br>Requirements"]
+    Requirements --> Constraints["🔒 Constraints"]
+    
+    Functional --> FR1["Core Features"]
+    Functional --> FR2["User Interactions"]
+    Functional --> FR3["System Behaviors"]
+    
+    NonFunctional --> NFR1["Performance"]
+    NonFunctional --> NFR2["Scalability"]
+    NonFunctional --> NFR3["Reliability"]
+    NonFunctional --> NFR4["Usability"]
+    
+    Constraints --> C1["Technical Constraints"]
+    Constraints --> C2["Business Constraints"]
+    Constraints --> C3["Time Constraints"]
+    
+    style Requirements fill:#4da6ff,stroke:#0066cc,color:white
+    style Functional fill:#4dbb5f,stroke:#36873f,color:white
+    style NonFunctional fill:#ffa64d,stroke:#cc7a30,color:white
+    style Constraints fill:#ff5555,stroke:#cc0000,color:white
+</mermaid>
+
+## Design Approach by Level
+
+<mermaid>
+graph LR
+    L1Des["Level 1<br>Design"] -->|"Focuses on"| L1D["Targeted Fix"]
+    
+    L2Des["Level 2<br>Design"] -->|"Focuses on"| L2D1["Feature Specification"]
+    L2Des -->|"Includes"| L2D2["Component Integration"]
+    
+    L3Des["Level 3<br>Design"] -->|"Focuses on"| L3D1["Component Architecture"]
+    L3Des -->|"Includes"| L3D2["Interface Design"]
+    L3Des -->|"Includes"| L3D3["Data Flow"]
+    
+    L4Des["Level 4<br>Design"] -->|"Focuses on"| L4D1["System Architecture"]
+    L4Des -->|"Includes"| L4D2["Component Relationships"]
+    L4Des -->|"Includes"| L4D3["Data Architecture"]
+    L4Des -->|"Includes"| L4D4["Security Model"]
+    L4Des -->|"Includes"| L4D5["Scalability Design"]
+    
+    style L1Des fill:#4dbb5f,stroke:#36873f,color:white
+    style L2Des fill:#ffa64d,stroke:#cc7a30,color:white
+    style L3Des fill:#ff5555,stroke:#cc0000,color:white
+    style L4Des fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Task Breakdown Structure
+
+When breaking down implementation tasks, follow this hierarchical approach:
+
+<mermaid>
+graph TD
+    Overall["Overall Task"] --> Phases["Implementation Phases"]
+    Phases --> Components["Component Tasks"]
+    Components --> Features["Feature Tasks"]
+    Features --> Functions["Function-Level Tasks"]
+    
+    Overall --> D1["Define Dependencies"]
+    Overall --> M1["Set Milestones"]
+    
+    Phases --> P1["Phase Objectives"]
+    Phases --> P2["Phase Dependencies"]
+    Phases --> P3["Phase Deliverables"]
+    
+    style Overall fill:#4da6ff,stroke:#0066cc,color:white
+    style Phases fill:#ffa64d,stroke:#cc7a30,color:white
+    style Components fill:#ff5555,stroke:#cc0000,color:white
+    style Features fill:#d971ff,stroke:#a33bc2,color:white
+    style Functions fill:#4dbbbb,stroke:#368787,color:white
+</mermaid>
+
+## Testing Strategy Planning
+
+<mermaid>
+graph TD
+    Testing["🧪 Testing<br>Strategy Planning"] --> Unit["Unit Testing"]
+    Testing --> Integration["Integration Testing"]
+    Testing --> System["System Testing"]
+    Testing --> Performance["Performance Testing"]
+    
+    Unit --> UT1["Test Case Design"]
+    Unit --> UT2["Coverage Goals"]
+    
+    Integration --> IT1["Component Interactions"]
+    Integration --> IT2["API Testing"]
+    
+    System --> ST1["End-to-End Scenarios"]
+    System --> ST2["User Workflows"]
+    
+    Performance --> PT1["Load Testing"]
+    Performance --> PT2["Scalability Testing"]
+    
+    style Testing fill:#4da6ff,stroke:#0066cc,color:white
+    style Unit fill:#4dbb5f,stroke:#36873f,color:white
+    style Integration fill:#ffa64d,stroke:#cc7a30,color:white
+    style System fill:#ff5555,stroke:#cc0000,color:white
+    style Performance fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Risk Assessment Matrix
+
+<mermaid>
+graph TD
+    Risks["⚠️ Risk<br>Assessment"] --> Technical["Technical Risks"]
+    Risks --> Resource["Resource Risks"]
+    Risks --> Schedule["Schedule Risks"]
+    Risks --> External["External Risks"]
+    
+    Technical --> TR1["Technology Limitations"]
+    Technical --> TR2["Integration Challenges"]
+    Technical --> TR3["Performance Issues"]
+    
+    Resource --> RR1["Skill Gaps"]
+    Resource --> RR2["Resource Availability"]
+    
+    Schedule --> SR1["Time Constraints"]
+    Schedule --> SR2["Dependency Delays"]
+    
+    External --> ER1["Vendor Dependencies"]
+    External --> ER2["Requirement Changes"]
+    
+    style Risks fill:#4da6ff,stroke:#0066cc,color:white
+    style Technical fill:#ff5555,stroke:#cc0000,color:white
+    style Resource fill:#ffa64d,stroke:#cc7a30,color:white
+    style Schedule fill:#4dbb5f,stroke:#36873f,color:white
+    style External fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+## Planning Deliverables by Complexity Level
+
+### Level 1 (Quick Fix)
+- Problem definition
+- Solution approach
+- Affected code areas
+- Testing plan
+
+### Level 2 (Feature Enhancement)
+- Feature requirements
+- Design overview
+- Task breakdown
+- Testing approach
+- Integration points
+
+### Level 3 (Component Development)
+- Detailed requirements
+- Component architecture
+- Interface definitions
+- Comprehensive task plan
+- Test strategy
+- Risk assessment
+
+### Level 4 (System Architecture)
+- Comprehensive requirements documentation
+- System architecture diagrams
+- Detailed component designs
+- Interface specifications
+- Phased implementation plan
+- Test strategy for all phases
+- Performance considerations
+- Security considerations
+- Risk assessment and mitigation
+
+## Planning Checklist
+
+- [ ] Fully understand the task requirements
+- [ ] Analyze existing code and architecture
+- [ ] Determine task complexity level
+- [ ] Document requirements appropriately for the level
+- [ ] Create design documentation at appropriate detail
+- [ ] Break down implementation into concrete tasks
+- [ ] Plan testing approach
+- [ ] Identify integration points and dependencies
+- [ ] Assess potential risks
+- [ ] Estimate time and effort
+- [ ] Finalize implementation plan document
+- [ ] Review plan with stakeholders if needed
+
+## Transition to Creative Mode
+
+Once planning is complete:
+1. Ensure the implementation plan is clear and actionable
+2. Verify all requirements are captured
+3. Confirm the task breakdown is sufficiently detailed
+4. Ensure risks are identified and mitigated
+5. Transition to Creative Mode to explore implementation approaches and design solutions

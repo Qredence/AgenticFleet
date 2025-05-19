@@ -44,9 +44,10 @@ chat = MagenticOneGroupChat(
 #### Available Agents
 
 1. **WebSurfer**
+
    ```python
    from agentic_fleet.agents import WebSurfer
-   
+
    web_surfer = WebSurfer(
        browser="chromium",
        headless=True
@@ -54,18 +55,20 @@ chat = MagenticOneGroupChat(
    ```
 
 2. **FileSurfer**
+
    ```python
    from agentic_fleet.agents import FileSurfer
-   
+
    file_surfer = FileSurfer(
        workspace_dir="./workspace"
    )
    ```
 
 3. **Coder**
+
    ```python
    from agentic_fleet.agents import Coder
-   
+
    coder = Coder(
        language="python",
        style_guide="pep8"
@@ -73,9 +76,10 @@ chat = MagenticOneGroupChat(
    ```
 
 4. **Executor**
+
    ```python
    from agentic_fleet.agents import Executor
-   
+
    executor = Executor(
        sandbox=True,
        timeout=30
@@ -87,6 +91,7 @@ chat = MagenticOneGroupChat(
 ### Authentication
 
 #### OAuth Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -98,6 +103,7 @@ Content-Type: application/json
 ```
 
 #### Logout
+
 ```http
 POST /api/auth/logout
 Authorization: Bearer <token>
@@ -106,6 +112,7 @@ Authorization: Bearer <token>
 ### Chat
 
 #### Start Chat Session
+
 ```http
 POST /api/chat/start
 Authorization: Bearer <token>
@@ -119,6 +126,7 @@ Content-Type: application/json
 ```
 
 #### Send Message
+
 ```http
 POST /api/chat/message
 Authorization: Bearer <token>
@@ -132,6 +140,7 @@ Content-Type: application/json
 ```
 
 #### Get Chat History
+
 ```http
 GET /api/chat/history/{session_id}
 Authorization: Bearer <token>
@@ -140,6 +149,7 @@ Authorization: Bearer <token>
 ### File Operations
 
 #### Upload File
+
 ```http
 POST /api/files/upload
 Authorization: Bearer <token>
@@ -149,6 +159,7 @@ file: <file_data>
 ```
 
 #### List Files
+
 ```http
 GET /api/files/list
 Authorization: Bearer <token>
@@ -157,12 +168,14 @@ Authorization: Bearer <token>
 ### System Status
 
 #### Get System Status
+
 ```http
 GET /api/system/status
 Authorization: Bearer <token>
 ```
 
 #### Get Agent Status
+
 ```http
 GET /api/system/agents
 Authorization: Bearer <token>
@@ -173,17 +186,19 @@ Authorization: Bearer <token>
 ### Chat WebSocket
 
 Connect to real-time chat:
+
 ```javascript
-const ws = new WebSocket('ws://localhost:8000/ws/chat/{session_id}')
+const ws = new WebSocket("ws://localhost:8000/ws/chat/{session_id}");
 ```
 
 #### Message Format
+
 ```json
 {
-    "type": "message",
-    "content": "Message content",
-    "timestamp": "2025-02-24T15:57:56+01:00",
-    "agent": "web_surfer"
+  "type": "message",
+  "content": "Message content",
+  "timestamp": "2025-02-24T15:57:56+01:00",
+  "agent": "web_surfer"
 }
 ```
 
@@ -193,15 +208,16 @@ All API endpoints return standard error responses:
 
 ```json
 {
-    "error": {
-        "code": "ERROR_CODE",
-        "message": "Error description",
-        "details": {}
-    }
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Error description",
+    "details": {}
+  }
 }
 ```
 
 Common error codes:
+
 - `AUTH_REQUIRED`: Authentication required
 - `INVALID_TOKEN`: Invalid authentication token
 - `SESSION_NOT_FOUND`: Chat session not found
@@ -211,6 +227,7 @@ Common error codes:
 ## Rate Limiting
 
 API endpoints are rate-limited by default:
+
 - 100 requests per minute per IP
 - 1000 requests per hour per user
 - WebSocket connections limited to 5 per user

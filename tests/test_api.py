@@ -2,13 +2,10 @@
 Tests for the Agentic Fleet API.
 """
 
-import json
-from datetime import datetime
 
 import pytest
-from fastapi.testclient import TestClient
-
 from agentic_fleet.api.app import app
+from fastapi.testclient import TestClient
 
 
 @pytest.fixture

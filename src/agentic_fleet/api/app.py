@@ -7,7 +7,7 @@ import os
 import platform
 import sys
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 
 from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -60,7 +60,9 @@ async def api_exception_handler(request: Request, exc: AgenticFleetAPIError) -> 
 
 
 @app.exception_handler(AgenticFleetDatabaseError)
-async def database_exception_handler(request: Request, exc: AgenticFleetDatabaseError) -> JSONResponse:
+async def database_exception_handler(
+    request: Request, exc: AgenticFleetDatabaseError
+) -> JSONResponse:
     """
     Handle database exceptions.
     """
@@ -78,7 +80,7 @@ app.include_router(chat, prefix="/chat", tags=["chat"])
 
 
 @app.get("/")
-async def root() -> Dict[str, Any]:
+async def root() -> dict[str, Any]:
     """
     Root endpoint that returns API information.
     """
@@ -90,7 +92,7 @@ async def root() -> Dict[str, Any]:
 
 
 @app.get("/health")
-async def health_check(db: AsyncSession = Depends(get_db)) -> Dict[str, Any]:
+async def health_check(db: AsyncSession = Depends(get_db)) -> dict[str, Any]:
     """
     Health check endpoint.
 

@@ -2,7 +2,6 @@
 
 import logging
 import os
-from typing import Optional
 
 import chainlit as cl
 from autogen_agentchat.messages import TextMessage
@@ -14,14 +13,16 @@ from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from dotenv import load_dotenv
 
 # Initialize logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
 
 # Initialize global variables
-model_client: Optional[AzureOpenAIChatCompletionClient] = None
+model_client: AzureOpenAIChatCompletionClient | None = None
 agent_team = {}
 
 
@@ -121,7 +122,9 @@ async def main(message: cl.Message):
                 logger.error(f"Error with {agent_name}: {str(e)}")
                 task.status = cl.TaskStatus.FAILED
                 await task_list.update()
-                await cl.Message(content=f"⚠️ Error with {agent_name}: {str(e)}", author="System").send()
+                await cl.Message(
+                    content=f"⚠️ Error with {agent_name}: {str(e)}", author="System"
+                ).send()
 
     except Exception as e:
         error_msg = f"Message processing failed: {str(e)}"

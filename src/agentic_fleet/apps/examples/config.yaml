@@ -14,22 +14,23 @@ agents:
     headless: true
     start_page: "https://www.bing.com"
     timeout: 300
-    
+
   file_surfer:
     description: "Manages file operations and information extraction"
     allowed_extensions: [".txt", ".md", ".py", ".json", ".yaml", ".yml"]
-    max_file_size: 10485760  # 10MB
-    
+    max_file_size: 10485760 # 10MB
+
   coder:
     description: "Generates and reviews code"
     supported_languages: ["python", "javascript", "typescript"]
     max_code_length: 5000
-    
+
   executor:
     description: "Executes code safely in an isolated environment"
     timeout: 300
     max_memory: "512M"
-    allowed_modules: ["os", "sys", "json", "yaml", "requests", "pandas", "numpy"]
+    allowed_modules:
+      ["os", "sys", "json", "yaml", "requests", "pandas", "numpy"]
 
 # UI settings
 ui:
@@ -44,5 +45,5 @@ logging:
   level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: "logs/agent_chat.log"
-  max_size: 10485760  # 10MB
-  backup_count: 5 
+  max_size: 10485760 # 10MB
+  backup_count: 5

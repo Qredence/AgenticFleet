@@ -1,16 +1,8 @@
 """Core application module for AgenticFleet."""
 
 import logging
-from typing import Any, AsyncGenerator, Dict, List, Optional, Union
-
-from autogen_agentchat.agents import CodeExecutorAgent
-from autogen_agentchat.teams import MagenticOneGroupChat
-from autogen_ext.agents.file_surfer import FileSurfer
-from autogen_ext.agents.magentic_one import MagenticOneCoderAgent
-from autogen_ext.agents.web_surfer import MultimodalWebSurfer
-from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
-from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
-from dotenv import load_dotenv
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from agentic_fleet.backend.chainlit_components.chat_settings import ChatSettings
 from agentic_fleet.config import (
@@ -19,6 +11,14 @@ from agentic_fleet.config import (
     DEFAULT_START_PAGE,
     config_manager,
 )
+from autogen_agentchat.agents import CodeExecutorAgent
+from autogen_agentchat.teams import MagenticOneGroupChat
+from autogen_ext.agents.file_surfer import FileSurfer
+from autogen_ext.agents.magentic_one import MagenticOneCoderAgent
+from autogen_ext.agents.web_surfer import MultimodalWebSurfer
+from autogen_ext.code_executors.local import LocalCommandLineCodeExecutor
+from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
+from dotenv import load_dotenv
 
 
 class AgentInitializationError(Exception):
@@ -38,8 +38,8 @@ TEAM_CONFIGURATIONS = config_manager.get_team_settings("magentic_fleet_one").get
 
 def create_chat_profile(
     team_config: str = "default",
-    model_client: Optional[AzureOpenAIChatCompletionClient] = None,
-) -> Dict[str, Any]:
+    model_client: AzureOpenAIChatCompletionClient | None = None,
+) -> dict[str, Any]:
     """Create a chat profile with specified configuration.
 
     Args:
@@ -65,7 +65,7 @@ def create_chat_profile_with_code_execution(
     workspace_dir: str,
     team_config: str = "default",
     execution_timeout: int = 300,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Create a chat profile with code execution capabilities.
 
     Args:
@@ -94,7 +94,7 @@ class ApplicationManager:
         self.model_client = model_client
         self._initialized = False
         self.agent_team = None
-        self.teams: Dict[str, MagenticOneGroupChat] = {}
+        self.teams: dict[str, MagenticOneGroupChat] = {}
         self.settings = None
 
     async def start(self) -> None:
@@ -131,7 +131,7 @@ class ApplicationManager:
 
     async def process_message(
         self, message: str, settings: ChatSettings
-    ) -> AsyncGenerator[Union[str, Dict[str, Any]], None]:
+    ) -> AsyncGenerator[str | dict[str, Any], None]:
         """Process a message using the current agent team.
 
         Args:
@@ -172,7 +172,9 @@ class ApplicationManager:
             logger.error(f"Failed to initialize agent team: {str(e)}")
             raise
 
-    async def create_agent_team(self, model_client: AzureOpenAIChatCompletionClient) -> MagenticOneGroupChat:
+    async def create_agent_team(
+        self, model_client: AzureOpenAIChatCompletionClient
+    ) -> MagenticOneGroupChat:
         """Create and configure the agent team.
 
         Args:
@@ -235,8 +237,8 @@ class ApplicationManager:
 
     async def create_team(
         self,
-        profile: Dict[str, Any],
-        model_client: Optional[AzureOpenAIChatCompletionClient] = None,
+        profile: dict[str, Any],
+        model_client: AzureOpenAIChatCompletionClient | None = None,
     ) -> MagenticOneGroupChat:
         """Create a new agent team based on profile configuration.
 
@@ -344,7 +346,7 @@ async def create_application(model_client: AzureOpenAIChatCompletionClient) -> A
     return app
 
 
-async def stream_text(text: str) -> List[str]:
+async def stream_text(text: str) -> list[str]:
     """Stream text content word by word.
 
     Args:

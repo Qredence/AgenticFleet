@@ -3,7 +3,6 @@
 from unittest.mock import patch
 
 import pytest
-
 from agentic_fleet.services.client_factory import create_client, get_cached_client
 
 
@@ -43,7 +42,9 @@ def test_model_family_detection(mock_env_vars, mock_openai_client):
     client1 = create_client(model_name="gpt-4o-mini-2024-07-18")
 
     # Use a different mock for a non-GPT-4o model
-    with patch("agentic_fleet.services.client_factory.AzureOpenAIChatCompletionClient") as mock_client_class:
+    with patch(
+        "agentic_fleet.services.client_factory.AzureOpenAIChatCompletionClient"
+    ) as mock_client_class:
         mock_client = mock_client_class.return_value
         mock_client.model = "gpt-35-turbo"
         mock_client.model_info = {"family": "azure", "vision": False}

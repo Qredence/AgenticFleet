@@ -2,10 +2,8 @@
 Routes for task management.
 """
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 
 from agentic_fleet.api.dependencies.services import get_task_service
 from agentic_fleet.schemas.task import Task, TaskCreate, TaskUpdate
@@ -15,8 +13,10 @@ from agentic_fleet.services.task_service import TaskService
 router = APIRouter()
 
 
-@router.get("/", response_model=Dict[str, List[Task]])
-async def list_tasks(task_service: TaskService = Depends(get_task_service)) -> Dict[str, List[Task]]:
+@router.get("/", response_model=dict[str, list[Task]])
+async def list_tasks(
+    task_service: TaskService = Depends(get_task_service),
+) -> dict[str, list[Task]]:
     """
     List all tasks.
     """
@@ -28,7 +28,9 @@ async def list_tasks(task_service: TaskService = Depends(get_task_service)) -> D
 
 
 @router.post("/", response_model=Task)
-async def create_task(task: TaskCreate, task_service: TaskService = Depends(get_task_service)) -> Task:
+async def create_task(
+    task: TaskCreate, task_service: TaskService = Depends(get_task_service)
+) -> Task:
     """
     Create a new task.
     """
@@ -55,7 +57,9 @@ async def get_task(task_id: str, task_service: TaskService = Depends(get_task_se
 
 
 @router.put("/{task_id}", response_model=Task)
-async def update_task(task_id: str, task: TaskUpdate, task_service: TaskService = Depends(get_task_service)) -> Task:
+async def update_task(
+    task_id: str, task: TaskUpdate, task_service: TaskService = Depends(get_task_service)
+) -> Task:
     """
     Update an existing task.
     """
@@ -70,8 +74,10 @@ async def update_task(task_id: str, task: TaskUpdate, task_service: TaskService 
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.delete("/{task_id}", response_model=Dict[str, bool])
-async def delete_task(task_id: str, task_service: TaskService = Depends(get_task_service)) -> Dict[str, bool]:
+@router.delete("/{task_id}", response_model=dict[str, bool])
+async def delete_task(
+    task_id: str, task_service: TaskService = Depends(get_task_service)
+) -> dict[str, bool]:
     """
     Delete a task.
     """
@@ -87,7 +93,9 @@ async def delete_task(task_id: str, task_service: TaskService = Depends(get_task
 
 
 @router.post("/{task_id}/assign/{agent_id}", response_model=Task)
-async def assign_task(task_id: str, agent_id: str, task_service: TaskService = Depends(get_task_service)) -> Task:
+async def assign_task(
+    task_id: str, agent_id: str, task_service: TaskService = Depends(get_task_service)
+) -> Task:
     """
     Assign a task to an agent.
     """

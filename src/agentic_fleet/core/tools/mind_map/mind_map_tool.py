@@ -5,7 +5,7 @@ This module provides tools for constructing and analyzing knowledge graphs
 to track logical relationships in complex reasoning chains.
 """
 
-from typing import Any, Dict, List, Set
+from typing import Any
 
 import networkx as nx
 from pydantic import BaseModel
@@ -17,7 +17,7 @@ class Entity(BaseModel):
     id: str
     label: str
     type: str
-    attributes: Dict[str, Any] = {}
+    attributes: dict[str, Any] = {}
     confidence: float = 1.0
 
 
@@ -27,7 +27,7 @@ class Relationship(BaseModel):
     source: str
     target: str
     type: str
-    attributes: Dict[str, Any] = {}
+    attributes: dict[str, Any] = {}
     weight: float = 1.0
 
 
@@ -37,7 +37,9 @@ class MindMapTool:
     logical relationships and dependencies in reasoning chains.
     """
 
-    def __init__(self, graph_type: str = "directed", max_nodes: int = 50, clustering_threshold: float = 0.7) -> None:
+    def __init__(
+        self, graph_type: str = "directed", max_nodes: int = 50, clustering_threshold: float = 0.7
+    ) -> None:
         """
         Initialize the Mind Map Tool.
 
@@ -49,8 +51,8 @@ class MindMapTool:
         self.graph = nx.DiGraph() if graph_type == "directed" else nx.Graph()
         self.max_nodes = max_nodes
         self.clustering_threshold = clustering_threshold
-        self.entity_types: Set[str] = set()
-        self.relationship_types: Set[str] = set()
+        self.entity_types: set[str] = set()
+        self.relationship_types: set[str] = set()
 
     def add_entities(self, entities_data: str) -> None:
         """
@@ -119,7 +121,9 @@ class MindMapTool:
         analysis.append("\nKey Concepts:")
         for node, score in central_nodes:
             node_data = self.graph.nodes[node]
-            analysis.append(f"- {node_data['label']} (Centrality: {score:.2f}, Type: {node_data['type']})")
+            analysis.append(
+                f"- {node_data['label']} (Centrality: {score:.2f}, Type: {node_data['type']})"
+            )
 
         # Identify communities
         communities = list(nx.community.greedy_modularity_communities(self.graph.to_undirected()))
@@ -142,7 +146,7 @@ class MindMapTool:
 
         return "\n".join(analysis)
 
-    def get_graph_state(self) -> Dict[str, Any]:
+    def get_graph_state(self) -> dict[str, Any]:
         """
         Get the current state of the knowledge graph.
 
@@ -184,7 +188,7 @@ class MindMapTool:
         self.entity_types.clear()
         self.relationship_types.clear()
 
-    def _parse_entities(self, entities_data: str) -> List[Entity]:
+    def _parse_entities(self, entities_data: str) -> list[Entity]:
         """
         Parse entities from structured data.
 
@@ -200,7 +204,7 @@ class MindMapTool:
         # Add parsing logic here
         return entities
 
-    def _parse_relationships(self, relationships_data: str) -> List[Relationship]:
+    def _parse_relationships(self, relationships_data: str) -> list[Relationship]:
         """
         Parse relationships from structured data.
 

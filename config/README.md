@@ -15,4 +15,4 @@ For development, you can create local versions of these files (e.g., `model_conf
 
 ## Environment Variables
 
-Many configuration options can also be set using environment variables. See the `.env.example` file in the project root for a list of available environment variables. 
+Many configuration options can also be set using environment variables. See the `.env.example` file in the project root for a list of available environment variables.

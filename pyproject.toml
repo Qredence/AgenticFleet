@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentic-fleet"
-version = "0.4.95"
-description = "A powerful multi-agent system for adaptive AI reasoning and automation"
+version = "0.5.0"
+description = "A powerful multi-agent system for adaptive AI reasoning and automation with a clean, modular architecture"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
@@ -29,15 +29,16 @@ classifiers = [
 
 dependencies = [
     # Core Framework
-    "fastapi>=0.109.0",
-    "packaging>=23.2",
-    "psutil>=5.9.8",
+    "fastapi>=0.115.0",
     "pydantic>=2.5.2",
     "pydantic-settings>=2.2.1",
     "python-dotenv>=1.0.1",
-    "typing-extensions>=4.8.0",
     "uvicorn>=0.24.0",
     "starlette>=0.41.3",
+    "typer>=0.15.1",
+    "click>=8.1.8",
+    "packaging>=23.2",
+    "typing-extensions>=4.8.0",
     # Networking & Async
     "aiofiles>=23.1.0",
     "aiohttp>=3.11.11,<4.0.0",
@@ -48,23 +49,28 @@ dependencies = [
     "websockets>=14.2",
     "python-socketio>=5.12.1",
     "sse-starlette>=2.2.1",
+    "asyncer>=0.0.7",
+    "nest-asyncio>=1.6.0",
+    # Database & Storage
+    "sqlalchemy[asyncio]>=2.0.28",
+    "psycopg2-binary>=2.9.9",
+    "redis>=5.2.1",
+    "supabase>=2.3.1",
     # AI/ML Infrastructure
-    "autogen-agentchat>=0.5.3,<0.6.0",
-    "autogen-core>=0.5.3,<0.6.0",
-    "autogen-ext[langchain,docker]>=0.5.3,<0.6.0",
-    "autogen-ext[web-surfer,file-surfer,video-surfer]>=0.5.3,<0.6.0",
-    "autogen-ext[azure,gemini]>=0.5.3,<0.6.0",
-    "autogen-ext[mcp,diskcache]>=0.5.3,<0.6.0",
-    "autogen-ext[grpc]>=0.5.3,<0.6.0",
+    "autogen-agentchat>=0.5.7,<0.6.0",
+    "autogen-core>=0.5.7,<0.6.0",
+    "autogen-ext[langchain,docker]>=0.5.7,<0.6.0",
+    "autogen-ext>=0.5.7,<0.6.0", # Temporarily removed extras pulling openai-whisper
+    "autogen-ext[openai,azure,gemini]>=0.5.7,<0.6.0",
+    "autogen-ext[mcp,diskcache]>=0.5.7,<0.6.0",
+    "autogen-ext[grpc]>=0.5.7,<0.6.0",
     "autogenstudio",
-    "dspy>=1.0.0",
     "semantic-kernel>=1.19.0",
     "tiktoken>=0.8.0",
     # Model Providers
-    "composio-core>=0.6.11.post1",
-    "deepseek>=0.1.0", # For DeepSeek
     "magentic-one-cli",
-    "ollama>=0.1.5", # For Ollama
+    "mcp>=1.6.0",
+    "literalai>=0.1.201",
     # Azure Services
     "azure-ai-inference>=1.0.0b6", # For Azure AI Foundry
     "azure-ai-ml>=1.12.1", # For Azure AI Foundry
@@ -77,98 +83,86 @@ dependencies = [
     "azure-storage-blob>=12.24.0",
     # Data Processing
     "jsonlines>=4.0.0",
-    "matplotlib>=3.10.0",
     "numpy>=1.26",
     "pandas>=2.2.3",
-    "pillow>=11.0.0",
-    "plotly>=5.16.0",
-    "plotly-express>=0.4.1",
     "pytz>=2024.2",
-    "requests-html>=0.10.0",
-    "seaborn>=0.13.0",
-    "yfinance>=0.2.51",
     "scikit-learn>=1.6.1",
+    "dataclasses-json>=0.6.7",
+    # Visualization
+    "matplotlib>=3.10.0",
+    "pillow>=11.0.0",
+    "seaborn>=0.13.0",
     # Web & Utilities
     "beautifulsoup4>=4.12.0",
     "bing>=0.31",
     "chainlit>=2.5.5",
     "docker>=7.1.0",
-    "markitdown>=0.0.1a3",
-    "opentelemetry-instrumentation-fastapi>=0.44b0",
+    "markitdown",
     "playwright>=1.20.0",
-    "sqlalchemy[asyncio]>=2.0.28",
-    "psycopg2-binary>=2.9.9",
-    "supabase>=2.3.1",
+    "requests-html>=0.10.0",
     "tenacity>=9.0.0",
-    "dataclasses-json>=0.6.7",
     "html2text>=2024.2.26",
     "pyjwt>=2.10.1",
-    "redis>=5.2.1",
-    "pyyaml>=6.0.2",
-    # Developer Tools
+    "pyyaml==5.3.1", # Using a specific version known to work with Python 3.12
+    "psutil>=5.9.8",
+    # Monitoring & Instrumentation
+    "opentelemetry-instrumentation-fastapi>=0.44b0",
+    "uptrace>=1.27.0",
+    # Development Tools
+    "rich>=13.9.4",
     "aioconsole>=0.8.1",
-    "axios>=0.4.0",
     "authlib>=1.4.0",
-    "black>=24.10.0",
-    "isort>=5.13.2",
-    "ruff>=0.5.3",
-    "codecov>=2.1.13",
-    "gunicorn>=23.0.0",
+    "debugpy>=1.8.12",
     "ipykernel>=6.29.5",
     "puremagic>=1.28",
-    "pytest>=8.3.4",
-    "pytest-asyncio>=0.25.2",
-    "pytest-cov>=6.0.0",
-    "pytest-xdist>=3.5.0",
-    "rich>=13.9.4",
-    "typer>=0.15.1",
-    "types-setuptools>=75.8.0.20250110",
-    "setuptools>=75.8.0",
-    "asyncer>=0.0.7",
-    "uptrace>=1.27.0",
     "syncer>=2.0.3",
-    "nest-asyncio>=1.6.0",
-    "click>=8.1.8",
-    "grpcio>=1.70.0",
-    "grpcio-tools==1.64.0",
-    "absl-py==2.1.0",
-    # macOS specific
-    "modulegraph>=0.19.6",
-    "macholib>=1.16.3",
-    "py2app>=0.28.8",
     "mem0ai>=0.1.86",
-    "mcp>=1.6.0",
-    "literalai>=0.1.201",
-    "debugpy>=1.8.12",
+    # gRPC Support
+    "grpcio>=1.70.0",
+    "grpcio-tools>=1.70.0", # Matching grpcio version
+    "absl-py>=2.1.0",
+    # macOS specific (optional but included for compatibility)
+    "macholib>=1.16.3; sys_platform == 'darwin'",
+    "pytest>=8.3.4",
+    "ruff>=0.11.10",
+    "black>=25.1.0",
+    "isort>=6.0.1",
 ]
 
 [project.optional-dependencies]
 test = [
-    "pytest>=7.4.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-cov>=4.1.0",
+    # Testing Framework
+    "pytest>=8.0.2,<9.0.0",
+    "pytest-asyncio>=0.25.2",
+    "pytest-cov>=6.0.0",
     "pytest-mock>=3.11.1",
     "pytest-sugar>=0.9.7",
+    "pytest-xdist>=3.5.0",
+    "coverage>=7.4.4",
+
+    # HTTP Testing
     "httpx>=0.25.0",
     "respx>=0.20.2",
-    "coverage>=7.3.0",
+
+    # Code Quality
     "mypy>=1.5.0",
-    "ruff>=0.1.0",
-    "black>=23.9.0",
-    "isort>=5.12.0"
+    "codecov>=2.1.13"
 ]
 
 dev = [
     # Linting and Code Quality
     "ruff>=0.5.3",
-    "black>=24.1.1",
+    "black>=24.10.0",
     "isort>=5.13.2",
-
+    "mypy>=1.5.0",
 
     # Testing
-    "pytest>=8.0.2",
-    "pytest-asyncio>=0.23.3",
-    "pytest-cov>=4.1.0",
+    "pytest>=8.0.2,<9.0.0",
+    "pytest-asyncio>=0.25.2",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.11.1",
+    "pytest-sugar>=0.9.7",
+    "pytest-xdist>=3.5.0",
     "coverage>=7.4.4",
 
     # Documentation
@@ -177,26 +171,42 @@ dev = [
 
     # Debugging
     "ipdb>=0.13.13",
-    "rich>=10.16.2"
+    "rich>=13.9.4",
+    "debugpy>=1.8.12"
 ]
 
 docs = [
     "mkdocs>=1.5.3",
-    "mkdocstrings[python]>=0.24.0"
+    "mkdocstrings[python]>=0.24.0",
+    "mkdocs-material>=9.5.0",
+    "pymdown-extensions>=10.7.0"
 ]
 
 models = [
+    # Local Models
     "ollama>=0.1.5",
-    "autogen-ext[semantic-kernel-anthropic]",
-    "autogen-ext[semantic-kernel-google]",
-    "autogen-ext[semantic-kernel-ollama]",
-    "autogen-ext[semantic-kernel-aws]",
-    "autogen-ext[semantic-kernel-mistralai]",
-    "autogen-ext[semantic-kernel-hugging-face]"
+
+    # Cloud Providers
+    "autogen-ext[semantic-kernel-anthropic]>=0.5.7,<0.6.0",
+    "autogen-ext[semantic-kernel-google]>=0.5.7,<0.6.0",
+    "autogen-ext[semantic-kernel-ollama]>=0.5.7,<0.6.0",
+    "autogen-ext[semantic-kernel-aws]>=0.5.7,<0.6.0",
+    "autogen-ext[semantic-kernel-mistralai]>=0.5.7,<0.6.0",
+    "autogen-ext[semantic-kernel-hugging-face]>=0.5.7,<0.6.0"
+]
+
+deploy = [
+    "gunicorn>=23.0.0",
+    "uvicorn[standard]>=0.24.0",
+    "supervisor>=4.2.5",
+    # Using docker SDK
+    "docker>=7.0.0"
+    # Note: docker-compose should be installed via pip install docker-compose
+    # or via the Docker Desktop application
 ]
 
 [tool.pytest.ini_options]
-minversion = "7.4.0"
+minversion = "8.0.0"
 addopts = "-ra -q --cov=agentic_fleet --cov-report=term-missing"
 testpaths = ["tests"]
 python_files = "test_*.py"

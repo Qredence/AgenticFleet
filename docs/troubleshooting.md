@@ -11,11 +11,13 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Check Running Instances**:
+
    ```bash
    agenticfleet status
    ```
 
 2. **Use Different Port**:
+
    ```bash
    agenticfleet start --port 8001
    ```
@@ -34,11 +36,13 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **List Running Instances**:
+
    ```bash
    ps aux | grep agenticfleet
    ```
 
 2. **Stop All Instances**:
+
    ```bash
    agenticfleet stop --all
    ```
@@ -58,11 +62,13 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Verify Environment Variables**:
+
    ```bash
    agenticfleet config list | grep OAUTH
    ```
 
 2. **Check Callback URL**:
+
    - Ensure it matches GitHub OAuth settings
    - Default: `http://localhost:8000/auth/callback`
 
@@ -78,6 +84,7 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Clear Token Cache**:
+
    ```bash
    agenticfleet clean --auth-cache
    ```
@@ -95,11 +102,13 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Verify Credentials**:
+
    ```bash
    agenticfleet config verify azure
    ```
 
 2. **Check Endpoint**:
+
    - Ensure endpoint URL is correct
    - Test connection:
      ```bash
@@ -118,6 +127,7 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Check Usage**:
+
    ```bash
    agenticfleet status --usage
    ```
@@ -137,11 +147,13 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Monitor Usage**:
+
    ```bash
    agenticfleet status --resources
    ```
 
 2. **Clear Cache**:
+
    ```bash
    agenticfleet clean --cache
    ```
@@ -159,6 +171,7 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Check Performance**:
+
    ```bash
    agenticfleet status --performance
    ```
@@ -178,6 +191,7 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Clean Install**:
+
    ```bash
    uv pip uninstall agentic-fleet
    uv pip install agentic-fleet --no-deps
@@ -196,15 +210,17 @@ This guide helps you resolve common issues with AgenticFleet.
 **Solutions**:
 
 1. **Manual Installation**:
+
    ```bash
    playwright install chromium --with-deps
    ```
 
 2. **System Dependencies**:
+
    ```bash
    # Ubuntu/Debian
    sudo apt-get install -y libgbm-dev
-   
+
    # macOS
    brew install webkit
    ```
@@ -236,6 +252,7 @@ agenticfleet logs --component agent
 ### "No module named 'agentic_fleet'"
 
 **Solution**:
+
 ```bash
 # Reinstall package
 uv pip install -e .
@@ -244,6 +261,7 @@ uv pip install -e .
 ### "ImportError: cannot import name 'X'"
 
 **Solution**:
+
 ```bash
 # Update to latest version
 uv pip install --upgrade agentic-fleet

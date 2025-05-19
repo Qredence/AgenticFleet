@@ -4,7 +4,7 @@ Pydantic schemas for message-related data.
 
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -32,17 +32,21 @@ class MessageCreate(MessageBase):
     """Schema for creating a new message."""
 
     session_id: str = Field(..., description="ID of the chat session")
-    parent_id: Optional[str] = Field(None, description="ID of the parent message (for threading)")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional message metadata")
-    attachments: List[Dict[str, Any]] = Field(default_factory=list, description="Attached files or media")
+    parent_id: str | None = Field(None, description="ID of the parent message (for threading)")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional message metadata"
+    )
+    attachments: list[dict[str, Any]] = Field(
+        default_factory=list, description="Attached files or media"
+    )
 
 
 class MessageUpdate(BaseModel):
     """Schema for updating an existing message."""
 
-    content: Optional[str] = Field(None, description="Content of the message")
-    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional message metadata")
-    is_edited: Optional[bool] = Field(None, description="Whether the message has been edited")
+    content: str | None = Field(None, description="Content of the message")
+    metadata: dict[str, Any] | None = Field(None, description="Additional message metadata")
+    is_edited: bool | None = Field(None, description="Whether the message has been edited")
 
 
 class Message(MessageBase):
@@ -50,12 +54,16 @@ class Message(MessageBase):
 
     id: str = Field(..., description="Unique identifier for the message")
     session_id: str = Field(..., description="ID of the chat session")
-    parent_id: Optional[str] = Field(None, description="ID of the parent message (for threading)")
+    parent_id: str | None = Field(None, description="ID of the parent message (for threading)")
     timestamp: datetime = Field(..., description="When the message was sent")
-    edited_at: Optional[datetime] = Field(None, description="When the message was last edited")
+    edited_at: datetime | None = Field(None, description="When the message was last edited")
     is_edited: bool = Field(default=False, description="Whether the message has been edited")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional message metadata")
-    attachments: List[Dict[str, Any]] = Field(default_factory=list, description="Attached files or media")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional message metadata"
+    )
+    attachments: list[dict[str, Any]] = Field(
+        default_factory=list, description="Attached files or media"
+    )
 
     class Config:
         """Pydantic configuration."""

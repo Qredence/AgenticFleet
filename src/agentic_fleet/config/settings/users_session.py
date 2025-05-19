@@ -1,8 +1,6 @@
-from typing import Dict
-
 from chainlit.context import WebsocketSession, context
 
-user_sessions: Dict[str, Dict] = {}
+user_sessions: dict[str, dict] = {}
 
 
 class UserSession:

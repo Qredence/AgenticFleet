@@ -5,7 +5,7 @@ This module implements the retrieval-reasoning pattern using Autogen 0.4.7's
 architecture for dynamic multi-agent interactions.
 """
 
-from typing import List, Optional, Sequence
+from collections.abc import Sequence
 
 from autogen_agentchat.agents import BaseChatAgent
 from autogen_agentchat.base import Response
@@ -73,7 +73,7 @@ class RetrievalReasoningOrchestrator(BaseChatAgent):
         response = await self.mind_map_agent.process_message(message, token)
         return response
 
-    async def _process_token_in_text(self, text: str, token_type: str) -> Optional[Response]:
+    async def _process_token_in_text(self, text: str, token_type: str) -> Response | None:
         """Extract and process a specific token type from text."""
         start_token = f"[{token_type}:"
         end_token = "]"
@@ -91,7 +91,9 @@ class RetrievalReasoningOrchestrator(BaseChatAgent):
                     return await self._handle_mind_map(query)
         return None
 
-    async def process_message(self, message: ChatMessage, token: CancellationToken = None) -> Response:
+    async def process_message(
+        self, message: ChatMessage, token: CancellationToken = None
+    ) -> Response:
         """
         Process incoming messages and manage the reasoning flow.
 
@@ -104,7 +106,7 @@ class RetrievalReasoningOrchestrator(BaseChatAgent):
         """
         iteration = 0
         current_reasoning = message.content
-        collected_info: List[Response] = []
+        collected_info: list[Response] = []
 
         while iteration < self.max_iterations and not (token and token.cancelled):
             # Process tokens in current reasoning
@@ -137,7 +139,9 @@ class RetrievalReasoningOrchestrator(BaseChatAgent):
             },
         )
 
-    async def generate_response(self, messages: Sequence[LLMMessage], token: CancellationToken = None) -> CreateResult:
+    async def generate_response(
+        self, messages: Sequence[LLMMessage], token: CancellationToken = None
+    ) -> CreateResult:
         """
         Generate a response based on the message history.
 

@@ -1,0 +1,254 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Command Execution Rules and Best Practices
+
+This document outlines the rules and best practices for executing commands during the development of AgenticFleet. These guidelines ensure consistent, safe, and effective command execution across the project.
+
+## Core Principles for Command Execution
+
+1. **Provide Context**: Always include a clear explanation of why you're running a command
+2. **Be Precise**: Use exact commands with proper arguments and options
+3. **Show Results**: Document important command output for future reference
+4. **Handle Errors**: Properly handle and document any errors that occur
+5. **Use Appropriate Permissions**: Only use elevated permissions when necessary
+
+## Command Categories and Usage Guidelines
+
+<mermaid>
+graph TD
+    Command["⚙️ Command Types"] --> Development["🛠️ Development<br>Commands"]
+    Command --> Testing["🧪 Testing<br>Commands"]
+    Command --> Deployment["🚀 Deployment<br>Commands"]
+    Command --> Maintenance["🔧 Maintenance<br>Commands"]
+    
+    Development --> D1["Code Generation"]
+    Development --> D2["Build Tools"]
+    Development --> D3["Dependency Management"]
+    
+    Testing --> T1["Unit Testing"]
+    Testing --> T2["Integration Testing"]
+    Testing --> T3["Coverage Analysis"]
+    
+    Deployment --> DP1["Containerization"]
+    Deployment --> DP2["Environment Setup"]
+    Deployment --> DP3["Release Management"]
+    
+    Maintenance --> M1["Debugging"]
+    Maintenance --> M2["Monitoring"]
+    Maintenance --> M3["System Management"]
+    
+    style Command fill:#4da6ff,stroke:#0066cc,color:white
+    style Development fill:#4dbb5f,stroke:#36873f,color:white
+    style Testing fill:#ffa64d,stroke:#cc7a30,color:white
+    style Deployment fill:#ff5555,stroke:#cc0000,color:white
+    style Maintenance fill:#d971ff,stroke:#a33bc2,color:white
+</mermaid>
+
+### Development Commands
+
+#### Dependency Management
+```bash
+# Installing project dependencies
+pip install -r requirements.txt
+
+# Adding a new dependency
+pip install package_name && pip freeze > requirements.txt
+```
+
+#### Code Generation
+```bash
+# Generating code from schemas
+python -m src.tools.code_generator --schema schema.json --output output_dir
+```
+
+#### Build Tools
+```bash
+# Building project
+python -m build
+```
+
+### Testing Commands
+
+#### Unit Testing
+```bash
+# Running all tests
+pytest
+
+# Running specific test file
+pytest tests/unit/test_file.py
+
+# Running tests with coverage
+pytest --cov=src tests/
+```
+
+#### Integration Testing
+```bash
+# Running integration tests
+pytest tests/integration/
+
+# Running end-to-end tests
+pytest tests/e2e/
+```
+
+### Deployment Commands
+
+#### Containerization
+```bash
+# Building Docker image
+docker build -t agentic-fleet:latest .
+
+# Running Docker container
+docker run -p 8000:8000 agentic-fleet:latest
+```
+
+#### Environment Setup
+```bash
+# Setting up virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Unix/macOS
+.\.venv\Scripts\activate  # On Windows
+```
+
+### Maintenance Commands
+
+#### Debugging
+```bash
+# Checking logs
+tail -f logs/app.log
+
+# Debugging with Python debugger
+python -m debugpy --listen 5678 --wait-for-client app.py
+```
+
+## Command Execution Workflow
+
+<mermaid>
+graph TD
+    Start["Start Command Execution"] --> Plan["Plan Command"]
+    Plan --> Verify["Verify Command Safety"]
+    Verify --> Execute["Execute Command"]
+    Execute --> Check["Check Results"]
+    Check --> Doc["Document Results"]
+    
+    Check -->|"Error"| Troubleshoot["Troubleshoot"]
+    Troubleshoot --> Adjust["Adjust Command"]
+    Adjust --> Verify
+    
+    style Start fill:#99ccff,stroke:#4d88ff
+    style Verify fill:#ff9999,stroke:#ff6666
+    style Execute fill:#99ff99,stroke:#66cc66
+    style Check fill:#ffcc99,stroke:#ff9966
+    style Troubleshoot fill:#ff9999,stroke:#ff6666
+</mermaid>
+
+## Command Documentation Format
+
+When documenting commands, follow this format:
+
+```
+## Command: [Command Name]
+
+**Purpose**: [Brief description of why this command is being executed]
+
+**Command**:
+```bash
+[Exact command to execute]
+```
+
+**Expected Result**: [What should happen when the command is executed]
+
+**Actual Result**: [What actually happened, including relevant output]
+```
+
+## Safety Guidelines
+
+1. **Never use `sudo` unless absolutely necessary**
+2. **Always review commands that modify filesystem extensively**
+3. **Double-check destructive commands (rm, drop, delete, etc.)**
+4. **Use `--dry-run` or equivalent when available**
+5. **Backup data before running potentially dangerous commands**
+
+## Environment-Specific Commands
+
+### Development Environment
+```bash
+# Start local development server
+python -m src.agentic_fleet.main
+```
+
+### Testing Environment
+```bash
+# Run with test configuration
+ENV=test python -m src.agentic_fleet.main
+```
+
+### Production Environment
+```bash
+# Run with production configuration
+ENV=prod python -m src.agentic_fleet.main
+```
+
+## Error Handling
+
+<mermaid>
+graph TD
+    Error["❌ Command Error"] --> Analyze["Analyze Error Message"]
+    Analyze --> Classify["Classify Error Type"]
+    
+    Classify --> Permission["Permission Issue"]
+    Classify --> Syntax["Syntax Error"]
+    Classify --> Missing["Missing Dependency"]
+    Classify --> Logical["Logical Error"]
+    
+    Permission --> PermissionFix["Fix: Check/Adjust Permissions"]
+    Syntax --> SyntaxFix["Fix: Correct Command Syntax"]
+    Missing --> MissingFix["Fix: Install Required Dependencies"]
+    Logical --> LogicalFix["Fix: Revise Command Logic"]
+    
+    PermissionFix & SyntaxFix & MissingFix & LogicalFix --> Retry["Retry Command"]
+    Retry --> Document["Document Solution"]
+    
+    style Error fill:#ff9999,stroke:#ff6666,color:black
+    style Analyze fill:#ffcc99,stroke:#ff9966
+    style Classify fill:#ffcc99,stroke:#ff9966
+    style Retry fill:#99ff99,stroke:#66cc66
+    style Document fill:#99ccff,stroke:#4d88ff
+</mermaid>
+
+## Command Execution in Memory Bank Modes
+
+### Planning Mode Commands
+- Commands to gather information
+- Commands to analyze existing code
+- Non-destructive exploratory commands
+
+### Creative Mode Commands
+- Commands to prototype solutions
+- Experimental commands in isolated environments
+- Commands to generate design artifacts
+
+### Implementation Mode Commands
+- Commands to create and modify code
+- Commands to install dependencies
+- Commands to build and test implementations
+
+### Reflection Mode Commands
+- Commands to analyze code quality
+- Commands to run tests and gather metrics
+- Commands to verify implementation
+
+## Best Practices Summary
+
+1. **Be Explicit**: Use full paths and explicit options instead of relying on defaults
+2. **Use Version Control**: Ensure work is committed before running potentially destructive commands
+3. **Document Extensively**: Record commands, their context, and their outputs
+4. **Use Appropriate Environment**: Run commands in the right environment (dev, test, prod)
+5. **Follow Progressive Approach**: Start with simple/safe commands and progress to more complex/risky ones
+6. **Verify Results**: Always check that commands produced the expected outcome
+7. **Learn from Errors**: Document errors and their solutions for future reference
+8. **Use Automation**: Create scripts for repeated command sequences
+9. **Practice Least Privilege**: Use the minimum permissions necessary
+10. **Keep Context in Mind**: Consider the current mode, task, and complexity level when executing commands

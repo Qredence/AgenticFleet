@@ -6,30 +6,32 @@ with various configurations and specializations.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Type
+from typing import Any
 
 from autogen_core.models import ChatCompletionClient
 from pydantic import BaseModel
 
 from agentic_fleet.core.agents.base import BaseAgent
-from agentic_fleet.core.agents.team_manager import TeamConfig, TeamManager
 from agentic_fleet.core.agents.orchestrator import OrchestratorConfig
-from agentic_fleet.core.models.messages import EnhancedSystemMessage
+from agentic_fleet.core.agents.team_manager import TeamConfig, TeamManager
 
 logger = logging.getLogger(__name__)
 
+
 class TeamSpecialization(BaseModel):
     """Configuration for team specialization."""
+
     name: str
     description: str
-    required_agents: List[str]
-    orchestrator_config: Optional[OrchestratorConfig] = None
-    team_config: Optional[Dict[str, Any]] = None
+    required_agents: list[str]
+    orchestrator_config: OrchestratorConfig | None = None
+    team_config: dict[str, Any] | None = None
+
 
 class TeamFactory:
     """
     Factory for creating specialized agent teams.
-    
+
     This factory:
     1. Provides predefined team configurations
     2. Creates teams with specific specializations
@@ -37,65 +39,61 @@ class TeamFactory:
     4. Configures team-specific settings
     """
 
-    def __init__(self, model_client: Optional[ChatCompletionClient] = None):
+    def __init__(self, model_client: ChatCompletionClient | None = None):
         """Initialize the team factory.
 
         Args:
             model_client: The LLM client to use for created teams
         """
         self.model_client = model_client
-        self._specializations: Dict[str, TeamSpecialization] = {}
+        self._specializations: dict[str, TeamSpecialization] = {}
         self._register_default_specializations()
 
     def _register_default_specializations(self) -> None:
         """Register default team specializations."""
-        self._specializations.update({
-            "coding": TeamSpecialization(
-                name="coding",
-                description="Team specialized in software development tasks",
-                required_agents=["coder", "file_surfer", "executor"],
-                orchestrator_config=OrchestratorConfig(
-                    planning_temperature=0.7,
-                    max_steps=30,
-                    stall_threshold_seconds=180
+        self._specializations.update(
+            {
+                "coding": TeamSpecialization(
+                    name="coding",
+                    description="Team specialized in software development tasks",
+                    required_agents=["coder", "file_surfer", "executor"],
+                    orchestrator_config=OrchestratorConfig(
+                        planning_temperature=0.7, max_steps=30, stall_threshold_seconds=180
+                    ),
+                    team_config={
+                        "max_parallel_tasks": 1,
+                        "max_retries": 3,
+                        "timeout_seconds": 1800,  # 30 minutes
+                    },
                 ),
-                team_config={
-                    "max_parallel_tasks": 1,
-                    "max_retries": 3,
-                    "timeout_seconds": 1800  # 30 minutes
-                }
-            ),
-            "research": TeamSpecialization(
-                name="research",
-                description="Team specialized in web research and information gathering",
-                required_agents=["web_surfer", "file_surfer"],
-                orchestrator_config=OrchestratorConfig(
-                    planning_temperature=0.8,
-                    max_steps=20,
-                    stall_threshold_seconds=240
+                "research": TeamSpecialization(
+                    name="research",
+                    description="Team specialized in web research and information gathering",
+                    required_agents=["web_surfer", "file_surfer"],
+                    orchestrator_config=OrchestratorConfig(
+                        planning_temperature=0.8, max_steps=20, stall_threshold_seconds=240
+                    ),
+                    team_config={
+                        "max_parallel_tasks": 2,
+                        "max_retries": 2,
+                        "timeout_seconds": 2400,  # 40 minutes
+                    },
                 ),
-                team_config={
-                    "max_parallel_tasks": 2,
-                    "max_retries": 2,
-                    "timeout_seconds": 2400  # 40 minutes
-                }
-            ),
-            "general": TeamSpecialization(
-                name="general",
-                description="Balanced team for general-purpose tasks",
-                required_agents=["web_surfer", "file_surfer", "coder", "executor"],
-                orchestrator_config=OrchestratorConfig(
-                    planning_temperature=0.7,
-                    max_steps=40,
-                    stall_threshold_seconds=300
+                "general": TeamSpecialization(
+                    name="general",
+                    description="Balanced team for general-purpose tasks",
+                    required_agents=["web_surfer", "file_surfer", "coder", "executor"],
+                    orchestrator_config=OrchestratorConfig(
+                        planning_temperature=0.7, max_steps=40, stall_threshold_seconds=300
+                    ),
+                    team_config={
+                        "max_parallel_tasks": 1,
+                        "max_retries": 3,
+                        "timeout_seconds": 3600,  # 1 hour
+                    },
                 ),
-                team_config={
-                    "max_parallel_tasks": 1,
-                    "max_retries": 3,
-                    "timeout_seconds": 3600  # 1 hour
-                }
-            )
-        })
+            }
+        )
 
     def register_specialization(self, specialization: TeamSpecialization) -> None:
         """Register a new team specialization.
@@ -105,7 +103,7 @@ class TeamFactory:
         """
         self._specializations[specialization.name] = specialization
 
-    def get_specialization(self, name: str) -> Optional[TeamSpecialization]:
+    def get_specialization(self, name: str) -> TeamSpecialization | None:
         """Get a registered specialization by name.
 
         Args:
@@ -116,7 +114,7 @@ class TeamFactory:
         """
         return self._specializations.get(name)
 
-    def list_specializations(self) -> List[str]:
+    def list_specializations(self) -> list[str]:
         """List all registered specialization names.
 
         Returns:
@@ -127,8 +125,8 @@ class TeamFactory:
     def create_team(
         self,
         specialization: str,
-        available_agents: Dict[str, BaseAgent],
-        custom_config: Optional[Dict[str, Any]] = None
+        available_agents: dict[str, BaseAgent],
+        custom_config: dict[str, Any] | None = None,
     ) -> TeamManager:
         """Create a team with the specified specialization.
 
@@ -149,10 +147,7 @@ class TeamFactory:
             raise ValueError(f"Unknown specialization: {specialization}")
 
         # Validate required agents
-        missing_agents = [
-            agent for agent in spec.required_agents
-            if agent not in available_agents
-        ]
+        missing_agents = [agent for agent in spec.required_agents if agent not in available_agents]
         if missing_agents:
             raise ValueError(
                 f"Missing required agents for {specialization} specialization: "
@@ -164,29 +159,21 @@ class TeamFactory:
             name=f"{specialization}_team",
             description=spec.description,
             orchestrator_config=spec.orchestrator_config,
-            **{
-                **spec.team_config,
-                **(custom_config or {})
-            }
+            **{**spec.team_config, **(custom_config or {})},
         )
 
         # Create and configure team
-        team = TeamManager(
-            config=team_config,
-            model_client=self.model_client
-        )
+        team = TeamManager(config=team_config, model_client=self.model_client)
 
         # Register required agents
         required_agent_dict = {
-            name: agent for name, agent in available_agents.items()
-            if name in spec.required_agents
+            name: agent for name, agent in available_agents.items() if name in spec.required_agents
         }
         team.register_agents(required_agent_dict)
 
         # Initialize orchestrator
         team.initialize_orchestrator(
-            name=f"{specialization}_orchestrator",
-            config=spec.orchestrator_config
+            name=f"{specialization}_orchestrator", config=spec.orchestrator_config
         )
 
         return team
@@ -195,9 +182,9 @@ class TeamFactory:
         self,
         name: str,
         description: str,
-        agents: Dict[str, BaseAgent],
-        orchestrator_config: Optional[OrchestratorConfig] = None,
-        team_config: Optional[Dict[str, Any]] = None
+        agents: dict[str, BaseAgent],
+        orchestrator_config: OrchestratorConfig | None = None,
+        team_config: dict[str, Any] | None = None,
     ) -> TeamManager:
         """Create a custom team with specified configuration.
 
@@ -215,18 +202,12 @@ class TeamFactory:
             name=name,
             description=description,
             orchestrator_config=orchestrator_config,
-            **(team_config or {})
+            **(team_config or {}),
         )
 
-        team = TeamManager(
-            config=config,
-            model_client=self.model_client
-        )
+        team = TeamManager(config=config, model_client=self.model_client)
 
         team.register_agents(agents)
-        team.initialize_orchestrator(
-            name=f"{name}_orchestrator",
-            config=orchestrator_config
-        )
+        team.initialize_orchestrator(name=f"{name}_orchestrator", config=orchestrator_config)
 
-        return team 
+        return team

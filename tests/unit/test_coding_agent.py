@@ -1,10 +1,6 @@
 import pytest
-
 from agentic_fleet.core.agents.coding_agent import CodingAgent, CodingConfig
-from agentic_fleet.core.tools.code_execution.code_execution_tool import (
-    CodeBlock,
-    ExecutionResult,
-)
+from agentic_fleet.core.tools.code_execution.code_execution_tool import CodeBlock, ExecutionResult
 
 
 @pytest.mark.asyncio

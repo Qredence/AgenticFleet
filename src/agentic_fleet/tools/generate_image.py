@@ -2,7 +2,7 @@ import base64
 import io
 import uuid
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import Literal
 
 from autogen_core.code_executor import ImportFromModule
 from autogen_core.tools import FunctionTool
@@ -12,9 +12,9 @@ from PIL import Image
 
 async def generate_image(
     query: str,
-    output_dir: Optional[Path] = None,
+    output_dir: Path | None = None,
     image_size: Literal["1024x1024", "512x512", "256x256"] = "1024x1024",
-) -> List[str]:
+) -> list[str]:
     """
     Generate images using OpenAI's DALL-E model based on a text description.
 
@@ -30,7 +30,9 @@ async def generate_image(
     client = OpenAI()
 
     # Generate images using DALL-E 3
-    response = client.images.generate(model="dall-e-3", prompt=query, n=1, response_format="b64_json", size=image_size)
+    response = client.images.generate(
+        model="dall-e-3", prompt=query, n=1, response_format="b64_json", size=image_size
+    )
 
     saved_files = []
 

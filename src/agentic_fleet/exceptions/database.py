@@ -2,7 +2,6 @@
 Database-specific exceptions for Agentic Fleet.
 """
 
-from typing import Optional
 
 from agentic_fleet.exceptions.base import AgenticFleetDatabaseError
 
@@ -21,7 +20,7 @@ class DatabaseQueryError(AgenticFleetDatabaseError):
     Exception raised when a database query fails.
     """
 
-    def __init__(self, message: str = "Database query failed", query: Optional[str] = None):
+    def __init__(self, message: str = "Database query failed", query: str | None = None):
         self.query = query
         super().__init__(message)
 

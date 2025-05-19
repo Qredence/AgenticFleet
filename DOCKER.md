@@ -31,8 +31,9 @@ docker-compose up -d prod
 ## Symlinks
 
 For convenience, we provide symlinks in the root directory:
+
 - `Dockerfile` → `docker/prod.Dockerfile`
 - `docker-compose.yml` → `docker/docker-compose.yml`
 - `.dockerignore` → `docker/.dockerignore`
 
-These symlinks allow you to run Docker commands from the root directory. 
+These symlinks allow you to run Docker commands from the root directory.

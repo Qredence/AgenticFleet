@@ -11,4 +11,4 @@ if [ $# -eq 0 ]; then
 else
     echo "Running tests with arguments: $@"
     python -m pytest "$@"
-fi 
+fi

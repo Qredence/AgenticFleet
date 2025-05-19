@@ -59,15 +59,15 @@ docker build \
 # If --push flag is provided, push the images to Docker Hub
 if [ "$2" = "--push" ]; then
     echo "Pushing images to Docker Hub..."
-    
+
     # Extract the tags from the TAGS variable
     TAG1=$(echo ${TAGS} | cut -d' ' -f2)
     TAG2=$(echo ${TAGS} | cut -d' ' -f4)
-    
+
     # Remove the -t prefix
     TAG1=${TAG1:2}
     TAG2=${TAG2:2}
-    
+
     docker push "${TAG1}"
     docker push "${TAG2}"
 fi

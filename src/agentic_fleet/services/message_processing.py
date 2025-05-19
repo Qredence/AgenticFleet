@@ -3,7 +3,7 @@
 This module provides functionality for processing and streaming messages in the chat interface.
 """
 
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import chainlit as cl
 from autogen_agentchat.messages import TextMessage
@@ -24,8 +24,8 @@ async def stream_text(text: str, delay: float = 0.03) -> None:
 
 
 async def process_response(
-    response: Union[TextMessage, List[Any], Dict[str, Any]],
-) -> Tuple[Optional[str], Optional[str]]:
+    response: TextMessage | list[Any] | dict[str, Any],
+) -> tuple[str | None, str | None]:
     """Process agent responses and return response text and plan update.
 
     Args:

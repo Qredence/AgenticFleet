@@ -26,6 +26,7 @@ This example demonstrates how to use AgenticFleet with Chainlit UI and AutoGen a
 ## Setup
 
 1. Create a `.env` file in the project root with your Azure OpenAI credentials:
+
    ```env
    AZURE_OPENAI_API_KEY=your_api_key
    AZURE_OPENAI_ENDPOINT=your_endpoint
@@ -33,6 +34,7 @@ This example demonstrates how to use AgenticFleet with Chainlit UI and AutoGen a
    ```
 
 2. Install required packages:
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -45,6 +47,7 @@ This example demonstrates how to use AgenticFleet with Chainlit UI and AutoGen a
 ## Usage
 
 1. Start the chat application:
+
    ```bash
    chainlit run basic_agent_chat.py
    ```
@@ -60,6 +63,7 @@ This example demonstrates how to use AgenticFleet with Chainlit UI and AutoGen a
 ## Configuration
 
 The `config.yaml` file contains settings for:
+
 - Model parameters
 - Agent configurations
 - UI preferences
@@ -70,11 +74,13 @@ Modify these settings to customize the behavior of your agents.
 ## Example Interactions
 
 1. Web Search:
+
    ```
    User: "Search for the latest Python best practices"
    ```
 
 2. Code Generation:
+
    ```
    User: "Write a Python function to calculate Fibonacci numbers"
    ```
@@ -87,6 +93,7 @@ Modify these settings to customize the behavior of your agents.
 ## Error Handling
 
 The example includes comprehensive error handling:
+
 - Setup failures
 - Agent processing errors
 - Resource cleanup issues
@@ -104,10 +111,11 @@ All errors are logged and displayed in the UI with appropriate messages.
 ## Contributing
 
 Feel free to:
+
 - Report issues
 - Suggest improvements
 - Submit pull requests
 
 ## License
 
-This example is part of AgenticFleet and is licensed under the same terms as the main project. 
+This example is part of AgenticFleet and is licensed under the same terms as the main project.

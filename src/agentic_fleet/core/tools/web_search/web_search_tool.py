@@ -7,7 +7,7 @@ search results to gather relevant information for decision making.
 
 import asyncio
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any
 
 import httpx
 from bs4 import BeautifulSoup
@@ -25,7 +25,7 @@ class SearchResult(BaseModel):
     source: str
     timestamp: datetime = Field(default_factory=datetime.now)
     relevance_score: float = 0.0
-    metadata: Dict[str, Any] = {}
+    metadata: dict[str, Any] = {}
 
 
 class WebSearchTool:
@@ -34,7 +34,9 @@ class WebSearchTool:
     to gather relevant information for decision making.
     """
 
-    def __init__(self, max_results: int = 5, search_depth: int = 1, min_relevance_score: float = 0.7) -> None:
+    def __init__(
+        self, max_results: int = 5, search_depth: int = 1, min_relevance_score: float = 0.7
+    ) -> None:
         """
         Initialize the Web Search Tool.
 
@@ -46,10 +48,10 @@ class WebSearchTool:
         self.max_results = max_results
         self.search_depth = search_depth
         self.min_relevance_score = min_relevance_score
-        self.search_history: List[Dict[str, Any]] = []
+        self.search_history: list[dict[str, Any]] = []
         self.vectorizer = TfidfVectorizer(stop_words="english", max_features=1000)
 
-    async def search(self, query: str) -> List[SearchResult]:
+    async def search(self, query: str) -> list[SearchResult]:
         """
         Perform a web search for the given query.
 
@@ -68,9 +70,9 @@ class WebSearchTool:
 
             # Score and filter results
             scored_results = await self._score_results(query, results)
-            filtered_results = [r for r in scored_results if r.relevance_score >= self.min_relevance_score][
-                : self.max_results
-            ]
+            filtered_results = [
+                r for r in scored_results if r.relevance_score >= self.min_relevance_score
+            ][: self.max_results]
 
             # If search depth > 1, follow links and analyze content
             if self.search_depth > 1:
@@ -89,7 +91,7 @@ class WebSearchTool:
             self.search_history.append(search_record)
             raise
 
-    async def _execute_search(self, query: str) -> List[SearchResult]:
+    async def _execute_search(self, query: str) -> list[SearchResult]:
         """
         Execute the search using available search APIs.
 
@@ -121,7 +123,7 @@ class WebSearchTool:
 
         return results
 
-    async def _score_results(self, query: str, results: List[SearchResult]) -> List[SearchResult]:
+    async def _score_results(self, query: str, results: list[SearchResult]) -> list[SearchResult]:
         """
         Score search results based on relevance to query.
 
@@ -150,7 +152,7 @@ class WebSearchTool:
 
         return sorted(results, key=lambda x: x.relevance_score, reverse=True)
 
-    async def _analyze_content(self, results: List[SearchResult]) -> List[SearchResult]:
+    async def _analyze_content(self, results: list[SearchResult]) -> list[SearchResult]:
         """
         Analyze the content of search results in more detail.
 
@@ -176,7 +178,11 @@ class WebSearchTool:
                                 {
                                     "detailed_content": main_content.get_text(),
                                     "word_count": len(main_content.get_text().split()),
-                                    "links": [a["href"] for a in main_content.find_all("a") if "href" in a.attrs],
+                                    "links": [
+                                        a["href"]
+                                        for a in main_content.find_all("a")
+                                        if "href" in a.attrs
+                                    ],
                                 }
                             )
             except Exception as e:
@@ -190,7 +196,7 @@ class WebSearchTool:
 
         return detailed_results
 
-    def get_search_history(self) -> List[Dict[str, Any]]:
+    def get_search_history(self) -> list[dict[str, Any]]:
         """
         Get the history of searches performed.
 
@@ -203,7 +209,7 @@ class WebSearchTool:
         """Clear the search history."""
         self.search_history.clear()
 
-    def get_recent_searches(self, limit: int = 10) -> List[Dict[str, Any]]:
+    def get_recent_searches(self, limit: int = 10) -> list[dict[str, Any]]:
         """
         Get the most recent searches.
 

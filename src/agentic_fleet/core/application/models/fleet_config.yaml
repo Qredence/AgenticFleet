@@ -21,4 +21,4 @@ defaults:
   max_stalls: 3
   workspace_dir: "workspace"
   downloads_dir: "downloads"
-  debug_dir: "debug" 
+  debug_dir: "debug"

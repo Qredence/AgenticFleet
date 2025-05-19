@@ -9,9 +9,9 @@ This module implements the lead orchestrator agent responsible for:
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Union
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any
 
 from autogen_core.models import ChatCompletionClient
 from pydantic import BaseModel
@@ -154,29 +154,34 @@ Based on the information gathered, provide the final answer to the original requ
 The answer should be phrased as if you were speaking to the user.
 """
 
+
 @dataclass
 class TaskEntry:
     """Entry in the task ledger."""
+
     description: str
     status: str = "pending"  # pending, in_progress, completed, failed
-    assigned_agent: Optional[str] = None
+    assigned_agent: str | None = None
     created_at: datetime = field(default_factory=datetime.now)
-    completed_at: Optional[datetime] = None
-    result: Optional[Any] = None
-    facts: Dict[str, List[str]] = field(default_factory=lambda: {
-        "GIVEN OR VERIFIED FACTS": [],
-        "FACTS TO LOOK UP": [],
-        "FACTS TO DERIVE": [],
-        "EDUCATED GUESSES": []
-    })
-    plan: List[str] = field(default_factory=list)
+    completed_at: datetime | None = None
+    result: Any | None = None
+    facts: dict[str, list[str]] = field(
+        default_factory=lambda: {
+            "GIVEN OR VERIFIED FACTS": [],
+            "FACTS TO LOOK UP": [],
+            "FACTS TO DERIVE": [],
+            "EDUCATED GUESSES": [],
+        }
+    )
+    plan: list[str] = field(default_factory=list)
+
 
 class TaskLedger:
     """Maintains the history and state of tasks."""
-    
+
     def __init__(self):
         """Initialize the task ledger."""
-        self.tasks: List[TaskEntry] = []
+        self.tasks: list[TaskEntry] = []
         self.current_task_index: int = 0
 
     def add_task(self, description: str) -> TaskEntry:
@@ -192,31 +197,30 @@ class TaskLedger:
             for key, value in updates.items():
                 if hasattr(task, key):
                     setattr(task, key, value)
-            if updates.get('status') == 'completed':
+            if updates.get("status") == "completed":
                 task.completed_at = datetime.now()
 
-    def get_current_task(self) -> Optional[TaskEntry]:
+    def get_current_task(self) -> TaskEntry | None:
         """Get the current active task."""
         if 0 <= self.current_task_index < len(self.tasks):
             return self.tasks[self.current_task_index]
         return None
 
+
 class ProgressLedger:
     """Tracks progress and maintains state for self-reflection."""
-    
+
     def __init__(self):
         """Initialize the progress ledger."""
-        self.steps: List[Dict[str, Any]] = []
+        self.steps: list[dict[str, Any]] = []
         self.stall_count: int = 0
         self.last_progress_time: datetime = datetime.now()
 
     def add_step(self, description: str, result: Any = None) -> None:
         """Add a new progress step."""
-        self.steps.append({
-            'description': description,
-            'result': result,
-            'timestamp': datetime.now()
-        })
+        self.steps.append(
+            {"description": description, "result": result, "timestamp": datetime.now()}
+        )
         self.last_progress_time = datetime.now()
 
     def is_stalled(self, stall_threshold_seconds: int = 300) -> bool:
@@ -224,18 +228,23 @@ class ProgressLedger:
         time_since_last_progress = (datetime.now() - self.last_progress_time).total_seconds()
         return time_since_last_progress > stall_threshold_seconds
 
+
 class OrchestratorConfig(BaseModel):
     """Configuration for the Orchestrator agent."""
+
     max_stalls: int = 3
     stall_threshold_seconds: int = 300
     max_steps: int = 50
     planning_temperature: float = 0.7
-    default_system_message: str = "You are the lead orchestrator agent responsible for planning and coordinating other agents to complete tasks."
+    default_system_message: str = (
+        "You are the lead orchestrator agent responsible for planning and coordinating other agents to complete tasks."
+    )
+
 
 class Orchestrator(BaseAgent):
     """
     Lead orchestrator agent that coordinates other agents to complete tasks.
-    
+
     The orchestrator:
     1. Creates and maintains task plans
     2. Assigns subtasks to appropriate agents
@@ -246,9 +255,9 @@ class Orchestrator(BaseAgent):
     def __init__(
         self,
         name: str = "orchestrator",
-        config: Optional[OrchestratorConfig] = None,
-        model_client: Optional[ChatCompletionClient] = None,
-        available_agents: Optional[Dict[str, BaseAgent]] = None,
+        config: OrchestratorConfig | None = None,
+        model_client: ChatCompletionClient | None = None,
+        available_agents: dict[str, BaseAgent] | None = None,
         **kwargs: Any,
     ) -> None:
         """Initialize the Orchestrator agent.
@@ -261,107 +270,106 @@ class Orchestrator(BaseAgent):
             **kwargs: Additional keyword arguments
         """
         super().__init__(name=name, model_client=model_client, **kwargs)
-        
+
         self.config = config or OrchestratorConfig()
         self.available_agents = available_agents or {}
-        
+
         self.task_ledger = TaskLedger()
         self.progress_ledger = ProgressLedger()
 
-    async def _get_facts(self, task: str) -> Dict[str, List[str]]:
+    async def _get_facts(self, task: str) -> dict[str, list[str]]:
         """Gather initial facts about the task using closed book prompt."""
         system_message = EnhancedSystemMessage(
-            content=ORCHESTRATOR_CLOSED_BOOK_PROMPT.format(task=task),
-            source="system"
+            content=ORCHESTRATOR_CLOSED_BOOK_PROMPT.format(task=task), source="system"
         )
-        
+
         response = await self.model_client.chat_completion(
-            messages=[system_message],
-            temperature=self.config.planning_temperature
+            messages=[system_message], temperature=self.config.planning_temperature
         )
-        
+
         # Parse response into fact categories
         facts = {
             "GIVEN OR VERIFIED FACTS": [],
             "FACTS TO LOOK UP": [],
             "FACTS TO DERIVE": [],
-            "EDUCATED GUESSES": []
+            "EDUCATED GUESSES": [],
         }
-        
+
         current_category = None
-        for line in response.content.split('\n'):
+        for line in response.content.split("\n"):
             line = line.strip()
             if line in facts:
                 current_category = line
             elif current_category and line:
                 facts[current_category].append(line)
-        
+
         return facts
 
-    async def create_task_plan(self, task: str) -> List[str]:
+    async def create_task_plan(self, task: str) -> list[str]:
         """Create a plan of subtasks for the given task."""
         # First gather facts
         facts = await self._get_facts(task)
-        
+
         # Create plan using the facts
         system_message = EnhancedSystemMessage(
             content=ORCHESTRATOR_PLAN_PROMPT.format(
-                team=self._format_agent_capabilities(),
-                task=task
+                team=self._format_agent_capabilities(), task=task
             ),
-            source="system"
+            source="system",
         )
-        
+
         response = await self.model_client.chat_completion(
-            messages=[system_message],
-            temperature=self.config.planning_temperature
+            messages=[system_message], temperature=self.config.planning_temperature
         )
-        
+
         # Parse response into subtasks
         subtasks = self._parse_plan_into_subtasks(response.content)
-        
+
         # Create task entry with facts and plan
         task_entry = self.task_ledger.add_task(task)
         task_entry.facts = facts
         task_entry.plan = subtasks
-        
+
         return subtasks
 
     def _format_agent_capabilities(self) -> str:
         """Format available agents and their capabilities."""
         capabilities = []
         for name, agent in self.available_agents.items():
-            desc = getattr(agent, 'description', 'No description available')
+            desc = getattr(agent, "description", "No description available")
             capabilities.append(f"- {name}: {desc}")
         return "\n".join(capabilities)
 
-    def _parse_plan_into_subtasks(self, plan: str) -> List[str]:
+    def _parse_plan_into_subtasks(self, plan: str) -> list[str]:
         """Parse the LLM response into discrete subtasks."""
         subtasks = [
-            line.strip().lstrip('- ').lstrip('* ')
-            for line in plan.split('\n')
-            if line.strip() and not line.strip().startswith('#')
+            line.strip().lstrip("- ").lstrip("* ")
+            for line in plan.split("\n")
+            if line.strip() and not line.strip().startswith("#")
         ]
         return subtasks
 
-    async def assign_task(self, task: TaskEntry) -> Optional[str]:
+    async def assign_task(self, task: TaskEntry) -> str | None:
         """Assign a task to the most appropriate agent."""
         # Use ledger prompt to determine next agent and action
         names = list(self.available_agents.keys())
         ledger_response = await self.model_client.chat_completion(
-            messages=[EnhancedSystemMessage(
-                content=ORCHESTRATOR_LEDGER_PROMPT.format(
-                    task=task.description,
-                    team=self._format_agent_capabilities(),
-                    names=", ".join(names)
-                ),
-                source="system"
-            )],
-            temperature=0.2
+            messages=[
+                EnhancedSystemMessage(
+                    content=ORCHESTRATOR_LEDGER_PROMPT.format(
+                        task=task.description,
+                        team=self._format_agent_capabilities(),
+                        names=", ".join(names),
+                    ),
+                    source="system",
+                )
+            ],
+            temperature=0.2,
         )
-        
+
         try:
             import json
+
             decision = json.loads(ledger_response.content)
             return decision["next_speaker"]["answer"]
         except (json.JSONDecodeError, KeyError):
@@ -373,7 +381,7 @@ class Orchestrator(BaseAgent):
         # Create initial plan
         await self.create_task_plan(task)
         current_task = self.task_ledger.get_current_task()
-        
+
         while current_task and not current_task.status == "completed":
             # Check for stall conditions
             if self.progress_ledger.is_stalled(self.config.stall_threshold_seconds):
@@ -393,18 +401,17 @@ class Orchestrator(BaseAgent):
                         self.task_ledger.current_task_index,
                         status="completed",
                         result=result,
-                        assigned_agent=agent_name
+                        assigned_agent=agent_name,
                     )
                     self.progress_ledger.add_step(
-                        f"Completed subtask: {current_task.description}",
-                        result=result
+                        f"Completed subtask: {current_task.description}", result=result
                     )
                 except Exception as e:
                     logger.error(f"Task execution failed: {str(e)}")
                     self.task_ledger.update_task(
                         self.task_ledger.current_task_index,
                         status="failed",
-                        assigned_agent=agent_name
+                        assigned_agent=agent_name,
                     )
                     # Update plan on failure
                     await self._update_facts_and_plan(current_task)
@@ -414,47 +421,48 @@ class Orchestrator(BaseAgent):
 
         # Get final answer
         final_response = await self.model_client.chat_completion(
-            messages=[EnhancedSystemMessage(
-                content=ORCHESTRATOR_GET_FINAL_ANSWER.format(task=task),
-                source="system"
-            )],
-            temperature=0.7
+            messages=[
+                EnhancedSystemMessage(
+                    content=ORCHESTRATOR_GET_FINAL_ANSWER.format(task=task), source="system"
+                )
+            ],
+            temperature=0.7,
         )
-        
+
         return final_response.content
 
     async def _update_facts_and_plan(self, task: TaskEntry) -> None:
         """Update facts and create new plan when progress stalls."""
         # Update facts
         facts_response = await self.model_client.chat_completion(
-            messages=[EnhancedSystemMessage(
-                content=ORCHESTRATOR_UPDATE_FACTS_PROMPT.format(
-                    task=task.description,
-                    facts=task.facts
-                ),
-                source="system"
-            )],
-            temperature=0.7
+            messages=[
+                EnhancedSystemMessage(
+                    content=ORCHESTRATOR_UPDATE_FACTS_PROMPT.format(
+                        task=task.description, facts=task.facts
+                    ),
+                    source="system",
+                )
+            ],
+            temperature=0.7,
         )
-        
+
         # Update plan
         plan_response = await self.model_client.chat_completion(
-            messages=[EnhancedSystemMessage(
-                content=ORCHESTRATOR_UPDATE_PLAN_PROMPT.format(
-                    team=self._format_agent_capabilities()
-                ),
-                source="system"
-            )],
-            temperature=0.7
+            messages=[
+                EnhancedSystemMessage(
+                    content=ORCHESTRATOR_UPDATE_PLAN_PROMPT.format(
+                        team=self._format_agent_capabilities()
+                    ),
+                    source="system",
+                )
+            ],
+            temperature=0.7,
         )
-        
+
         # Update task with new facts and plan
         new_plan = self._parse_plan_into_subtasks(plan_response.content)
-        self.task_ledger.update_task(
-            self.task_ledger.current_task_index,
-            plan=new_plan
-        )
+        self.task_ledger.update_task(self.task_ledger.current_task_index, plan=new_plan)
 
     async def execute(self, task: str) -> Any:
         """Execute a task (implementation of BaseAgent method)."""
-        return await self.execute_task(task) 
+        return await self.execute_task(task)

@@ -32,7 +32,9 @@ def main():
             os.environ["USE_OAUTH"] = "false"
 
         # Get the path to app.py
-        app_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "agentic_fleet"))
+        app_dir = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "..", "src", "agentic_fleet")
+        )
         app_path = os.path.join(app_dir, "app.py")
 
         # Build chainlit command
