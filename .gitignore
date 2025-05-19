@@ -198,6 +198,10 @@ ENV/
 debug/
 *.log
 *.tmp
+  
+# Secrets and sensitive files
+.env.vault
+docs/graph-flow.ipynb
 dump.rdb
 
 # Project specific
