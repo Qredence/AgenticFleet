@@ -1,7 +1,7 @@
 # Production Dockerfile for AgenticFleet
 
 # Builder stage
-FROM python:3.13-slim AS builder
+FROM python:3.13.7-slim AS builder
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -36,7 +36,7 @@ RUN /install/bin/pip install playwright \
     && /install/bin/pip install .
 
 # Production stage
-FROM python:3.13-slim
+FROM python:3.13.7-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
