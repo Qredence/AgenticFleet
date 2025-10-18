@@ -92,7 +92,31 @@ def _extract_text(message: Any) -> str:
             if isinstance(value, str):
                 return value
             if isinstance(value, list | tuple):
-                parts = [str(part) for part in value if str(part).strip()]
+                parts: list[str] = []
+                for part in value:
+                    if part is None:
+                        continue
+                    if isinstance(part, str):
+                        text = part.strip()
+                        if text:
+                            parts.append(text)
+                            continue
+                    if isinstance(part, dict):
+                        for key in ("text", "content", "message", "value"):
+                            maybe = part.get(key)
+                            if isinstance(maybe, str):
+                                text = maybe.strip()
+                                if text:
+                                    parts.append(text)
+                                    break
+                        else:
+                            text = str(part).strip()
+                            if text:
+                                parts.append(text)
+                        continue
+                    text = str(part).strip()
+                    if text:
+                        parts.append(text)
                 if parts:
                     return "\n".join(parts)
     return str(message)
